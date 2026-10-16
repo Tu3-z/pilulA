@@ -22,10 +22,10 @@ export function cardProduto(p) {
       ${p.selo ? `<span class="card__selo badge badge--dark">${p.selo}</span>` : ''}
     </div>
     <div class="card__body">
-      <p class="card__cat">${cat ? cat.nome : ''}</p>
+      <p class="card__cat">${p.marca}<span aria-hidden="true"> · </span><span class="sr-only">, </span>${cat ? cat.nome : ''}</p>
       <h3 class="card__title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
       <p class="card__sub">${p.sub}</p>
-      ${p.receita === 'retencao' ? '<span class="tarja">tarja vermelha · receita</span>' : ''}
+      ${p.receita !== 'livre' ? `<span class="tarja">tarja vermelha · ${p.receita === 'retencao' ? 'retém receita' : 'exige receita'}</span>` : ''}
     </div>
     <div class="card__foot">
       ${precoHTML(p)}

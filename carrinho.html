@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/forms.css">
   <link rel="stylesheet" href="assets/css/carrinho.css">
 </head>
 <body data-page="carrinho">
@@ -22,6 +23,9 @@
     <header class="cart-head">
       <p class="eyebrow">sua sacola</p>
       <h1 class="h1">Carrinh<b class="px">o</b><span class="star">*</span></h1>
+      <ol class="steps" aria-label="Etapas da compra">
+        <li class="is-on" data-step="0">1. Carrinho</li><li data-step="1">2. Seus dados</li><li data-step="2">3. Entrega</li><li data-step="3">4. Pagamento</li>
+      </ol>
     </header>
 
     <!-- carrinho vazio -->
@@ -40,15 +44,150 @@
     </section>
 
     <div class="cart" data-cheio hidden>
-      <!-- itens -->
-      <section class="win cart__items" aria-labelledby="itens-titulo">
-        <div class="win__bar"><span class="win__title" id="itens-titulo">carrinho.exe — <span data-qtd-itens>0 itens</span></span><span class="win__ctls" aria-hidden="true"><span class="win__ctl">_</span><span class="win__ctl">□</span><span class="win__ctl">×</span></span></div>
-        <ul class="lines" data-linhas></ul>
-        <div class="win__status"><span data-status>pronto.</span></div>
-      </section>
+      <div class="cart__main">
+        <!-- itens -->
+        <section class="win cart__items" aria-labelledby="itens-titulo">
+          <div class="win__bar"><span class="win__title" id="itens-titulo">carrinho.exe — <span data-qtd-itens>0 itens</span></span><span class="win__ctls" aria-hidden="true"><span class="win__ctl">_</span><span class="win__ctl">□</span><span class="win__ctl">×</span></span></div>
+          <ul class="lines" data-linhas></ul>
+          <div class="win__status"><span data-status>pronto.</span></div>
+        </section>
 
-      <!-- resumo + checkout -->
-      <div class="cart__side">
+        <!-- checkout -->
+        <form class="checkout" id="checkout" data-checkout novalidate aria-label="Finalizar compra">
+
+          <section class="checkout__rx" data-receita hidden aria-labelledby="rx-titulo">
+            <h2 id="rx-titulo" class="checkout__rx-title"><span class="tarja">receita obrigatória</span></h2>
+            <p>Seu pedido tem medicamento de tarja vermelha. Envie a foto da receita para o farmacêutico conferir. Antibióticos: a original é retida na entrega.</p>
+            <input class="upload__input" type="file" id="receita" name="receita" accept="image/*,.pdf" data-receita-input>
+            <label class="btn btn--dark btn--sm" for="receita">Enviar foto da receita</label>
+            <p class="term checkout__rx-status" data-receita-status aria-live="polite">nenhum arquivo_</p>
+          </section>
+
+          <!-- 1. dados -->
+          <fieldset class="block" data-etapa="1">
+            <legend class="block__title"><span class="block__n">1</span> Seus dados</legend>
+            <p class="block__hint" data-login-hint>Já tem conta? <a href="entrar.html?voltar=carrinho.html">Entrar</a> preenche tudo pra você.</p>
+            <div class="form-grid">
+              <div class="form-field form-field--full">
+                <label class="label" for="nome">Nome completo</label>
+                <input class="field" id="nome" name="nome" autocomplete="name" required>
+              </div>
+              <div class="form-field">
+                <label class="label" for="cpf">CPF</label>
+                <input class="field" id="cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" required>
+              </div>
+              <div class="form-field">
+                <label class="label" for="celular">Celular</label>
+                <input class="field" id="celular" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(11) 90000-0000" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 2. entrega -->
+          <fieldset class="block" data-etapa="2">
+            <legend class="block__title"><span class="block__n">2</span> Entrega</legend>
+            <div class="choice" role="radiogroup" aria-label="Modo de entrega">
+              <label class="choice__opt"><input type="radio" name="modo" value="entrega" checked> <span>Receber em casa · até 2h</span></label>
+              <label class="choice__opt"><input type="radio" name="modo" value="retirada"> <span>Retirar na loja · grátis</span></label>
+            </div>
+
+            <div class="form-grid" data-endereco>
+              <div class="form-field">
+                <label class="label" for="cep">CEP</label>
+                <input class="field" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" aria-describedby="cep-status" required>
+                <p class="field-hint term" id="cep-status" data-cep-status aria-live="polite">digita o CEP que a gente completa o resto</p>
+              </div>
+              <div class="form-field">
+                <label class="label" for="numero">Número</label>
+                <input class="field" id="numero" name="numero" inputmode="numeric" required>
+              </div>
+              <div class="form-field form-field--full">
+                <label class="label" for="rua">Rua</label>
+                <input class="field" id="rua" name="rua" autocomplete="address-line1" required>
+              </div>
+              <div class="form-field">
+                <label class="label" for="complemento">Complemento <span class="label__opt">(opcional)</span></label>
+                <input class="field" id="complemento" name="complemento" autocomplete="address-line2">
+              </div>
+              <div class="form-field">
+                <label class="label" for="bairro">Bairro</label>
+                <input class="field" id="bairro" name="bairro" required>
+              </div>
+              <div class="form-field form-field--full">
+                <label class="label" for="cidade">Cidade / UF</label>
+                <input class="field" id="cidade" name="cidade" autocomplete="address-level2" required>
+              </div>
+            </div>
+
+            <div class="store" data-loja hidden>
+              <p><b>pílula* Paulista</b><br>Av. [ENDEREÇO DA LOJA], São Paulo/SP<br>aberta 24h · pedido separado em até 30 min</p>
+            </div>
+          </fieldset>
+
+          <!-- 3. pagamento -->
+          <fieldset class="block" data-etapa="3">
+            <legend class="block__title"><span class="block__n">3</span> Pagamento</legend>
+            <div class="choice" role="radiogroup" aria-label="Forma de pagamento">
+              <label class="choice__opt"><input type="radio" name="pagamento" value="pix" checked> <span>Pix</span></label>
+              <label class="choice__opt"><input type="radio" name="pagamento" value="cartao"> <span>Cartão de crédito</span></label>
+              <label class="choice__opt"><input type="radio" name="pagamento" value="entrega"> <span>Na entrega</span></label>
+            </div>
+
+            <!-- pix -->
+            <div class="pay-panel" data-painel="pix">
+              <p><b>Aprovação na hora.</b> O QR code e o código copia-e-cola aparecem depois que você confirmar o pedido. Eles valem por 30 minutos.</p>
+            </div>
+
+            <!-- cartão -->
+            <div class="pay-panel" data-painel="cartao" hidden>
+              <div class="card-preview" aria-hidden="true">
+                <span class="card-preview__chip"></span>
+                <span class="card-preview__brand" data-cc-bandeira></span>
+                <span class="card-preview__num" data-cc-num>•••• •••• •••• ••••</span>
+                <span class="card-preview__row"><span data-cc-nome>NOME IMPRESSO</span><span data-cc-val>MM/AA</span></span>
+              </div>
+              <div class="form-grid">
+                <div class="form-field form-field--full">
+                  <label class="label" for="cc-numero">Número do cartão</label>
+                  <input class="field" id="cc-numero" name="ccNumero" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000">
+                </div>
+                <div class="form-field form-field--full">
+                  <label class="label" for="cc-nome">Nome impresso no cartão</label>
+                  <input class="field" id="cc-nome" name="ccNome" autocomplete="cc-name">
+                </div>
+                <div class="form-field">
+                  <label class="label" for="cc-validade">Validade</label>
+                  <input class="field" id="cc-validade" name="ccValidade" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA">
+                </div>
+                <div class="form-field">
+                  <label class="label" for="cc-cvv">CVV</label>
+                  <input class="field" id="cc-cvv" name="ccCvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123">
+                </div>
+                <div class="form-field form-field--full">
+                  <label class="label" for="cc-parcelas">Parcelas</label>
+                  <select class="field" id="cc-parcelas" name="parcelas" data-parcelas></select>
+                </div>
+              </div>
+              <p class="field-hint">Teste com o número 4111 1111 1111 1111 (Visa de teste), qualquer validade futura e qualquer CVV.</p>
+            </div>
+
+            <!-- na entrega -->
+            <div class="pay-panel" data-painel="entrega" hidden>
+              <div class="choice">
+                <label class="choice__opt"><input type="radio" name="naEntrega" value="maquininha" checked> <span>Cartão na maquininha</span></label>
+                <label class="choice__opt"><input type="radio" name="naEntrega" value="dinheiro"> <span>Dinheiro</span></label>
+              </div>
+              <div class="form-field troco" data-troco hidden>
+                <label class="label" for="troco">Troco para quanto? <span class="label__opt">(opcional)</span></label>
+                <input class="field" id="troco" name="troco" inputmode="decimal" placeholder="R$ 50,00">
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+
+      <!-- resumo -->
+      <aside class="cart__side">
         <section class="summary" aria-labelledby="resumo-titulo">
           <h2 id="resumo-titulo" class="summary__title">Resumo</h2>
 
@@ -69,63 +208,37 @@
             </div>
             <p class="coupon__msg term" id="cupom-msg" data-cupom-msg aria-live="polite"></p>
           </form>
-        </section>
-
-        <form class="checkout" data-checkout novalidate aria-labelledby="checkout-titulo">
-          <h2 id="checkout-titulo" class="summary__title">Entrega e pagamento</h2>
-
-          <div class="checkout__rx" data-receita hidden>
-            <p class="checkout__rx-title"><span class="tarja">receita obrigatória</span></p>
-            <p>Seu pedido tem medicamento de tarja vermelha. Envie a foto da receita; a original é retida na entrega.</p>
-            <input class="upload__input" type="file" id="receita" name="receita" accept="image/*,.pdf" data-receita-input>
-            <label class="btn btn--dark btn--sm" for="receita">Enviar foto da receita</label>
-            <p class="term checkout__rx-status" data-receita-status aria-live="polite">nenhum arquivo_</p>
-          </div>
-
-          <div class="checkout__grid">
-            <div class="checkout__full">
-              <label class="label" for="nome">Nome completo</label>
-              <input class="field" id="nome" name="nome" required autocomplete="name">
-            </div>
-            <div>
-              <label class="label" for="cep">CEP</label>
-              <input class="field" id="cep" name="cep" required inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" pattern="\d{5}-?\d{3}" maxlength="9">
-            </div>
-            <div>
-              <label class="label" for="numero">Número</label>
-              <input class="field" id="numero" name="numero" required autocomplete="address-line2">
-            </div>
-            <div class="checkout__full">
-              <label class="label" for="endereco">Endereço</label>
-              <input class="field" id="endereco" name="endereco" required autocomplete="address-line1">
-            </div>
-          </div>
-
-          <fieldset class="pay">
-            <legend class="label">Pagamento</legend>
-            <label class="pay__opt"><input type="radio" name="pagamento" value="pix" checked> <span>Pix</span></label>
-            <label class="pay__opt"><input type="radio" name="pagamento" value="cartao"> <span>Cartão</span></label>
-            <label class="pay__opt"><input type="radio" name="pagamento" value="entrega"> <span>Na entrega</span></label>
-          </fieldset>
 
           <p class="checkout__error term" data-erro role="alert" hidden></p>
-          <button type="submit" class="btn btn--primary btn--block" data-finalizar>Finalizar pedido · <span data-total-botao>R$ 0,00</span></button>
-          <p class="checkout__fine">Protótipo acadêmico: nenhum pagamento é processado.</p>
-        </form>
-      </div>
+          <button type="submit" form="checkout" class="btn btn--primary btn--block" data-finalizar>Finalizar pedido · <span data-total-botao>R$ 0,00</span></button>
+          <p class="checkout__fine">Protótipo acadêmico: nenhum pagamento é processado e nenhum dado sai do seu navegador.</p>
+        </section>
+      </aside>
     </div>
 
-    <dialog class="dialog" data-confirmacao aria-labelledby="ok-titulo">
+    <dialog class="dialog dialog--wide" data-confirmacao aria-labelledby="ok-titulo">
       <div class="win">
         <div class="win__bar"><span class="win__title">Pedido enviado</span><span class="win__ctls" aria-hidden="true"><span class="win__ctl">×</span></span></div>
         <div class="win__body">
           <span class="dialog__icon" data-icone="ok"></span>
-          <div>
+          <div class="confirm">
             <h2 id="ok-titulo" class="cart-empty__title">Pedido <span data-pedido></span> confirmado!</h2>
-            <p>A gente já está separando tudo. Chega em até 2h. ✱</p>
+            <p data-confirm-texto></p>
+            <div class="pix" data-pix hidden>
+              <div class="pix__qr" data-pix-qr></div>
+              <div class="pix__side">
+                <p class="label">Pix copia e cola</p>
+                <div class="pix__code">
+                  <input class="field term" readonly data-pix-codigo aria-label="Código Pix copia e cola">
+                  <button type="button" class="win__btn" data-copiar>Copiar</button>
+                </div>
+                <p class="term pix__timer">expira em <span data-pix-timer>30:00</span></p>
+                <p class="field-hint">QR code ilustrativo: não pague.</p>
+              </div>
+            </div>
           </div>
         </div>
-        <form method="dialog" class="dialog__actions"><button class="win__btn" value="ok" autofocus>OK</button></form>
+        <form method="dialog" class="dialog__actions"><a class="win__btn win__btn--link" href="loja.html">Continuar comprando</a><button class="win__btn" value="ok">OK</button></form>
       </div>
     </dialog>
   </main>
