@@ -5,7 +5,8 @@
       L<b class="px px--light">o</b>ja<span class="star star--light">*</span>
     </h1>
     <p class="page-head__lead">
-      Tudo que a farmácia tem, organizado em pastas. Filtra, busca e manda pro carrinho.
+      Tudo que a farmácia tem, organizado por categoria. Filtre por marca, preço e receita, ou use a
+      busca lá em cima.
     </p>
   </div>
 </section>
@@ -14,48 +15,34 @@
   <pl-janela class="explorer" [controles]="['_', '□', '×']">
     <span titulo class="explorer__titulo"><pl-icone nome="pasta" />{{ caminho() }}</span>
 
-    <div class="explorer__menu" aria-hidden="true">
-      <span><u>A</u>rquivo</span><span><u>E</u>ditar</span><span><u>E</u>xibir</span
-      ><span><u>F</u>avoritos</span><span>A<u>j</u>uda</span>
-    </div>
-
-    <form
-      class="explorer__tools"
-      role="search"
-      aria-label="Filtrar produtos"
-      (submit)="$event.preventDefault()"
-    >
-      <div class="explorer__addr">
-        <span class="explorer__addr-label" aria-hidden="true">Endereço</span>
-        <output class="field explorer__path" aria-label="Pasta atual">{{ caminho() }}</output>
-      </div>
-      <div class="explorer__search">
-        <label class="sr-only" for="filtro-q">Buscar na loja</label>
-        <input
-          class="field"
-          id="filtro-q"
-          type="search"
-          placeholder="buscar…"
-          autocomplete="off"
-          [value]="q()"
-          (input)="digitarBusca($any($event.target).value)"
-        />
-      </div>
+    <div class="explorer__tools">
+      <button
+        type="button"
+        class="win__btn explorer__toggle"
+        aria-controls="explorer-filtros"
+        [attr.aria-expanded]="filtrosAbertos()"
+        (click)="filtrosAbertos.set(!filtrosAbertos())"
+      >
+        <pl-icone nome="filtro" /> Filtros
+        @if (chips().length) {
+          <span class="explorer__toggle-n">{{ chips().length }}</span>
+        }
+      </button>
       <div class="explorer__sort">
-        <label class="explorer__addr-label" for="filtro-marca">Marca</label>
+        <label class="explorer__label" for="filtro-marca">Marca</label>
         <select
           class="field"
           id="filtro-marca"
           (change)="filtrar({ marca: $any($event.target).value })"
         >
-          <option value="" [selected]="!marca()">Todas</option>
+          <option value="" [selected]="!marca()">Todas as marcas</option>
           @for (m of catalogo.marcas(); track m) {
             <option [value]="m" [selected]="m === marca()">{{ m }}</option>
           }
         </select>
       </div>
       <div class="explorer__sort">
-        <label class="explorer__addr-label" for="filtro-ordem">Ordenar</label>
+        <label class="explorer__label" for="filtro-ordem">Ordenar por</label>
         <select
           class="field"
           id="filtro-ordem"
@@ -67,19 +54,24 @@
           <option value="az" [selected]="ordem() === 'az'">Nome (A–Z)</option>
         </select>
       </div>
-    </form>
+    </div>
 
     <div class="explorer__body">
-      <aside class="explorer__side" aria-label="Pastas e filtros">
+      <aside
+        class="explorer__side"
+        id="explorer-filtros"
+        aria-label="Categorias e filtros"
+        [class.is-open]="filtrosAbertos()"
+      >
         <fieldset>
-          <legend class="explorer__legend">Pastas</legend>
+          <legend class="explorer__legend">Categorias</legend>
           <div class="folders">
             <label class="folder">
               <input
                 type="radio"
                 name="pasta"
                 [checked]="cat() === 'todos'"
-                (change)="filtrar({ cat: null, sub: null })"
+                (change)="filtrar({ cat: null, sub: null }, true)"
               />
               <pl-icone nome="pasta" /><span>Todos os produtos</span
               ><span class="folder__n">{{ contar('todos') }}</span>
@@ -90,7 +82,7 @@
                   type="radio"
                   name="pasta"
                   [checked]="cat() === c.id && !sub()"
-                  (change)="filtrar({ cat: c.id, sub: null })"
+                  (change)="filtrar({ cat: c.id, sub: null }, true)"
                 />
                 <pl-icone nome="pasta" /><span>{{ c.nome }}</span
                 ><span class="folder__n">{{ contar(c.id) }}</span>
@@ -102,7 +94,7 @@
                       type="radio"
                       name="pasta"
                       [checked]="sub() === s.id"
-                      (change)="filtrar({ cat: c.id, sub: s.id })"
+                      (change)="filtrar({ cat: c.id, sub: s.id }, true)"
                     />
                     <pl-icone nome="pasta" /><span>{{ s.nome }}</span
                     ><span class="folder__n">{{ contar(c.id, s.id) }}</span>
@@ -137,7 +129,29 @@
       </aside>
 
       <section class="explorer__main" aria-labelledby="resultado-titulo">
-        <h2 id="resultado-titulo" class="explorer__heading">{{ cabecalho() }}</h2>
+        <div class="explorer__head">
+          <h2 id="resultado-titulo" class="explorer__heading">{{ cabecalho() }}</h2>
+          <p class="explorer__count" aria-live="polite">
+            {{ resultado().length }} {{ resultado().length === 1 ? 'produto' : 'produtos' }}
+          </p>
+        </div>
+
+        @if (chips().length) {
+          <div class="chips" role="group" aria-label="Filtros aplicados">
+            @for (c of chips(); track c.chave) {
+              <button
+                type="button"
+                class="chip"
+                (click)="filtrar(c.remover)"
+                [attr.aria-label]="'Remover filtro ' + c.rotulo"
+              >
+                {{ c.rotulo }} <pl-icone nome="fechar" />
+              </button>
+            }
+            <button type="button" class="chip chip--limpar" (click)="limpar()">Limpar tudo</button>
+          </div>
+        }
+
         <div class="grid">
           @for (p of resultado(); track p.id) {
             <pl-produto-card [produto]="p" />
@@ -146,8 +160,8 @@
               <div class="win__body empty__body">
                 <pl-icone nome="info" />
                 <div>
-                  <p class="empty__title">Nenhum arquivo encontrado.</p>
-                  <p>Tenta outra palavra ou fala com o farmacêutico no chat.</p>
+                  <p class="empty__title">Nenhum produto encontrado.</p>
+                  <p>Tente outra palavra, tire algum filtro ou fale com o farmacêutico no chat.</p>
                 </div>
               </div>
               <div class="dialog__actions">
@@ -160,7 +174,7 @@
     </div>
 
     <div class="win__status">
-      <span aria-live="polite">{{ resultado().length }} objeto(s)</span>
+      <span>{{ resultado().length }} objeto(s)</span>
       <span>frete grátis acima de R$ 99</span>
     </div>
   </pl-janela>

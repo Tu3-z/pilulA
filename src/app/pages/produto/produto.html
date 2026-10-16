@@ -1,17 +1,23 @@
 @if (p(); as p) {
   <div class="container">
     <nav class="crumbs" aria-label="Você está em">
-      <a routerLink="/">C:\pilula</a><span aria-hidden="true">\</span> <a routerLink="/loja">loja</a
-      ><span aria-hidden="true">\</span>
-      @if (cat(); as c) {
-        <a routerLink="/loja" [queryParams]="{ cat: c.id }">{{ c.arquivo.replace('.flp', '') }}</a
-        ><span aria-hidden="true">\</span>
-      }
-      @if (sub(); as s) {
-        <a routerLink="/loja" [queryParams]="{ cat: p.categoria, sub: s.id }">{{ s.id }}</a
-        ><span aria-hidden="true">\</span>
-      }
-      <span aria-current="page">{{ p.id }}</span>
+      <ol>
+        <li><a routerLink="/">Início</a></li>
+        <li><a routerLink="/loja">Loja</a></li>
+        @if (cat(); as c) {
+          <li>
+            <a routerLink="/loja" [queryParams]="{ cat: c.id }">{{ c.nome }}</a>
+          </li>
+        }
+        @if (sub(); as s) {
+          <li>
+            <a routerLink="/loja" [queryParams]="{ cat: p.categoria, sub: s.id }">{{ s.nome }}</a>
+          </li>
+        }
+        <li>
+          <span aria-current="page">{{ p.nome }}</span>
+        </li>
+      </ol>
     </nav>
 
     <article class="pdp">
@@ -31,12 +37,6 @@
       </div>
 
       <div class="pdp__info">
-        <p class="eyebrow">
-          {{ cat()?.nome }}
-          @if (sub(); as s) {
-            / {{ s.nome }}
-          }
-        </p>
         <div>
           <p class="pdp__brand">
             <a routerLink="/loja" [queryParams]="{ marca: p.marca }">{{ p.marca }}</a>
@@ -88,10 +88,25 @@
               />
               <button type="button" aria-label="Aumentar quantidade" (click)="ajustar(1)">+</button>
             </div>
-            <button type="button" class="btn btn--primary" (click)="comprar()">
-              Adicionar ao carrinho
+            <button
+              type="button"
+              class="btn btn--primary"
+              [class.is-done]="adicionado()"
+              (click)="comprar()"
+            >
+              @if (adicionado()) {
+                <pl-icone nome="check" /> Adicionado!
+              } @else {
+                Adicionar ao carrinho
+              }
             </button>
           </div>
+          @if (noCarrinho(); as n) {
+            <p class="pdp__incart" role="status">
+              <pl-icone nome="check" /> Você tem {{ n }} no carrinho ·
+              <a routerLink="/carrinho">ver carrinho e finalizar →</a>
+            </p>
+          }
           <ul class="pdp__ship">
             <li>chega em até 2h na Grande SP</li>
             <li>frete grátis acima de R$ 99</li>

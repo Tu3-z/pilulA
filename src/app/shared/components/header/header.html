@@ -1,12 +1,10 @@
-<div class="topbar" role="region" aria-label="Avisos da loja">
-  <div class="topbar__track">
-    @for (a of letreiro; track a) {
-      <span>{{ a }}</span>
+<!-- faixa de benefícios: texto fixo (sem letreiro rolando, que distrai e é difícil de ler) -->
+<div class="topbar" role="region" aria-label="Benefícios da loja">
+  <ul class="topbar__list container">
+    @for (a of letreiro; track a; let i = $index) {
+      <li [class.topbar__extra]="i >= 2">{{ a }}</li>
     }
-    @for (a of letreiro; track a) {
-      <span aria-hidden="true">{{ a }}</span>
-    }
-  </div>
+  </ul>
 </div>
 
 <div class="site-header">
@@ -132,7 +130,9 @@
         [attr.aria-expanded]="menuAberto()"
         (click)="alternarMenu($event)"
       >
-        <span class="cross-ico" aria-hidden="true"></span><span>Iniciar</span>
+        <span class="start-btn__icon" aria-hidden="true"
+          ><span></span><span></span><span></span></span
+        ><span>Categorias</span>
       </button>
       <ul class="tb-links">
         @for (c of catalogo.categorias(); track c.id) {
@@ -180,8 +180,17 @@
       <div class="start-menu__band" aria-hidden="true">
         <span>pílula<b>98</b></span>
       </div>
-      <nav class="start-menu__body" aria-label="Menu Iniciar">
+      <nav class="start-menu__body" aria-label="Menu principal">
         <ul>
+          <li class="sm-only-mobile">
+            <a class="sm-link" routerLink="/"><pl-icone nome="casa" /><span>Início</span></a>
+          </li>
+          <li>
+            <a class="sm-link" routerLink="/loja"
+              ><pl-icone nome="pasta" /><span>Toda a loja</span></a
+            >
+          </li>
+          <li class="sm-sep" role="separator"></li>
           @for (c of catalogo.categorias(); track c.id) {
             <li class="sm-item">
               <button

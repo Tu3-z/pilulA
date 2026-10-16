@@ -2,34 +2,42 @@
    Componentes compartilhados
    ========================================================================== */
 
-/* ---------- letreiro ---------- */
+/* ---------- faixa de benefícios (texto fixo: nada se mexendo enquanto a pessoa lê) ---------- */
 .topbar {
-  overflow: hidden;
-  white-space: nowrap;
   background: var(--night);
   color: var(--paper-2);
+  border-bottom: var(--line);
+}
+.topbar__list {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-5);
+  margin-block: 0;
+  padding-block: 7px;
+  list-style: none;
   font-family: var(--f-term);
   font-size: 1.2rem;
   line-height: 1;
-  padding-block: 7px;
-  border-bottom: var(--line);
+  white-space: nowrap;
 }
-.topbar__track {
-  display: inline-flex;
-  gap: 56px;
-  padding-left: 56px;
-  animation: marquee 38s linear infinite;
-}
-.topbar__track span::before {
+.topbar__list li::before {
   content: '✱ ';
   color: var(--blue-glow);
 }
-.topbar:hover .topbar__track {
-  animation-play-state: paused;
+@media (max-width: 1100px) {
+  .topbar__extra:nth-child(n + 4) {
+    display: none;
+  }
 }
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
+@media (max-width: 760px) {
+  .topbar__list {
+    justify-content: center;
+  }
+  .topbar__extra {
+    display: none;
+  }
+  .topbar__list li:nth-child(2) {
+    display: none;
   }
 }
 
@@ -892,9 +900,9 @@ select.field {
 .label {
   display: block;
   margin-bottom: 6px;
-  font-family: var(--f-pixel);
-  font-size: var(--t-xs);
-  text-transform: uppercase;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: var(--t-sm);
 }
 
 /* ---------- selos ---------- */
@@ -906,7 +914,7 @@ select.field {
   border: 1.5px solid var(--ink);
   background: var(--paper-2);
   font-family: var(--f-pixel);
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.3;
   text-transform: uppercase;
 }
@@ -926,7 +934,7 @@ select.field {
   background: var(--paper-2);
   border: 1.5px solid var(--ink);
   font-family: var(--f-pixel);
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.3;
   text-transform: uppercase;
 }
@@ -1065,7 +1073,7 @@ select.field {
 }
 .card__cat {
   font-family: var(--f-pixel);
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   color: var(--ink-2);
 }
@@ -1098,9 +1106,21 @@ select.field {
 }
 .card__foot {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--s-2);
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--s-3);
+}
+.card__add {
+  width: 100%;
+}
+.card__incart {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--cross);
 }
 .card__foot .btn {
   position: relative;
@@ -1161,32 +1181,50 @@ select.field {
 
 /* ---------- aviso flutuante ---------- */
 .toast-area {
+  /* no topo à direita, logo abaixo do cabeçalho: não cobre o botão de finalizar nem o rodapé */
   position: fixed;
   right: var(--s-4);
-  bottom: var(--s-4);
+  top: 156px;
   z-index: 90;
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
-  width: min(340px, calc(100vw - 32px));
+  width: min(360px, calc(100vw - 32px));
+}
+@media (max-width: 760px) {
+  .toast-area {
+    top: auto;
+    bottom: var(--s-3);
+    left: var(--s-3);
+    right: var(--s-3);
+    width: auto;
+  }
 }
 .toast {
   animation: toast-in 0.25s var(--ease);
 }
 .toast .win__body {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--s-3);
+  gap: var(--s-2) var(--s-3);
   padding: var(--s-3);
-  font-family: var(--f-term);
-  font-size: 1.3rem;
-  line-height: 1.1;
+  font-size: var(--t-sm);
+  line-height: 1.3;
 }
-.toast .win__body a {
+.toast__msg {
+  flex: 1 1 160px;
+}
+.toast__link {
   margin-left: auto;
-  font-size: 1.1rem;
+  font-weight: 700;
   white-space: nowrap;
   color: var(--blue-ink);
+}
+.toast__acao {
+  margin-left: auto;
+  min-width: 0;
+  min-height: 36px;
 }
 .toast.is-leaving {
   animation: toast-out 0.2s var(--ease) forwards;
@@ -1369,4 +1407,58 @@ pl-footer,
 pl-erro-campo,
 pl-produto-card {
   display: block;
+}
+
+/* ==========================================================================
+   Ajustes de usabilidade
+   ========================================================================== */
+
+/* botão "Categorias" com ícone de menu (antes "Iniciar", que não dizia o que fazia) */
+.start-btn__icon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 16px;
+}
+.start-btn__icon span {
+  height: 2.5px;
+  background: var(--ink);
+}
+.sm-only-mobile {
+  display: none;
+}
+@media (max-width: 760px) {
+  .sm-only-mobile {
+    display: block;
+  }
+}
+
+/* controles _ □ × que são só enfeite: apagados, para não parecerem clicáveis */
+.win__ctls--deco .win__ctl {
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: default;
+}
+/* × de verdade (fecha pop-ups e avisos) */
+.win__close {
+  width: 28px;
+  height: 26px;
+  font-size: 16px;
+  font-family: var(--f-body);
+  font-weight: 700;
+  cursor: pointer;
+}
+.win__close:hover {
+  background: var(--plastic-hi);
+}
+.win__close:active {
+  box-shadow: var(--bevel-in);
+}
+
+/* confirmação no botão depois de adicionar */
+.btn--primary.is-done {
+  background: var(--cross);
+}
+.btn--primary.is-done:hover {
+  background: var(--cross);
 }

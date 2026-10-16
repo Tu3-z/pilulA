@@ -100,6 +100,32 @@ public/
 
 > Para ligar num back-end real, troque a URL em `CatalogoService.URL` pelo endpoint da API. Os serviços de carrinho e sessão viram chamadas HTTP.
 
+## Decisões de UX
+
+A estética é forte, então algumas regras garantem que ela não atrapalhe o uso:
+
+- **Nada se mexe enquanto a pessoa lê.** A faixa de benefícios é fixa, sem letreiro rolando. Os pop-ups não flutuam e nenhum texto pisca. Tudo respeita `prefers-reduced-motion`.
+- **Só parece botão o que é botão.** Os `_ □ ×` das janelas decorativas ficam apagados. Os pop-ups e avisos que fecham de verdade têm um `×` real. A tela do PC no topo é só ilustração.
+- **Nomes claros.** O botão da navbar se chama **Categorias** (não "Iniciar"). O caminho na página de produto usa nomes reais: Início › Loja › Medicamentos › Dor e febre. Os rótulos de formulário usam fonte de leitura, não a pixelada.
+- **Uma busca só.** A busca fica no cabeçalho e, na loja, mostra o termo atual.
+- **Loja escaneável:**
+  - contagem de produtos ao lado do título;
+  - filtros aplicados como **chips removíveis**, com "Limpar tudo";
+  - no celular, os filtros ficam atrás de um botão **Filtros (n)**, e os produtos aparecem na primeira tela;
+  - trocar de categoria entra no histórico, então o "voltar" do navegador funciona.
+- **Feedback em toda ação:**
+  - "Adicionar" vira "Adicionado ✓";
+  - o cartão mostra quantos itens já estão no carrinho;
+  - o produto mostra "Você tem N no carrinho · ver carrinho";
+  - remover item do carrinho tem **Desfazer**.
+- **Checkout guiado.** As etapas viram links que pulam para cada seção e ganham ✓ quando ficam completas. Os erros aparecem no próprio campo e num resumo junto ao botão de finalizar.
+- **Avisos fora do caminho.** Os toasts aparecem no topo à direita no desktop e embaixo no celular. Nunca cobrem o botão de finalizar.
+- **Acessibilidade:**
+  - foco visível também no fundo escuro;
+  - contraste dos textos conferido;
+  - alvos de toque com no mínimo 44 px;
+  - nada vaza para fora da tela no celular.
+
 ## Design system
 
 **Paleta.** São poucas cores, todas definidas em `src/styles/tokens.css`:

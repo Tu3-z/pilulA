@@ -34,6 +34,7 @@ export class HomePage {
 
   // ---------- pop-ups ----------
   protected readonly agua = signal<'sim' | 'nao' | null>(null);
+  protected readonly popAgua = signal(true);
   protected readonly bula = signal<'sim' | 'nao' | null>(null);
 
   // ---------- receita ----------

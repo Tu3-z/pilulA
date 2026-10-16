@@ -417,16 +417,6 @@
   right: -3%;
   top: 60%;
   width: min(260px, 52cqi);
-  animation: popup 6s var(--ease) infinite alternate;
-}
-.hero__popup:hover,
-.hero__popup:focus-within {
-  animation-play-state: paused;
-}
-@keyframes popup {
-  to {
-    transform: translateY(-10px);
-  }
 }
 .popup {
   display: flex;
@@ -809,7 +799,7 @@
 }
 .chat__typing {
   color: var(--ink-2);
-  animation: caret 1s steps(2) infinite;
+  opacity: 0.8;
 }
 .chat__form {
   display: flex;

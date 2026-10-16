@@ -13,7 +13,11 @@ export type NomeIcone =
   | 'desligar'
   | 'usuario'
   | 'seta'
-  | 'camera';
+  | 'camera'
+  | 'casa'
+  | 'check'
+  | 'fechar'
+  | 'filtro';
 
 /** Ícones pixelados em SVG. Uso: <pl-icone nome="pasta" /> */
 @Component({
@@ -22,6 +26,47 @@ export type NomeIcone =
   host: { 'aria-hidden': 'true' },
   template: `
     @switch (nome()) {
+      @case ('casa') {
+        <svg width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
+          <path fill="#121216" d="M7 1h2v1h1v1h1v1h1v1h1v1h1v2h-1v7H3V8H2V6h1V5h1V4h1V3h1V2h1z" />
+          <path fill="#FBFAF5" d="M7 3h2v1h1v1h1v1h1v8h-2V9H6v5H4V6h1V5h1V4h1z" />
+          <path fill="#2340B8" d="M7 10h2v4H7z" />
+        </svg>
+      }
+      @case ('check') {
+        <svg width="16" height="16" viewBox="0 0 16 16">
+          <path
+            d="M2.5 8.5l3.5 3.5 7.5-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.6"
+            stroke-linecap="square"
+          />
+        </svg>
+      }
+      @case ('fechar') {
+        <svg width="12" height="12" viewBox="0 0 12 12">
+          <path
+            d="M2 2l8 8M10 2l-8 8"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="square"
+          />
+        </svg>
+      }
+      @case ('filtro') {
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linejoin="round"
+        >
+          <path d="M3 5h18l-7 8v6l-4 2v-8z" />
+        </svg>
+      }
       @case ('busca') {
         <svg
           width="18"
