@@ -22,6 +22,9 @@ import { Router, RouterLink } from '@angular/router';
         <p class="bsod__center">
           Pressione qualquer tecla para continuar <span class="bsod__blink">_</span>
         </p>
+        <p class="bsod__center">
+          <a class="bsod__btn" routerLink="/">Voltar para o início</a>
+        </p>
       </div>
     </section>
   `,
@@ -59,6 +62,21 @@ import { Router, RouterLink } from '@angular/router';
     }
     .bsod__center {
       text-align: center;
+    }
+    .bsod__btn {
+      display: inline-block;
+      margin-top: 0.5em;
+      padding: 0.2em 0.8em;
+      background: #e8ecfa;
+      color: var(--blue-ink);
+      text-decoration: none;
+    }
+    .bsod__btn:hover,
+    .bsod__btn:focus-visible {
+      background: #fff;
+      color: var(--blue-ink);
+      outline: 3px solid #fff;
+      outline-offset: 3px;
     }
     .bsod__blink {
       animation: piscar 1s steps(2) infinite;

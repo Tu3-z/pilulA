@@ -3,12 +3,22 @@
    ========================================================================== */
 
 .crumbs {
+  padding-block: var(--s-5);
+  font-size: var(--t-sm);
+}
+.crumbs ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  padding-block: var(--s-5);
-  font-family: var(--f-term);
-  font-size: 1.25rem;
+  align-items: center;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.crumbs li + li::before {
+  content: '›';
+  margin: 0 10px;
+  color: var(--ink-2);
 }
 .crumbs a {
   color: var(--ink-2);
@@ -16,8 +26,8 @@
 .crumbs a:hover {
   color: var(--blue);
 }
-.crumbs span[aria-hidden] {
-  color: var(--ink-2);
+.crumbs [aria-current] {
+  font-weight: 600;
 }
 
 .pdp {
@@ -181,4 +191,20 @@
     top: 0;
     max-width: 520px;
   }
+}
+
+.pdp__incart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--blue-tint);
+  border: 1.5px solid var(--blue);
+  color: var(--blue-ink);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+.pdp__incart a {
+  color: var(--blue-ink);
 }

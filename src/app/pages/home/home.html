@@ -29,7 +29,7 @@
     <div class="hero__stage">
       <p class="hero__sticker outline" aria-hidden="true">2026 vai ser o ano da sua saúde.</p>
 
-      <div class="pc">
+      <div class="pc" aria-hidden="true">
         <div class="pc__monitor">
           <div class="pc__screen">
             <div class="screen">
@@ -54,12 +54,12 @@
                 </div>
                 <div>
                   <p class="screen__label">Receita</p>
-                  <div class="screen__check" aria-label="não precisa">✓</div>
+                  <div class="screen__check">✓</div>
                 </div>
               </div>
               <div class="screen__btns">
-                <a class="pill pill--blue" routerLink="/loja">Criar</a>
-                <a class="pill pill--dark" routerLink="/" fragment="categorias">Fechar</a>
+                <span class="pill pill--blue">Criar</span>
+                <span class="pill pill--dark">Fechar</span>
               </div>
             </div>
           </div>
@@ -85,48 +85,52 @@
         </div>
       </div>
 
-      <pl-janela
-        class="hero__popup"
-        titulo="Nova mensagem"
-        tituloId="pop-agua"
-        [controles]="['_', '×']"
-        role="complementary"
-        aria-labelledby="pop-agua"
-      >
-        <div class="win__body popup">
-          <p class="popup__q">
-            <pl-icone class="popup__icon" nome="boneco" /><span>já bebeu água hoje?</span>
-          </p>
-          <p class="popup__a" aria-live="polite">
-            @switch (agua()) {
-              @case ('sim') {
-                boa! ✱ continua assim.
+      @if (popAgua()) {
+        <pl-janela
+          class="hero__popup"
+          titulo="Nova mensagem"
+          tituloId="pop-agua"
+          [fechavel]="true"
+          rotuloFechar="mensagem sobre beber água"
+          (fechar)="popAgua.set(false)"
+          role="complementary"
+          aria-labelledby="pop-agua"
+        >
+          <div class="win__body popup">
+            <p class="popup__q">
+              <pl-icone class="popup__icon" nome="boneco" /><span>já bebeu água hoje?</span>
+            </p>
+            <p class="popup__a" aria-live="polite">
+              @switch (agua()) {
+                @case ('sim') {
+                  boa! ✱ continua assim.
+                }
+                @case ('nao') {
+                  vai lá, a gente espera :)
+                }
               }
-              @case ('nao') {
-                vai lá, a gente espera :)
-              }
-            }
-          </p>
-          <div class="popup__btns">
-            <button
-              type="button"
-              class="win__btn"
-              [attr.aria-pressed]="agua() === 'sim'"
-              (click)="agua.set('sim')"
-            >
-              Sim
-            </button>
-            <button
-              type="button"
-              class="win__btn"
-              [attr.aria-pressed]="agua() === 'nao'"
-              (click)="agua.set('nao')"
-            >
-              Não
-            </button>
+            </p>
+            <div class="popup__btns">
+              <button
+                type="button"
+                class="win__btn"
+                [attr.aria-pressed]="agua() === 'sim'"
+                (click)="agua.set('sim')"
+              >
+                Sim
+              </button>
+              <button
+                type="button"
+                class="win__btn"
+                [attr.aria-pressed]="agua() === 'nao'"
+                (click)="agua.set('nao')"
+              >
+                Não
+              </button>
+            </div>
           </div>
-        </div>
-      </pl-janela>
+        </pl-janela>
+      }
     </div>
   </div>
 </section>
@@ -136,7 +140,7 @@
   <header class="section__head">
     <p class="eyebrow">01 / categorias</p>
     <h2 id="cat-titulo" class="h2">Escolha um <span class="px px--ink">disquete</span></h2>
-    <p class="section__aside">Seis gavetas da farmácia, cada uma num disquete. Clica que abre.</p>
+    <p class="section__aside">As 6 categorias da farmácia. Cada disquete abre uma seção da loja.</p>
   </header>
   <ul class="floppies">
     @for (c of catalogo.categorias(); track c.id) {
@@ -177,6 +181,7 @@
         class="think__popup"
         titulo="Nova mensagem"
         tituloId="pop-bula"
+        [controles]="[]"
         role="complementary"
         aria-labelledby="pop-bula"
       >

@@ -12,17 +12,34 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: var(--s-2);
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
   font-family: var(--f-term);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
-.steps li {
-  padding: 4px 12px;
+.steps a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
   background: var(--plastic);
+  color: var(--ink);
+  text-decoration: none;
   border: 1px solid var(--ink);
   box-shadow: var(--bevel-out);
 }
-.steps li.is-on {
+.steps a:hover {
+  background: var(--plastic-hi);
+}
+.steps a.is-ok pl-icone {
+  color: var(--cross);
+}
+.steps a.is-on.is-ok pl-icone {
+  color: var(--paper-2);
+}
+.steps a.is-on {
   background: var(--blue);
   color: var(--paper-2);
   box-shadow: var(--bevel-in);

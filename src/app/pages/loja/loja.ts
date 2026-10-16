@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
@@ -87,8 +94,28 @@ export class LojaPage {
     const s = this.subcategoria();
     let t = this.oferta() ? 'Ofertas' : 'Todos os produtos';
     if (c) t = s ? `${c.nome} › ${s.nome}` : c.nome;
-    return this.marca() ? `${t} · ${this.marca()}` : t;
+    return t;
   });
+
+  /** filtros aplicados, cada um com o que remover da URL ao clicar no × */
+  protected readonly chips = computed(() => {
+    const lista: { chave: string; rotulo: string; remover: Params }[] = [];
+    const c = this.categoria();
+    const s = this.subcategoria();
+    if (this.q()) lista.push({ chave: 'q', rotulo: `Busca: “${this.q()}”`, remover: { q: null } });
+    if (c) lista.push({ chave: 'cat', rotulo: c.nome, remover: { cat: null, sub: null } });
+    if (s) lista.push({ chave: 'sub', rotulo: s.nome, remover: { sub: null } });
+    if (this.marca())
+      lista.push({ chave: 'marca', rotulo: `Marca: ${this.marca()}`, remover: { marca: null } });
+    if (this.livre())
+      lista.push({ chave: 'livre', rotulo: 'Só sem receita', remover: { livre: null } });
+    if (this.oferta())
+      lista.push({ chave: 'oferta', rotulo: 'Em oferta', remover: { oferta: null } });
+    return lista;
+  });
+
+  /** no celular, os filtros ficam recolhidos atrás do botão "Filtros" */
+  protected readonly filtrosAbertos = signal(false);
 
   constructor() {
     // título da aba acompanha a pasta aberta
@@ -103,21 +130,18 @@ export class LojaPage {
     return cat === 'todos' ? this.catalogo.produtos().length : this.catalogo.contar(cat, sub);
   }
 
-  /** Atualiza um ou mais filtros na URL (sem empilhar no histórico). */
-  protected filtrar(mudancas: Params): void {
+  /**
+   * Atualiza um ou mais filtros na URL. Trocar de categoria entra no histórico
+   * (o "voltar" do navegador volta pra categoria anterior); ordenar/marcar filtros, não.
+   */
+  protected filtrar(mudancas: Params, empilhar = false): void {
     const atual = { ...this.rota.snapshot.queryParams, ...mudancas };
     const limpo = Object.fromEntries(
       Object.entries(atual).filter(
         ([, v]) => v !== '' && v !== null && v !== undefined && v !== 'todos' && v !== 'relevancia',
       ),
     );
-    this.router.navigate([], { relativeTo: this.rota, queryParams: limpo, replaceUrl: true });
-  }
-
-  private buscaTimer?: ReturnType<typeof setTimeout>;
-  protected digitarBusca(valor: string): void {
-    clearTimeout(this.buscaTimer);
-    this.buscaTimer = setTimeout(() => this.filtrar({ q: valor.trim() || null }), 180);
+    this.router.navigate([], { relativeTo: this.rota, queryParams: limpo, replaceUrl: !empilhar });
   }
 
   protected limpar(): void {

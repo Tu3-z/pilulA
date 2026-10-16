@@ -2,13 +2,33 @@
   <header class="cart-head">
     <p class="eyebrow">sua sacola</p>
     <h1 class="h1">Carrinh<b class="px">o</b><span class="star">*</span></h1>
-    <ol class="steps" aria-label="Etapas da compra">
-      @for (e of etapas; track e; let i = $index) {
-        <li [class.is-on]="i <= etapa()" [attr.aria-current]="i === etapa() ? 'step' : null">
-          {{ i + 1 }}. {{ e }}
-        </li>
-      }
-    </ol>
+    @if (r().itens.length) {
+      <nav aria-label="Etapas da compra">
+        <ol class="steps">
+          @for (e of etapas; track e.id; let i = $index) {
+            <li>
+              <a
+                routerLink="/carrinho"
+                [fragment]="e.id"
+                [class.is-on]="i === etapa()"
+                [class.is-ok]="etapaOk(i)"
+                [attr.aria-current]="i === etapa() ? 'step' : null"
+              >
+                @if (etapaOk(i)) {
+                  <pl-icone nome="check" />
+                } @else {
+                  {{ i + 1 }}.
+                }
+                {{ e.rotulo }}
+                @if (etapaOk(i)) {
+                  <span class="sr-only">(completo)</span>
+                }
+              </a>
+            </li>
+          }
+        </ol>
+      </nav>
+    }
   </header>
 
   @if (!r().itens.length) {
@@ -32,6 +52,7 @@
       <div class="cart__main">
         <!-- itens -->
         <pl-janela
+          id="etapa-itens"
           class="cart__items"
           tituloId="itens-titulo"
           [controles]="['_', '□', '×']"
@@ -144,7 +165,7 @@
           }
 
           <!-- 1. dados -->
-          <fieldset class="block" data-etapa="1" formGroupName="dados">
+          <fieldset class="block" id="etapa-dados" data-etapa="1" formGroupName="dados">
             <legend class="block__title"><span class="block__n">1</span> Seus dados</legend>
             @if (!sessao.logado()) {
               <p class="block__hint">
@@ -200,7 +221,7 @@
           </fieldset>
 
           <!-- 2. entrega -->
-          <fieldset class="block" data-etapa="2" formGroupName="entrega">
+          <fieldset class="block" id="etapa-entrega" data-etapa="2" formGroupName="entrega">
             <legend class="block__title"><span class="block__n">2</span> Entrega</legend>
             <div class="choice" role="radiogroup" aria-label="Modo de entrega">
               <label class="choice__opt"
@@ -303,7 +324,7 @@
           </fieldset>
 
           <!-- 3. pagamento -->
-          <fieldset class="block" data-etapa="3" formGroupName="pagamento">
+          <fieldset class="block" id="etapa-pagamento" data-etapa="3" formGroupName="pagamento">
             <legend class="block__title"><span class="block__n">3</span> Pagamento</legend>
             <div class="choice" role="radiogroup" aria-label="Forma de pagamento">
               <label class="choice__opt"

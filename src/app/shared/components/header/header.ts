@@ -48,9 +48,8 @@ export class Header {
     'Frete grátis acima de R$ 99',
     'Entrega em até 2h na Grande SP',
     'Farmacêutico online 24h',
-    'Cupom PILULA10 na primeira compra',
     'Até 3x sem juros no cartão',
-    'Manda a foto da receita',
+    'Cupom PILULA10 na 1ª compra',
   ];
 
   /** categoria aberta na loja (para marcar na barra) */
@@ -97,10 +96,13 @@ export class Header {
     const relogio = setInterval(() => this.hora.set(this.agora()), 20_000);
     inject(DestroyRef).onDestroy(() => clearInterval(relogio));
 
-    // fecha menus ao trocar de página
-    this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => this.fecharTudo(false));
+    // fecha menus ao trocar de página e mantém a busca do topo em sincronia com a loja
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
+      this.fecharTudo(false);
+      const u = this.router.parseUrl(this.router.url);
+      const naLoja = u.root.children['primary']?.segments[0]?.path === 'loja';
+      this.termo.set(naLoja ? (u.queryParams['q'] ?? '') : '');
+    });
 
     // escurece a página no celular quando o menu está aberto
     effect(() => this.document.body.classList.toggle('start-open', this.menuAberto()));

@@ -60,6 +60,11 @@ export class ProdutoPage {
   });
 
   protected readonly qtd = signal(1);
+  /** quantas unidades deste produto já estão no carrinho */
+  protected readonly noCarrinho = computed(() => this.carrinho.qtdDe(this.id()));
+  /** feedback rápido no botão depois de adicionar */
+  protected readonly adicionado = signal(false);
+  private timerAdicionado?: ReturnType<typeof setTimeout>;
   protected readonly aba = signal<Aba>('desc');
   protected readonly abas: { id: Aba; rotulo: string }[] = [
     { id: 'desc', rotulo: 'Descrição' },
@@ -89,9 +94,12 @@ export class ProdutoPage {
     const p = this.p();
     if (!p) return;
     this.carrinho.adicionar(p.id, this.qtd());
+    this.adicionado.set(true);
+    clearTimeout(this.timerAdicionado);
+    this.timerAdicionado = setTimeout(() => this.adicionado.set(false), 1600);
     this.avisos.mostrar(`${this.qtd()}× ${p.nome} no carrinho.`, {
       rota: '/carrinho',
-      rotulo: 'ver →',
+      rotulo: 'Ver carrinho',
     });
   }
 

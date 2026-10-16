@@ -171,7 +171,27 @@ export class CarrinhoPage {
 
   // ================================================================ etapas
   protected readonly etapa = signal(0);
-  protected readonly etapas = ['Carrinho', 'Seus dados', 'Entrega', 'Pagamento'];
+  protected readonly etapas = [
+    { id: 'etapa-itens', rotulo: 'Carrinho' },
+    { id: 'etapa-dados', rotulo: 'Seus dados' },
+    { id: 'etapa-entrega', rotulo: 'Entrega' },
+    { id: 'etapa-pagamento', rotulo: 'Pagamento' },
+  ];
+
+  /** etapa completa = grupo do formulário válido (o carrinho conta se tiver itens) */
+  protected etapaOk(i: number): boolean {
+    this.eventos();
+    if (i === 0) return this.r().itens.length > 0;
+    // só marca ✓ depois que a pessoa passou pela etapa (senão "Pagamento" já nasce completo com Pix)
+    if (!this.visitadas().has(i) && !this.enviado()) return false;
+    const grupos = [
+      this.form.controls.dados,
+      this.form.controls.entrega,
+      this.form.controls.pagamento,
+    ];
+    return grupos[i - 1].valid;
+  }
+  private readonly visitadas = signal(new Set<number>());
 
   // ================================================================ confirmação
   private readonly dialogo = viewChild<ElementRef<HTMLDialogElement>>('dialogo');
@@ -274,8 +294,13 @@ export class CarrinhoPage {
   }
 
   protected remover(id: string, nome: string): void {
+    const qtd = this.carrinho.qtdDe(id);
     this.carrinho.remover(id);
-    this.avisos.mostrar(`${nome} removido.`);
+    // remoção sem confirmação, mas com "Desfazer" (mais rápido e evita erro de clique)
+    this.avisos.mostrar(`${nome} removido do carrinho.`, undefined, {
+      rotulo: 'Desfazer',
+      executar: () => this.carrinho.adicionar(id, qtd),
+    });
   }
 
   protected readonly msgCupom = signal<{ texto: string; ok: boolean } | null>(null);
@@ -299,7 +324,10 @@ export class CarrinhoPage {
 
   protected focarEtapa(e: FocusEvent): void {
     const bloco = (e.target as HTMLElement).closest<HTMLElement>('[data-etapa]');
-    if (bloco) this.etapa.set(Number(bloco.dataset['etapa']));
+    if (!bloco) return;
+    const n = Number(bloco.dataset['etapa']);
+    this.etapa.set(n);
+    if (!this.visitadas().has(n)) this.visitadas.update((v) => new Set(v).add(n));
   }
 
   // ================================================================ finalizar
