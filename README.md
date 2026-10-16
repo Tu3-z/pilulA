@@ -4,19 +4,26 @@ E-commerce de farmácia — protótipo de front-end para o **Projeto Integrador*
 
 A ideia de farmácia online é comum, então o diferencial está na direção de arte: **colagem anos 2000 / Windows 98**. Tem céu de tempestade com nuvens, um computador bege desenhado em CSS, janelas e pop-ups do Windows, disquetes, retícula de impressão e títulos em serifa com letras pixeladas misturadas.
 
-## Como rodar
+## Como rodar (localhost)
 
-O projeto usa só HTML, CSS e JavaScript (ES modules), sem build e sem dependências. Como os módulos não carregam via `file://`, sirva a pasta por HTTP de um destes jeitos:
+O projeto usa só HTML, CSS e JavaScript (ES modules), sem build. Os módulos não carregam abrindo o arquivo direto (`file://`), então ele precisa de um servidor local. Escolha um:
 
+**1. Dois cliques (Windows).** Abra o **`iniciar.bat`**. Ele sobe o servidor em `http://localhost:8080` e abre o navegador. Para desligar, feche a janela preta.
+
+**2. Terminal com Node.js.**
 ```bash
-# Python
-python -m http.server 8080
+npm start
+```
+O comando sobe o `http-server` na porta 8080 e abre o navegador. Não precisa de `npm install`.
 
-# ou Node
-npx serve .
+**3. VS Code.** Instale a extensão **Live Server** (o VS Code já sugere ao abrir a pasta). Depois clique em **Go Live**, na barra de baixo.
+
+**4. Python.**
+```bash
+python -m http.server 8080
 ```
 
-Depois abra `http://localhost:8080`. No VS Code, a extensão **Live Server** também funciona. O site roda no **GitHub Pages** sem nenhuma configuração extra.
+O site também roda no **GitHub Pages** sem configuração extra.
 
 ## Páginas
 
@@ -33,6 +40,8 @@ Depois abra `http://localhost:8080`. No VS Code, a extensão **Live Server** tam
 
 ```
 ├── index.html, loja.html, produto.html, carrinho.html, entrar.html, 404.html
+├── iniciar.bat               ← dois cliques e o site abre em localhost:8080
+├── package.json              ← npm start
 └── assets/
     ├── css/
     │   ├── tokens.css        ← cores, fontes, espaçamentos, texturas (comece por aqui)
