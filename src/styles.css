@@ -1,0 +1,6 @@
+/* Estilos globais da pílula* — o design system fica em src/styles/.
+   Estilos de cada página/componente ficam ao lado do componente (.css). */
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/components.css';
+@import './styles/forms.css';

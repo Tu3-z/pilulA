@@ -1,0 +1,399 @@
+<!-- ============ HERO ============ -->
+<section class="hero sky" aria-labelledby="hero-titulo">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow eyebrow--light">farmácia online · desde 2000*</p>
+      <h1 id="hero-titulo" class="hero__title">
+        <span class="sr-only">Cuide de você primeiro.</span>
+        <span aria-hidden="true"
+          >Cuide de
+          <span class="nowrap">v<b class="px px--light">o</b>c<b class="px px--light">ê</b></span
+          ><br />primeiro<span class="star star--light">*</span></span
+        >
+      </h1>
+      <p class="hero__lead">
+        Remédios, vitaminas, dermocosméticos e higiene na sua porta em até 2 horas, com farmacêutico
+        de verdade no chat, a qualquer hora.
+      </p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" routerLink="/loja">Ir pra loja <pl-icone nome="seta" /></a>
+        <a class="btn btn--ghost-light" routerLink="/" fragment="receita">Enviar receita</a>
+      </div>
+      <ul class="hero__facts">
+        <li><b>2h</b><span>entrega na Grande SP</span></li>
+        <li><b>24h</b><span>farmacêutico online</span></li>
+        <li><b>R$ 99</b><span>frete grátis a partir de</span></li>
+      </ul>
+    </div>
+
+    <div class="hero__stage">
+      <p class="hero__sticker outline" aria-hidden="true">2026 vai ser o ano da sua saúde.</p>
+
+      <div class="pc">
+        <div class="pc__monitor">
+          <div class="pc__screen">
+            <div class="screen">
+              <p class="screen__title">detalhes do pedido:</p>
+              <div class="screen__field screen__field--wide">
+                vitamina c 1g<span class="screen__caret" aria-hidden="true"></span>
+              </div>
+              <div class="screen__row">
+                <div>
+                  <p class="screen__label">Quantidade</p>
+                  <div class="screen__field">01</div>
+                </div>
+                <div>
+                  <p class="screen__label">Entrega</p>
+                  <div class="screen__field">em até 2h <span aria-hidden="true">▾</span></div>
+                </div>
+              </div>
+              <div class="screen__row">
+                <div>
+                  <p class="screen__label">Pagamento</p>
+                  <div class="screen__opts"><span class="is-on">pix</span><span>cartão</span></div>
+                </div>
+                <div>
+                  <p class="screen__label">Receita</p>
+                  <div class="screen__check" aria-label="não precisa">✓</div>
+                </div>
+              </div>
+              <div class="screen__btns">
+                <a class="pill pill--blue" routerLink="/loja">Criar</a>
+                <a class="pill pill--dark" routerLink="/" fragment="categorias">Fechar</a>
+              </div>
+            </div>
+          </div>
+          <div class="pc__chin" aria-hidden="true">
+            <span class="pc__brand">pílula*</span><span class="pc__slot"></span
+            ><span class="pc__led"></span>
+          </div>
+        </div>
+        <div class="pc__neck" aria-hidden="true"></div>
+        <div class="pc__kbd" aria-hidden="true">
+          <div class="pc__keys">
+            @for (escura of teclas; track $index) {
+              <i [class.k--dark]="escura"></i>
+            }
+            <i class="k--dark"></i><i></i><i></i><i></i><i class="k--space"></i><i></i><i></i><i></i
+            ><i class="k--dark"></i>
+          </div>
+        </div>
+        <div class="pc__mouse" aria-hidden="true"></div>
+        <div class="pc__disks" aria-hidden="true">
+          <span class="disk disk--ink"><span class="disk__label">receita.doc</span></span>
+          <span class="disk disk--blue"><span class="disk__label">saude.exe</span></span>
+        </div>
+      </div>
+
+      <pl-janela
+        class="hero__popup"
+        titulo="Nova mensagem"
+        tituloId="pop-agua"
+        [controles]="['_', '×']"
+        role="complementary"
+        aria-labelledby="pop-agua"
+      >
+        <div class="win__body popup">
+          <p class="popup__q">
+            <pl-icone class="popup__icon" nome="boneco" /><span>já bebeu água hoje?</span>
+          </p>
+          <p class="popup__a" aria-live="polite">
+            @switch (agua()) {
+              @case ('sim') {
+                boa! ✱ continua assim.
+              }
+              @case ('nao') {
+                vai lá, a gente espera :)
+              }
+            }
+          </p>
+          <div class="popup__btns">
+            <button
+              type="button"
+              class="win__btn"
+              [attr.aria-pressed]="agua() === 'sim'"
+              (click)="agua.set('sim')"
+            >
+              Sim
+            </button>
+            <button
+              type="button"
+              class="win__btn"
+              [attr.aria-pressed]="agua() === 'nao'"
+              (click)="agua.set('nao')"
+            >
+              Não
+            </button>
+          </div>
+        </div>
+      </pl-janela>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIAS (disquetes) ============ -->
+<section id="categorias" class="section container" aria-labelledby="cat-titulo">
+  <header class="section__head">
+    <p class="eyebrow">01 / categorias</p>
+    <h2 id="cat-titulo" class="h2">Escolha um <span class="px px--ink">disquete</span></h2>
+    <p class="section__aside">Seis gavetas da farmácia, cada uma num disquete. Clica que abre.</p>
+  </header>
+  <ul class="floppies">
+    @for (c of catalogo.categorias(); track c.id) {
+      <li>
+        <a
+          class="floppy"
+          [class]="'floppy--' + c.tom"
+          routerLink="/loja"
+          [queryParams]="{ cat: c.id }"
+        >
+          <span class="floppy__shutter" aria-hidden="true"></span>
+          <span class="floppy__label">
+            <span class="floppy__file" aria-hidden="true">{{ c.arquivo }}</span>
+            <span class="floppy__name">{{ c.rotulo || c.nome }}</span>
+            <span class="floppy__count">{{ catalogo.contar(c.id) }} itens</span>
+          </span>
+          <span class="floppy__notch" aria-hidden="true"></span>
+        </a>
+      </li>
+    }
+  </ul>
+</section>
+
+<!-- ============ PENSE ANTES DE TOMAR ============ -->
+<section class="think" aria-labelledby="think-titulo">
+  <div class="container think__grid">
+    <div class="think__art">
+      <span class="dither think__dither" aria-hidden="true"></span>
+      <h2 id="think-titulo" class="think__title">
+        <span class="sr-only">Pense antes de tomar.</span>
+        <span aria-hidden="true">
+          <span class="think__l1">Pen<b class="px px--ink">s</b>e</span>
+          <span class="think__l2"><b class="px px--ink think__big">A</b>ntes</span>
+          <span class="think__l3">de t<b class="px">o</b>mar<span class="px">.</span></span>
+        </span>
+      </h2>
+      <pl-janela
+        class="think__popup"
+        titulo="Nova mensagem"
+        tituloId="pop-bula"
+        role="complementary"
+        aria-labelledby="pop-bula"
+      >
+        <div class="win__body popup">
+          <p class="popup__q">
+            <pl-icone class="popup__icon" nome="boneco" /><span>leu a bula?</span>
+          </p>
+          <p class="popup__a" aria-live="polite">
+            @switch (bula()) {
+              @case ('sim') {
+                orgulho. ✱ dúvida? chama no chat.
+              }
+              @case ('nao') {
+                a gente lê junto → <a routerLink="/" fragment="chat">abrir chat</a>
+              }
+            }
+          </p>
+          <div class="popup__btns">
+            <button
+              type="button"
+              class="win__btn"
+              [attr.aria-pressed]="bula() === 'sim'"
+              (click)="bula.set('sim')"
+            >
+              Li
+            </button>
+            <button
+              type="button"
+              class="win__btn"
+              [attr.aria-pressed]="bula() === 'nao'"
+              (click)="bula.set('nao')"
+            >
+              Ainda não
+            </button>
+          </div>
+        </div>
+      </pl-janela>
+    </div>
+    <div class="think__qs">
+      <p class="think__wave" aria-label="faz sentido?">
+        @for (l of onda; track $index) {
+          <span aria-hidden="true" [style.--y]="l.y">{{ l.ch === ' ' ? ' ' : l.ch }}</span>
+        }
+      </p>
+      <p>é necessário?</p>
+      <p>tem receita?</p>
+      <p>já falou com o farmacêutico?</p>
+      <p class="think__end">bem-vindo à farmácia<br />sem automedicação!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESTAQUES ============ -->
+<section class="section container" aria-labelledby="dest-titulo">
+  <header class="section__head section__head--row">
+    <div>
+      <p class="eyebrow">02 / em destaque</p>
+      <h2 id="dest-titulo" class="h2">Acabou de <span class="px">chegar</span></h2>
+    </div>
+    <a class="btn btn--ghost" routerLink="/loja">Ver a loja toda <pl-icone nome="seta" /></a>
+  </header>
+  <div class="grid">
+    @for (p of catalogo.destaques(); track p.id) {
+      <pl-produto-card [produto]="p" />
+    }
+  </div>
+</section>
+
+<!-- ============ RECEITA + CHAT ============ -->
+<section id="receita" class="band sky" aria-labelledby="rec-titulo">
+  <div class="container band__grid">
+    <div class="band__copy">
+      <p class="eyebrow eyebrow--light">03 / receita</p>
+      <h2 id="rec-titulo" class="h2 h2--light">
+        Manda a r<b class="px px--light">e</b>ceita<span class="star star--light">*</span>
+      </h2>
+      <p class="band__lead">
+        Tira uma foto, a gente separa tudo e confirma com você no chat antes de sair pra entrega.
+      </p>
+      <div class="upload">
+        <input
+          class="upload__input"
+          type="file"
+          id="receita-arquivo"
+          accept="image/*,.pdf"
+          (change)="enviarReceita($event)"
+        />
+        <label class="btn btn--primary" for="receita-arquivo"
+          ><pl-icone nome="camera" /> Enviar foto da receita</label
+        >
+        <p class="upload__status term" aria-live="polite">{{ receita() }}</p>
+      </div>
+      <p class="band__fine">Antibióticos e controlados: a receita original é retida na entrega.</p>
+    </div>
+
+    <pl-janela
+      id="chat"
+      class="chat"
+      tituloId="chat-titulo"
+      [controles]="['_', '□', '×']"
+      role="region"
+      aria-labelledby="chat-titulo"
+    >
+      <span titulo
+        ><span class="chat__dot" aria-hidden="true"></span>farmacêutico online — conversa</span
+      >
+      <div class="chat__log" role="log" aria-live="polite" #log>
+        @for (m of mensagens(); track $index) {
+          <p>
+            <b class="chat__who" [class.chat__who--farma]="m.quem === 'farma'">{{
+              m.quem === 'farma' ? 'farma_pilula diz:' : 'você diz:'
+            }}</b>
+            {{ m.texto }}
+          </p>
+        }
+        @if (digitando()) {
+          <p class="chat__typing">farma_pilula está digitando...</p>
+        }
+      </div>
+      <form class="chat__form" (submit)="$event.preventDefault(); enviarChat(log)">
+        <label class="sr-only" for="chat-msg">Sua mensagem</label>
+        <input
+          class="field"
+          id="chat-msg"
+          type="text"
+          placeholder="digite sua dúvida…"
+          autocomplete="off"
+          maxlength="200"
+          [formControl]="campoChat"
+        />
+        <button type="submit" class="win__btn">Enviar</button>
+      </form>
+    </pl-janela>
+  </div>
+</section>
+
+<!-- ============ VANTAGENS ============ -->
+<section class="section container" aria-labelledby="perk-titulo">
+  <h2 id="perk-titulo" class="sr-only">Por que a pílula*</h2>
+  <ul class="perks">
+    <li class="perk">
+      <svg
+        class="perk__icon"
+        width="48"
+        height="48"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        shape-rendering="crispEdges"
+      >
+        <path
+          fill="#121216"
+          d="M5 1h6v1h2v1h1v2h1v6h-1v2h-1v1h-2v1H5v-1H3v-1H2v-2H1V5h1V3h1V2h2z"
+        />
+        <path fill="#FBFAF5" d="M5 2h6v1h2v2h1v6h-1v2h-2v1H5v-1H3v-2H2V5h1V3h2z" />
+        <path fill="#2340B8" d="M7 4h2v4h3v2H7z" />
+      </svg>
+      <h3>Entrega em 2h</h3>
+      <p>Pediu, chegou. Na Grande SP, de segunda a domingo.</p>
+    </li>
+    <li class="perk">
+      <svg
+        class="perk__icon"
+        width="48"
+        height="48"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        shape-rendering="crispEdges"
+      >
+        <path fill="#121216" d="M1 2h14v10H7l-3 3v-3H1z" />
+        <path fill="#FBFAF5" d="M2 3h12v8H6l-1 1v-1H2z" />
+        <path fill="#2340B8" d="M4 5h8v1H4zM4 8h5v1H4z" />
+      </svg>
+      <h3>Farmacêutico 24h</h3>
+      <p>Dúvida sobre dose, genérico ou interação? É só chamar no chat.</p>
+    </li>
+    <li class="perk">
+      <svg
+        class="perk__icon"
+        width="48"
+        height="48"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        shape-rendering="crispEdges"
+      >
+        <path fill="#121216" d="M1 3h14v11H1z" />
+        <path fill="#FBFAF5" d="M2 4h12v9H2z" />
+        <path fill="#2340B8" d="M2 6h12v2H2z" />
+        <path fill="#121216" d="M3 10h4v1H3z" />
+      </svg>
+      <h3>Paga como quiser</h3>
+      <p>Pix, cartão em até 3x ou na entrega. Sem complicação.</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="container" aria-labelledby="news-titulo">
+  <div class="news">
+    <span class="dither news__dither" aria-hidden="true"></span>
+    <h2 id="news-titulo" class="h2">Fica lig<b class="px">a</b>do<span class="star">*</span></h2>
+    <p class="news__lead">sem spam, só cuidado.</p>
+    @if (!inscrito()) {
+      <form class="news__form" (submit)="$event.preventDefault(); assinar()">
+        <label class="sr-only" for="news-email">Seu e-mail</label>
+        <input
+          class="field"
+          id="news-email"
+          type="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+          [formControl]="email"
+          [attr.aria-invalid]="email.touched && email.invalid"
+        />
+        <button type="submit" class="btn btn--dark">Assinar</button>
+      </form>
+    } @else {
+      <p class="news__ok term" role="status">valeu! ✱ confere teu e-mail</p>
+    }
+  </div>
+</section>

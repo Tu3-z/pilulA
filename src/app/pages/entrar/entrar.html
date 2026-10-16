@@ -1,0 +1,251 @@
+<div class="logon sky">
+  <div class="container logon__grid">
+    <div class="logon__copy">
+      <p class="eyebrow eyebrow--light">minha conta</p>
+      <h1 class="h1 h1--light">
+        Bem-vind<b class="px px--light">o</b><br />de volta<span class="star star--light">*</span>
+      </h1>
+      <p class="logon__lead">
+        Entra pra acompanhar pedidos, guardar suas receitas e comprar mais rápido.
+      </p>
+      <p class="logon__note term">protótipo: a conta fica salva só neste navegador.</p>
+    </div>
+
+    <pl-janela class="logon__win" titulo="Logon — pílula98" [controles]="['?', '×']">
+      <div class="logon__head">
+        <svg
+          class="logon__key"
+          width="52"
+          height="52"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          shape-rendering="crispEdges"
+        >
+          <path fill="#121216" d="M5 1h6v1h1v5h-2V3H6v4H4V2h1z" />
+          <path fill="#121216" d="M2 7h12v8H2z" />
+          <path fill="#E9E0C6" d="M3 8h10v6H3z" />
+          <path fill="#2340B8" d="M7 9h2v2H7zM7 11h1v2H7z" />
+        </svg>
+        <p>Digite seus dados para entrar na pílula* ou crie uma conta nova.</p>
+      </div>
+
+      <div class="tabs__list logon__tabs" role="tablist" aria-label="Entrar ou criar conta">
+        @for (a of abas; track a.id) {
+          <button
+            class="tabs__tab"
+            role="tab"
+            [id]="'tab-' + a.id"
+            [attr.aria-controls]="'painel-' + a.id"
+            [attr.aria-selected]="aba() === a.id"
+            [tabIndex]="aba() === a.id ? 0 : -1"
+            (click)="aba.set(a.id)"
+            (keydown)="teclaAba($event)"
+          >
+            {{ a.rotulo }}
+          </button>
+        }
+      </div>
+
+      @if (aba() === 'entrar') {
+        <!-- ENTRAR -->
+        <section
+          class="tabs__panel logon__panel"
+          role="tabpanel"
+          id="painel-entrar"
+          aria-labelledby="tab-entrar"
+        >
+          <form class="form" [formGroup]="login" (ngSubmit)="entrar()" novalidate>
+            @if (sessao.usuario(); as u) {
+              <p class="form-alert form-alert--info term">
+                você já está conectado como {{ u.nome }}.
+              </p>
+            }
+            <div class="form-field">
+              <label class="label" for="login-email">E-mail</label>
+              <input
+                class="field"
+                id="login-email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                [attr.aria-invalid]="!!erro('login', 'email')"
+                aria-describedby="login-email-erro"
+              />
+              <pl-erro-campo id="login-email-erro" [mensagem]="erro('login', 'email')" />
+            </div>
+            <div class="form-field">
+              <label class="label" for="login-senha">Senha</label>
+              <div class="pass">
+                <input
+                  class="field"
+                  id="login-senha"
+                  [type]="mostrar()['login'] ? 'text' : 'password'"
+                  formControlName="senha"
+                  autocomplete="current-password"
+                  [attr.aria-invalid]="!!erro('login', 'senha')"
+                  aria-describedby="login-senha-erro"
+                />
+                <button
+                  type="button"
+                  class="win__btn pass__toggle"
+                  [attr.aria-pressed]="!!mostrar()['login']"
+                  (click)="alternarSenha('login')"
+                >
+                  {{ mostrar()['login'] ? 'ocultar' : 'mostrar' }}
+                </button>
+              </div>
+              <pl-erro-campo id="login-senha-erro" [mensagem]="erro('login', 'senha')" />
+            </div>
+            @if (erroLogin()) {
+              <p class="form-alert term" role="alert">{{ erroLogin() }}</p>
+            }
+            <div class="form__actions">
+              <button type="button" class="link-btn" (click)="esqueci()">
+                Esqueci minha senha
+              </button>
+              <button type="submit" class="btn btn--primary">Entrar</button>
+            </div>
+            <p class="form-msg term" aria-live="polite">{{ msgEsqueci() }}</p>
+          </form>
+        </section>
+      } @else {
+        <!-- CRIAR CONTA -->
+        <section
+          class="tabs__panel logon__panel"
+          role="tabpanel"
+          id="painel-criar"
+          aria-labelledby="tab-criar"
+        >
+          <form class="form" [formGroup]="cadastro" (ngSubmit)="criar()" novalidate>
+            <div class="form-grid">
+              <div class="form-field form-field--full">
+                <label class="label" for="cad-nome">Nome completo</label>
+                <input
+                  class="field"
+                  id="cad-nome"
+                  formControlName="nome"
+                  autocomplete="name"
+                  [attr.aria-invalid]="!!erro('cadastro', 'nome')"
+                  aria-describedby="cad-nome-erro"
+                />
+                <pl-erro-campo id="cad-nome-erro" [mensagem]="erro('cadastro', 'nome')" />
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-cpf">CPF</label>
+                <input
+                  class="field"
+                  id="cad-cpf"
+                  formControlName="cpf"
+                  plMascara="cpf"
+                  inputmode="numeric"
+                  placeholder="000.000.000-00"
+                  [attr.aria-invalid]="!!erro('cadastro', 'cpf')"
+                  aria-describedby="cad-cpf-erro"
+                />
+                <pl-erro-campo id="cad-cpf-erro" [mensagem]="erro('cadastro', 'cpf')" />
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-cel">Celular</label>
+                <input
+                  class="field"
+                  id="cad-cel"
+                  formControlName="celular"
+                  plMascara="celular"
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="tel-national"
+                  placeholder="(11) 90000-0000"
+                  [attr.aria-invalid]="!!erro('cadastro', 'celular')"
+                  aria-describedby="cad-cel-erro"
+                />
+                <pl-erro-campo id="cad-cel-erro" [mensagem]="erro('cadastro', 'celular')" />
+              </div>
+              <div class="form-field form-field--full">
+                <label class="label" for="cad-email">E-mail</label>
+                <input
+                  class="field"
+                  id="cad-email"
+                  type="email"
+                  formControlName="email"
+                  autocomplete="email"
+                  [attr.aria-invalid]="!!erro('cadastro', 'email')"
+                  aria-describedby="cad-email-erro"
+                />
+                <pl-erro-campo id="cad-email-erro" [mensagem]="erro('cadastro', 'email')" />
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-senha">Senha</label>
+                <div class="pass">
+                  <input
+                    class="field"
+                    id="cad-senha"
+                    [type]="mostrar()['cad'] ? 'text' : 'password'"
+                    formControlName="senha"
+                    autocomplete="new-password"
+                    [attr.aria-invalid]="!!erro('cadastro', 'senha')"
+                    aria-describedby="forca-txt cad-senha-erro"
+                  />
+                  <button
+                    type="button"
+                    class="win__btn pass__toggle"
+                    [attr.aria-pressed]="!!mostrar()['cad']"
+                    (click)="alternarSenha('cad')"
+                  >
+                    {{ mostrar()['cad'] ? 'ocultar' : 'mostrar' }}
+                  </button>
+                </div>
+                <div class="strength" aria-hidden="true" [attr.data-nivel]="forca().nivel">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <p class="field-hint" id="forca-txt">{{ forca().texto }}</p>
+                <pl-erro-campo id="cad-senha-erro" [mensagem]="erro('cadastro', 'senha')" />
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-senha2">Confirmar senha</label>
+                <input
+                  class="field"
+                  id="cad-senha2"
+                  type="password"
+                  formControlName="senha2"
+                  autocomplete="new-password"
+                  [attr.aria-invalid]="!!erro('cadastro', 'senha2')"
+                  aria-describedby="cad-senha2-erro"
+                />
+                <pl-erro-campo id="cad-senha2-erro" [mensagem]="erro('cadastro', 'senha2')" />
+              </div>
+              <div class="form-field form-field--full">
+                <label class="check-row">
+                  <input
+                    type="checkbox"
+                    id="cad-termos"
+                    formControlName="termos"
+                    [attr.aria-invalid]="!!erro('cadastro', 'termos')"
+                    aria-describedby="cad-termos-erro"
+                  />
+                  <span
+                    >Li e aceito os <a href="#">termos de uso</a> e a
+                    <a href="#">política de privacidade</a> (LGPD).</span
+                  >
+                </label>
+                <pl-erro-campo id="cad-termos-erro" [mensagem]="erro('cadastro', 'termos')" />
+              </div>
+              <div class="form-field form-field--full">
+                <label class="check-row"
+                  ><input type="checkbox" formControlName="ofertas" />
+                  <span>Quero receber ofertas por e-mail. Sem spam, só cuidado.</span></label
+                >
+              </div>
+            </div>
+            @if (erroCadastro()) {
+              <p class="form-alert term" role="alert">{{ erroCadastro() }}</p>
+            }
+            <div class="form__actions">
+              <span></span>
+              <button type="submit" class="btn btn--primary">Criar conta</button>
+            </div>
+          </form>
+        </section>
+      }
+    </pl-janela>
+  </div>
+</div>
