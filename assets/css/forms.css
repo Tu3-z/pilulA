@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Formulários (login, cadastro, checkout)
+   ========================================================================== */
+
+.form { display: flex; flex-direction: column; gap: var(--s-4); }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--s-3); }
+.form-field { display: flex; flex-direction: column; min-width: 0; }
+.form-field--full { grid-column: 1 / -1; }
+@media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+
+.field-hint { margin-top: 6px; font-size: var(--t-xs); color: var(--ink-2); }
+.field-hint.term { font-size: 1.15rem; line-height: 1.05; }
+.field-error {
+  margin-top: 6px;
+  font-family: var(--f-term);
+  font-size: 1.15rem;
+  line-height: 1.05;
+  color: var(--alert);
+}
+.field-error::before { content: "✗ "; }
+.field[aria-invalid="true"] { border-color: var(--alert); box-shadow: inset 2px 2px 0 #E7B3AA, inset -2px -2px 0 var(--plastic-hi); }
+
+.form-alert {
+  padding: 10px 12px;
+  background: #F6E4E0;
+  border: 1.5px solid var(--alert);
+  color: var(--alert);
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+.form-alert--info { background: var(--blue-tint); border-color: var(--blue); color: var(--blue-ink); }
+.form-msg { font-size: 1.2rem; color: var(--blue); min-height: 1.2em; }
+.form__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
+
+.link-btn {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: var(--t-sm);
+}
+
+.pass { display: flex; gap: 6px; }
+.pass .field { flex: 1; min-width: 0; }
+.pass__toggle { min-width: 84px; font-size: 1.15rem; }
+
+.strength { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; height: 10px; margin-top: 8px; padding: 2px; background: var(--paper-2); border: 1px solid var(--ink); box-shadow: var(--bevel-in); }
+.strength span { background: transparent; }
+.strength[data-nivel="1"] span:nth-child(-n+1),
+.strength[data-nivel="2"] span:nth-child(-n+2),
+.strength[data-nivel="3"] span:nth-child(-n+3),
+.strength[data-nivel="4"] span:nth-child(-n+4) { background: var(--blue); }
+.strength[data-nivel="1"] span:nth-child(1) { background: var(--alert); }
+
+.check-row { display: flex; align-items: flex-start; gap: 10px; min-height: 32px; font-size: var(--t-sm); line-height: 1.4; }
+.check-row input { flex: none; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--blue); }
+
+/* opções tipo "botão de rádio" do Win98 */
+.choice { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.choice__opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 var(--s-4);
+  background: var(--plastic);
+  border: 1px solid var(--ink);
+  box-shadow: var(--bevel-out);
+  font-family: var(--f-term);
+  font-size: 1.3rem;
+}
+.choice__opt:has(input:checked) { background: var(--blue); color: var(--paper-2); box-shadow: var(--bevel-in); }
+.choice__opt:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
+.choice__opt input { accent-color: var(--ink); }

@@ -1,7 +1,7 @@
 import { montarLayout, avisar } from '../components/layout.js';
 import { cardProduto, ligarBotoesAdicionar, precoHTML } from '../components/card-produto.js';
-import { PRODUTOS, RECEITA, getProduto, getCategoria, formatBRL } from '../data/produtos.js';
-import { carrinho } from '../lib/carrinho.js';
+import { PRODUTOS, RECEITA, getProduto, getCategoria, getSub, formatBRL } from '../data/produtos.js';
+import { carrinho, maxParcelas } from '../lib/carrinho.js';
 import { arte } from '../lib/arte.js';
 import { $, $$, icones } from '../lib/util.js';
 
@@ -25,9 +25,11 @@ if (!p) {
     </div>`;
 } else {
   const cat = getCategoria(p.categoria);
+  const sub = getSub(p.categoria, p.subcategoria);
   const receita = RECEITA[p.receita];
   const arquivo = `${p.id}.bmp`;
-  const parcela = p.preco >= 40 ? `ou 2x de ${formatBRL(p.preco / 2)} sem juros` : 'no Pix, cartão ou na entrega';
+  const vezes = maxParcelas(p.preco);
+  const parcela = vezes > 1 ? `ou ${vezes}x de ${formatBRL(p.preco / vezes)} sem juros no cartão` : 'no Pix, cartão ou na entrega';
   document.title = `${p.nome} — pílula*`;
 
   raiz.innerHTML = `
@@ -35,6 +37,7 @@ if (!p) {
       <a href="index.html">C:\\pilula</a><span aria-hidden="true">\\</span>
       <a href="loja.html">loja</a><span aria-hidden="true">\\</span>
       <a href="loja.html?cat=${p.categoria}">${cat.arquivo.replace('.flp', '')}</a><span aria-hidden="true">\\</span>
+      ${sub ? `<a href="loja.html?cat=${p.categoria}&amp;sub=${sub.id}">${sub.id}</a><span aria-hidden="true">\\</span>` : ''}
       <span aria-current="page">${p.id}</span>
     </nav>
 
@@ -52,17 +55,18 @@ if (!p) {
       </div>
 
       <div class="pdp__info">
-        <p class="eyebrow">${cat.nome}</p>
+        <p class="eyebrow">${cat.nome}${sub ? ` / ${sub.nome}` : ''}</p>
         <div>
+          <p class="pdp__brand"><a href="loja.html?marca=${encodeURIComponent(p.marca)}">${p.marca}</a></p>
           <h1 class="pdp__title">${p.nome}</h1>
           <p class="pdp__sub">${p.sub}</p>
         </div>
         <div class="pdp__tags">
-          ${p.receita === 'retencao' ? '<span class="tarja">tarja vermelha · receita retida</span>' : `<span class="badge">${receita.rotulo}</span>`}
+          ${p.receita !== 'livre' ? `<span class="tarja">${receita.rotulo}</span>` : `<span class="badge">${receita.rotulo}</span>`}
           <span class="badge badge--blue">entrega em 2h</span>
         </div>
 
-        ${p.receita === 'retencao' ? `
+        ${p.receita !== 'livre' ? `
         <div class="pdp__alert" role="note">
           <div><b>Precisa de receita.</b>${receita.aviso} Você pode enviar a foto no carrinho.</div>
         </div>` : ''}
@@ -140,7 +144,9 @@ if (!p) {
   });
 
   // relacionados
-  const rel = PRODUTOS.filter((x) => x.categoria === p.categoria && x.id !== p.id).slice(0, 4);
+  const mesmaSub = PRODUTOS.filter((x) => x.subcategoria === p.subcategoria && x.categoria === p.categoria && x.id !== p.id);
+  const mesmaCat = PRODUTOS.filter((x) => x.categoria === p.categoria && x.subcategoria !== p.subcategoria);
+  const rel = [...mesmaSub, ...mesmaCat].slice(0, 4);
   if (rel.length) {
     const grade = $('[data-relacionados]');
     grade.innerHTML = rel.map(cardProduto).join('');

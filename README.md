@@ -23,29 +23,34 @@ Depois abra `http://localhost:8080`. No VS Code, a extensão **Live Server** tam
 | Página | Arquivo | O que tem |
 |---|---|---|
 | Início | `index.html` | Hero com o PC retrô, categorias em disquetes, "Pense antes de tomar", destaques, envio de receita, chat com farmacêutico, newsletter |
-| Loja | `loja.html` | Catálogo dentro de uma janela do "Windows Explorer": pastas (categorias), busca, ordenação e filtros sincronizados com a URL (`?cat=vitaminas&q=…`) |
+| Loja | `loja.html` | Catálogo dentro de uma janela do "Windows Explorer": pastas e subpastas (categorias), filtro por marca, busca, ordenação e filtros sincronizados com a URL (`?cat=dermo&sub=protetor&marca=ISDIN`) |
 | Produto | `produto.html?id=…` | Visualizador da imagem, preço, quantidade, abas (descrição / como usar / avisos) e produtos relacionados |
-| Carrinho | `carrinho.html` | Itens, cupom, barra de frete grátis estilo Win98, upload obrigatório de receita para tarja vermelha e checkout com confirmação |
+| Carrinho | `carrinho.html` | Itens, cupom, barra de frete grátis estilo Win98, receita obrigatória para tarja vermelha e checkout em 3 etapas (dados → entrega → pagamento) |
+| Entrar | `entrar.html` | Caixa de "Logon" do Windows com abas **Entrar** / **Criar conta** (`entrar.html#criar`, `?voltar=carrinho.html`) |
+| 404 | `404.html` | "Tela azul" do Windows 98 (o GitHub Pages usa automaticamente) |
 
 ## Estrutura
 
 ```
-├── index.html, loja.html, produto.html, carrinho.html
+├── index.html, loja.html, produto.html, carrinho.html, entrar.html, 404.html
 └── assets/
     ├── css/
     │   ├── tokens.css        ← cores, fontes, espaçamentos, texturas (comece por aqui)
     │   ├── base.css          ← reset, tipografia, utilitários (.sky, .dither, .px…)
     │   ├── components.css    ← cabeçalho, botões, janela Win98, cartão de produto, rodapé…
-    │   └── home.css, loja.css, produto.css, carrinho.css
+    │   ├── forms.css         ← campos, erros, máscaras, opções de rádio
+    │   └── home.css, loja.css, produto.css, carrinho.css, entrar.css
     ├── img/favicon.svg
     └── js/
-        ├── data/produtos.js        ← catálogo mock (trocar por API depois)
-        ├── lib/carrinho.js         ← estado do carrinho + localStorage + cupom + frete
+        ├── data/produtos.js        ← catálogo mock com produtos reais (trocar por API depois)
+        ├── lib/carrinho.js         ← estado do carrinho + localStorage + cupom + frete + parcelas
+        ├── lib/sessao.js           ← login/cadastro mock (senha em hash SHA-256)
+        ├── lib/validacao.js        ← máscaras e validações (CPF, celular, CEP, cartão/Luhn, senha)
         ├── lib/arte.js             ← ilustrações dos produtos em SVG
         ├── lib/util.js             ← escape de HTML, ícones, helpers
-        ├── components/layout.js    ← cabeçalho, rodapé e avisos injetados em todas as páginas
+        ├── components/layout.js    ← cabeçalho, navbar, menu Iniciar, busca, rodapé e avisos
         ├── components/card-produto.js
-        └── pages/home.js, loja.js, produto.js, carrinho.js
+        └── pages/home.js, loja.js, produto.js, carrinho.js, entrar.js
 ```
 
 ## Design system
@@ -74,6 +79,52 @@ Depois abra `http://localhost:8080`. No VS Code, a extensão **Live Server** tam
 - `.dither`: nuvem de pontinhos azuis.
 - `.outline`: serifa itálica vazada.
 
+## Navbar
+
+O cabeçalho fica fixo no topo e funciona como a **barra de tarefas do Windows 98**:
+
+- **Iniciar** abre um menu Iniciar com todas as categorias e subcategorias, ofertas, receita, chat e conta.
+- Cada categoria da barra abre um submenu ao passar o mouse ou focar pelo teclado.
+- Na bandeja ficam o status "farmacêutico online" e um relógio ao vivo.
+- A **busca** sugere produtos enquanto você digita. Ela busca por início de palavra ("dor" acha Dorflex e "dor de garganta", mas não "desodorante") e dá pra navegar com ↑ ↓ Enter Esc.
+- No celular, a barra some e tudo vai para o menu ☰.
+
+## Catálogo de teste
+
+São 55 produtos reais do varejo farmacêutico (Dorflex, Neosaldina, Centrum, Anthelios, CeraVe, Colgate, Pampers…) em 6 categorias e 24 subcategorias, com marca, apresentação e preço aproximado de mercado. O tipo de receita segue a regra brasileira:
+
+| `receita` | Significa | No site |
+|---|---|---|
+| `livre` | MIP / não-medicamento | compra normal |
+| `prescricao` | tarja vermelha | exige anexar a receita |
+| `retencao` | tarja vermelha com retenção (antibióticos) | exige anexar a receita; a original é retida na entrega |
+
+Os preços são ilustrativos. As marcas pertencem aos seus donos e aparecem só como dado de teste.
+
+## Formulários e pagamento
+
+- **Cadastro:**
+  - CPF com máscara e validação dos dígitos verificadores;
+  - celular com DDD;
+  - medidor de força da senha;
+  - confirmação de senha;
+  - aceite LGPD.
+  - Os erros aparecem no próprio campo (`aria-invalid` + `aria-describedby`).
+- **Login:** mostrar/ocultar senha e "esqueci a senha" (simulado). Depois de entrar, nome, CPF e celular já vêm preenchidos no checkout.
+- **Entrega:**
+  - receber em casa: o CEP completa o endereço sozinho pela API pública do **ViaCEP**;
+  - ou retirar na loja, sem frete.
+- **Pagamento:**
+  - **Pix:** QR code ilustrativo, código copia-e-cola e contador de 30 min.
+  - **Cartão:**
+    - prévia do cartão desenhada ao vivo e bandeira detectada pelo número (Visa, Mastercard, Elo, Amex);
+    - número validado pelo algoritmo de Luhn e validade conferida;
+    - até **3x sem juros**, com parcela mínima de R$ 30.
+    - Para testar, use `4111 1111 1111 1111`.
+  - **Na entrega:** maquininha ou dinheiro, com campo de troco.
+
+> ⚠️ O login é só um mock no `localStorage`, sem segurança real. Num sistema de verdade, a senha é validada no back-end (bcrypt/argon2) e a sessão fica num cookie `HttpOnly`. Nenhum dado de pagamento sai do navegador.
+
 ## Funcionalidades
 
 - O carrinho fica salvo no `localStorage` e sincroniza entre abas.
@@ -92,7 +143,7 @@ Depois abra `http://localhost:8080`. No VS Code, a extensão **Live Server** tam
 ## Próximos passos (sugestões)
 
 - [ ] Ligar o catálogo e o checkout a um back-end (API REST).
-- [ ] Login e área do cliente (pedidos, receitas enviadas).
+- [ ] Área do cliente (histórico de pedidos, receitas enviadas, endereços salvos).
 - [ ] Dados reais da farmácia no rodapé (CRF, AFE/ANVISA, CNPJ). Hoje estão como `[placeholder]`.
 
 ---
