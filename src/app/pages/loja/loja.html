@@ -1,0 +1,167 @@
+<section class="page-head sky">
+  <div class="container page-head__inner">
+    <p class="eyebrow eyebrow--light">catálogo completo</p>
+    <h1 class="h1 h1--light">
+      L<b class="px px--light">o</b>ja<span class="star star--light">*</span>
+    </h1>
+    <p class="page-head__lead">
+      Tudo que a farmácia tem, organizado em pastas. Filtra, busca e manda pro carrinho.
+    </p>
+  </div>
+</section>
+
+<div class="container explorer-wrap">
+  <pl-janela class="explorer" [controles]="['_', '□', '×']">
+    <span titulo class="explorer__titulo"><pl-icone nome="pasta" />{{ caminho() }}</span>
+
+    <div class="explorer__menu" aria-hidden="true">
+      <span><u>A</u>rquivo</span><span><u>E</u>ditar</span><span><u>E</u>xibir</span
+      ><span><u>F</u>avoritos</span><span>A<u>j</u>uda</span>
+    </div>
+
+    <form
+      class="explorer__tools"
+      role="search"
+      aria-label="Filtrar produtos"
+      (submit)="$event.preventDefault()"
+    >
+      <div class="explorer__addr">
+        <span class="explorer__addr-label" aria-hidden="true">Endereço</span>
+        <output class="field explorer__path" aria-label="Pasta atual">{{ caminho() }}</output>
+      </div>
+      <div class="explorer__search">
+        <label class="sr-only" for="filtro-q">Buscar na loja</label>
+        <input
+          class="field"
+          id="filtro-q"
+          type="search"
+          placeholder="buscar…"
+          autocomplete="off"
+          [value]="q()"
+          (input)="digitarBusca($any($event.target).value)"
+        />
+      </div>
+      <div class="explorer__sort">
+        <label class="explorer__addr-label" for="filtro-marca">Marca</label>
+        <select
+          class="field"
+          id="filtro-marca"
+          (change)="filtrar({ marca: $any($event.target).value })"
+        >
+          <option value="" [selected]="!marca()">Todas</option>
+          @for (m of catalogo.marcas(); track m) {
+            <option [value]="m" [selected]="m === marca()">{{ m }}</option>
+          }
+        </select>
+      </div>
+      <div class="explorer__sort">
+        <label class="explorer__addr-label" for="filtro-ordem">Ordenar</label>
+        <select
+          class="field"
+          id="filtro-ordem"
+          (change)="filtrar({ ordem: $any($event.target).value })"
+        >
+          <option value="relevancia" [selected]="ordem() === 'relevancia'">Relevância</option>
+          <option value="menor" [selected]="ordem() === 'menor'">Menor preço</option>
+          <option value="maior" [selected]="ordem() === 'maior'">Maior preço</option>
+          <option value="az" [selected]="ordem() === 'az'">Nome (A–Z)</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="explorer__body">
+      <aside class="explorer__side" aria-label="Pastas e filtros">
+        <fieldset>
+          <legend class="explorer__legend">Pastas</legend>
+          <div class="folders">
+            <label class="folder">
+              <input
+                type="radio"
+                name="pasta"
+                [checked]="cat() === 'todos'"
+                (change)="filtrar({ cat: null, sub: null })"
+              />
+              <pl-icone nome="pasta" /><span>Todos os produtos</span
+              ><span class="folder__n">{{ contar('todos') }}</span>
+            </label>
+            @for (c of catalogo.categorias(); track c.id) {
+              <label class="folder">
+                <input
+                  type="radio"
+                  name="pasta"
+                  [checked]="cat() === c.id && !sub()"
+                  (change)="filtrar({ cat: c.id, sub: null })"
+                />
+                <pl-icone nome="pasta" /><span>{{ c.nome }}</span
+                ><span class="folder__n">{{ contar(c.id) }}</span>
+              </label>
+              @if (cat() === c.id) {
+                @for (s of c.subs; track s.id) {
+                  <label class="folder folder--sub">
+                    <input
+                      type="radio"
+                      name="pasta"
+                      [checked]="sub() === s.id"
+                      (change)="filtrar({ cat: c.id, sub: s.id })"
+                    />
+                    <pl-icone nome="pasta" /><span>{{ s.nome }}</span
+                    ><span class="folder__n">{{ contar(c.id, s.id) }}</span>
+                  </label>
+                }
+              }
+            }
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="explorer__legend">Filtros</legend>
+          <label class="check"
+            ><input
+              type="checkbox"
+              [checked]="livre()"
+              (change)="filtrar({ livre: $any($event.target).checked ? '1' : null })"
+            />
+            <span>Só sem receita</span></label
+          >
+          <label class="check"
+            ><input
+              type="checkbox"
+              [checked]="oferta()"
+              (change)="filtrar({ oferta: $any($event.target).checked ? '1' : null })"
+            />
+            <span>Em oferta</span></label
+          >
+        </fieldset>
+        <div class="explorer__tip term">
+          dica: o cupom <b>PILULA10</b> dá 10% na primeira compra.
+        </div>
+      </aside>
+
+      <section class="explorer__main" aria-labelledby="resultado-titulo">
+        <h2 id="resultado-titulo" class="explorer__heading">{{ cabecalho() }}</h2>
+        <div class="grid">
+          @for (p of resultado(); track p.id) {
+            <pl-produto-card [produto]="p" />
+          } @empty {
+            <pl-janela class="empty__win" titulo="Pesquisar">
+              <div class="win__body empty__body">
+                <pl-icone nome="info" />
+                <div>
+                  <p class="empty__title">Nenhum arquivo encontrado.</p>
+                  <p>Tenta outra palavra ou fala com o farmacêutico no chat.</p>
+                </div>
+              </div>
+              <div class="dialog__actions">
+                <button type="button" class="win__btn" (click)="limpar()">Limpar filtros</button>
+              </div>
+            </pl-janela>
+          }
+        </div>
+      </section>
+    </div>
+
+    <div class="win__status">
+      <span aria-live="polite">{{ resultado().length }} objeto(s)</span>
+      <span>frete grátis acima de R$ 99</span>
+    </div>
+  </pl-janela>
+</div>
