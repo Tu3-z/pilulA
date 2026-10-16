@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pílula* — farmácia online</title>
+  <meta name="description" content="Remédios, vitaminas, dermocosméticos e higiene com entrega em até 2h e farmacêutico online 24h.">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+</head>
+<body data-page="home">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="site-header"></div>
+
+  <main id="conteudo">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero sky" aria-labelledby="hero-titulo">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow eyebrow--light">farmácia online · desde 2000*</p>
+          <h1 id="hero-titulo" class="hero__title">
+            <span class="sr-only">Cuide de você primeiro.</span>
+            <span aria-hidden="true">Cuide de <span class="nowrap">v<b class="px px--light">o</b>c<b class="px px--light">ê</b></span><br>primeiro<span class="star star--light">*</span></span>
+          </h1>
+          <p class="hero__lead">Remédios, vitaminas, dermocosméticos e higiene na sua porta em até 2 horas, com farmacêutico de verdade no chat, a qualquer hora.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary" href="loja.html">Ir pra loja <svg width="30" height="12" viewBox="0 0 34 12" aria-hidden="true"><path d="M0 6h31M26 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+            <a class="btn btn--ghost-light" href="#receita">Enviar receita</a>
+          </div>
+          <ul class="hero__facts">
+            <li><b>2h</b><span>entrega na Grande SP</span></li>
+            <li><b>24h</b><span>farmacêutico online</span></li>
+            <li><b>R$ 99</b><span>frete grátis a partir de</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__stage">
+          <p class="hero__sticker outline" aria-hidden="true">2026 vai ser o ano da sua saúde.</p>
+
+          <div class="pc">
+            <div class="pc__monitor">
+              <div class="pc__screen">
+                <div class="screen">
+                  <p class="screen__title">detalhes do pedido:</p>
+                  <div class="screen__field screen__field--wide">vitamina c 1g<span class="screen__caret" aria-hidden="true"></span></div>
+                  <div class="screen__row">
+                    <div><p class="screen__label">Quantidade</p><div class="screen__field">01</div></div>
+                    <div><p class="screen__label">Entrega</p><div class="screen__field">em até 2h <span aria-hidden="true">▾</span></div></div>
+                  </div>
+                  <div class="screen__row">
+                    <div><p class="screen__label">Pagamento</p><div class="screen__opts"><span class="is-on">pix</span><span>cartão</span></div></div>
+                    <div><p class="screen__label">Receita</p><div class="screen__check" aria-label="não precisa">✓</div></div>
+                  </div>
+                  <div class="screen__btns">
+                    <a class="pill pill--blue" href="loja.html">Criar</a>
+                    <a class="pill pill--dark" href="#categorias">Fechar</a>
+                  </div>
+                </div>
+              </div>
+              <div class="pc__chin" aria-hidden="true"><span class="pc__brand">pílula*</span><span class="pc__slot"></span><span class="pc__led"></span></div>
+            </div>
+            <div class="pc__neck" aria-hidden="true"></div>
+            <div class="pc__kbd" aria-hidden="true"><div class="pc__keys" data-teclas></div></div>
+            <div class="pc__mouse" aria-hidden="true"></div>
+            <div class="pc__disks" aria-hidden="true">
+              <span class="disk disk--ink"><span class="disk__label">receita.doc</span></span>
+              <span class="disk disk--blue"><span class="disk__label">saude.exe</span></span>
+            </div>
+          </div>
+
+          <aside class="win hero__popup" aria-labelledby="pop-titulo">
+            <div class="win__bar"><span class="win__title" id="pop-titulo">Nova mensagem</span><span class="win__ctls" aria-hidden="true"><span class="win__ctl">_</span><span class="win__ctl">×</span></span></div>
+            <div class="win__body popup">
+              <p class="popup__q"><span class="popup__icon" data-icone="boneco"></span><span>já bebeu água hoje?</span></p>
+              <p class="popup__a" data-agua-resposta aria-live="polite"></p>
+              <div class="popup__btns">
+                <button type="button" class="win__btn" data-agua="sim">Sim</button>
+                <button type="button" class="win__btn" data-agua="nao">Não</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CATEGORIAS (disquetes) ============ -->
+    <section id="categorias" class="section container" aria-labelledby="cat-titulo">
+      <header class="section__head">
+        <p class="eyebrow">01 / categorias</p>
+        <h2 id="cat-titulo" class="h2">Escolha um <span class="px px--ink">disquete</span></h2>
+        <p class="section__aside">Seis gavetas da farmácia, cada uma num disquete. Clica que abre.</p>
+      </header>
+      <ul class="floppies" data-categorias></ul>
+    </section>
+
+    <!-- ============ PENSE ANTES DE TOMAR ============ -->
+    <section class="think" aria-labelledby="think-titulo">
+      <div class="container think__grid">
+        <div class="think__art">
+          <span class="dither think__dither" aria-hidden="true"></span>
+          <h2 id="think-titulo" class="think__title">
+            <span class="sr-only">Pense antes de tomar.</span>
+            <span aria-hidden="true">
+              <span class="think__l1">Pen<b class="px px--ink">s</b>e</span>
+              <span class="think__l2"><b class="px px--ink think__big">A</b>ntes</span>
+              <span class="think__l3">de t<b class="px">o</b>mar<span class="px">.</span></span>
+            </span>
+          </h2>
+          <aside class="win think__popup" aria-labelledby="bula-titulo">
+            <div class="win__bar"><span class="win__title" id="bula-titulo">Nova mensagem</span><span class="win__ctls" aria-hidden="true"><span class="win__ctl">×</span></span></div>
+            <div class="win__body popup">
+              <p class="popup__q"><span class="popup__icon" data-icone="boneco"></span><span>leu a bula?</span></p>
+              <p class="popup__a" data-bula-resposta aria-live="polite"></p>
+              <div class="popup__btns">
+                <button type="button" class="win__btn" data-bula="sim">Li</button>
+                <button type="button" class="win__btn" data-bula="nao">Ainda não</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="think__qs">
+          <p class="think__wave" data-onda>faz sentido?</p>
+          <p>é necessário?</p>
+          <p>tem receita?</p>
+          <p>já falou com o farmacêutico?</p>
+          <p class="think__end">bem-vindo à farmácia<br>sem automedicação!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DESTAQUES ============ -->
+    <section class="section container" aria-labelledby="dest-titulo">
+      <header class="section__head section__head--row">
+        <div>
+          <p class="eyebrow">02 / em destaque</p>
+          <h2 id="dest-titulo" class="h2">Acabou de <span class="px">chegar</span></h2>
+        </div>
+        <a class="btn btn--ghost" href="loja.html">Ver a loja toda <svg width="30" height="12" viewBox="0 0 34 12" aria-hidden="true"><path d="M0 6h31M26 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+      </header>
+      <div class="grid" data-destaques></div>
+    </section>
+
+    <!-- ============ RECEITA + CHAT ============ -->
+    <section id="receita" class="band sky" aria-labelledby="rec-titulo">
+      <div class="container band__grid">
+        <div class="band__copy">
+          <p class="eyebrow eyebrow--light">03 / receita</p>
+          <h2 id="rec-titulo" class="h2 h2--light">Manda a r<b class="px px--light">e</b>ceita<span class="star star--light">*</span></h2>
+          <p class="band__lead">Tira uma foto, a gente separa tudo e confirma com você no chat antes de sair pra entrega.</p>
+          <div class="upload">
+            <input class="upload__input" type="file" id="receita-arquivo" accept="image/*,.pdf">
+            <label class="btn btn--primary" for="receita-arquivo">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+              Enviar foto da receita
+            </label>
+            <p class="upload__status term" data-receita-status aria-live="polite">nenhum arquivo selecionado_</p>
+          </div>
+          <p class="band__fine">Antibióticos e controlados: a receita original é retida na entrega.</p>
+        </div>
+
+        <div id="chat" class="win chat" aria-labelledby="chat-titulo">
+          <div class="win__bar">
+            <span class="win__title" id="chat-titulo"><span class="chat__dot" aria-hidden="true"></span>farmacêutico online — conversa</span>
+            <span class="win__ctls" aria-hidden="true"><span class="win__ctl">_</span><span class="win__ctl">□</span><span class="win__ctl">×</span></span>
+          </div>
+          <div class="chat__log" data-chat-log role="log" aria-live="polite">
+            <p><b class="chat__who chat__who--farma">farma_pilula diz:</b> oiii! sou a Bia, farmacêutica de plantão. como posso ajudar? :)</p>
+            <p><b class="chat__who chat__who--voce">você diz:</b> esse protetor serve pra pele oleosa??</p>
+            <p><b class="chat__who chat__who--farma">farma_pilula diz:</b> serve sim! o toque seco é ótimo pra oleosa. quer que eu separe um?</p>
+          </div>
+          <form class="chat__form" data-chat-form>
+            <label class="sr-only" for="chat-msg">Sua mensagem</label>
+            <input class="field" id="chat-msg" name="msg" type="text" placeholder="digite sua dúvida…" autocomplete="off" maxlength="200">
+            <button type="submit" class="win__btn">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VANTAGENS ============ -->
+    <section class="section container" aria-labelledby="perk-titulo">
+      <h2 id="perk-titulo" class="sr-only">Por que a pílula*</h2>
+      <ul class="perks">
+        <li class="perk">
+          <svg class="perk__icon" width="48" height="48" viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges"><path fill="#121216" d="M5 1h6v1h2v1h1v2h1v6h-1v2h-1v1h-2v1H5v-1H3v-1H2v-2H1V5h1V3h1V2h2z"/><path fill="#FBFAF5" d="M5 2h6v1h2v2h1v6h-1v2h-2v1H5v-1H3v-2H2V5h1V3h2z"/><path fill="#2340B8" d="M7 4h2v4h3v2H7z"/></svg>
+          <h3>Entrega em 2h</h3>
+          <p>Pediu, chegou. Na Grande SP, de segunda a domingo.</p>
+        </li>
+        <li class="perk">
+          <svg class="perk__icon" width="48" height="48" viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges"><path fill="#121216" d="M1 2h14v10H7l-3 3v-3H1z"/><path fill="#FBFAF5" d="M2 3h12v8H6l-1 1v-1H2z"/><path fill="#2340B8" d="M4 5h8v1H4zM4 8h5v1H4z"/></svg>
+          <h3>Farmacêutico 24h</h3>
+          <p>Dúvida sobre dose, genérico ou interação? É só chamar no chat.</p>
+        </li>
+        <li class="perk">
+          <svg class="perk__icon" width="48" height="48" viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges"><path fill="#121216" d="M1 3h14v11H1z"/><path fill="#FBFAF5" d="M2 4h12v9H2z"/><path fill="#2340B8" d="M2 6h12v2H2z"/><path fill="#121216" d="M3 10h4v1H3z"/></svg>
+          <h3>Paga como quiser</h3>
+          <p>Pix, cartão ou na entrega. Sem complicação.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ NEWSLETTER ============ -->
+    <section class="container" aria-labelledby="news-titulo">
+      <div class="news">
+        <span class="dither news__dither" aria-hidden="true"></span>
+        <h2 id="news-titulo" class="h2">Fica lig<b class="px">a</b>do<span class="star">*</span></h2>
+        <p class="news__lead">sem spam, só cuidado.</p>
+        <form class="news__form" data-news>
+          <label class="sr-only" for="news-email">Seu e-mail</label>
+          <input class="field" id="news-email" type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+          <button type="submit" class="btn btn--dark">Assinar</button>
+        </form>
+        <p class="news__ok term" data-news-ok role="status" hidden>valeu! ✱ confere teu e-mail</p>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+  <script type="module" src="assets/js/pages/home.js"></script>
+</body>
+</html>

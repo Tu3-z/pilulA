@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loja — pílula*</title>
+  <meta name="description" content="Catálogo da pílula*: medicamentos, vitaminas, dermocosméticos, higiene e mais.">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/loja.css">
+</head>
+<body data-page="loja">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="site-header"></div>
+
+  <main id="conteudo">
+    <section class="page-head sky">
+      <div class="container page-head__inner">
+        <p class="eyebrow eyebrow--light">catálogo completo</p>
+        <h1 class="h1 h1--light">L<b class="px px--light">o</b>ja<span class="star star--light">*</span></h1>
+        <p class="page-head__lead">Tudo que a farmácia tem, organizado em pastas. Filtra, busca e manda pro carrinho.</p>
+      </div>
+    </section>
+
+    <div class="container explorer-wrap">
+      <div class="win explorer">
+        <div class="win__bar">
+          <span class="win__title"><span data-icone="pasta"></span><span data-caminho>C:\pilula\loja</span></span>
+          <span class="win__ctls" aria-hidden="true"><span class="win__ctl">_</span><span class="win__ctl">□</span><span class="win__ctl">×</span></span>
+        </div>
+
+        <div class="explorer__menu" aria-hidden="true">
+          <span><u>A</u>rquivo</span><span><u>E</u>ditar</span><span><u>E</u>xibir</span><span><u>F</u>avoritos</span><span>A<u>j</u>uda</span>
+        </div>
+
+        <form class="explorer__tools" data-filtros role="search" aria-label="Filtrar produtos">
+          <div class="explorer__addr">
+            <span class="explorer__addr-label" aria-hidden="true">Endereço</span>
+            <output class="field explorer__path" data-caminho aria-label="Pasta atual">C:\pilula\loja</output>
+          </div>
+          <div class="explorer__search">
+            <label class="sr-only" for="filtro-q">Buscar na loja</label>
+            <input class="field" id="filtro-q" name="q" type="search" placeholder="buscar…" autocomplete="off">
+          </div>
+          <div class="explorer__sort">
+            <label class="explorer__addr-label" for="filtro-ordem">Ordenar</label>
+            <select class="field" id="filtro-ordem" name="ordem">
+              <option value="relevancia">Relevância</option>
+              <option value="menor">Menor preço</option>
+              <option value="maior">Maior preço</option>
+              <option value="az">Nome (A–Z)</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="explorer__body">
+          <aside class="explorer__side" aria-label="Pastas e filtros">
+            <fieldset>
+              <legend class="explorer__legend">Pastas</legend>
+              <div class="folders" data-pastas></div>
+            </fieldset>
+            <fieldset>
+              <legend class="explorer__legend">Filtros</legend>
+              <label class="check"><input type="checkbox" data-filtro-livre> <span>Só sem receita</span></label>
+              <label class="check"><input type="checkbox" data-filtro-oferta> <span>Em oferta</span></label>
+            </fieldset>
+            <div class="explorer__tip term">
+              dica: o cupom <b>PILULA10</b> dá 10% na primeira compra.
+            </div>
+          </aside>
+
+          <section class="explorer__main" aria-labelledby="resultado-titulo">
+            <h2 id="resultado-titulo" class="explorer__heading" data-titulo>Todos os produtos</h2>
+            <div class="grid" data-grade></div>
+            <div class="empty" data-vazio hidden>
+              <div class="win empty__win">
+                <div class="win__bar"><span class="win__title">Pesquisar</span></div>
+                <div class="win__body empty__body">
+                  <span data-icone="info"></span>
+                  <div>
+                    <p class="empty__title">Nenhum arquivo encontrado.</p>
+                    <p>Tenta outra palavra ou fala com o farmacêutico no chat.</p>
+                  </div>
+                </div>
+                <div class="dialog__actions"><button type="button" class="win__btn" data-limpar>Limpar filtros</button></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="win__status">
+          <span data-status aria-live="polite">0 objeto(s)</span>
+          <span>frete grátis acima de R$ 99</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script type="module" src="assets/js/pages/loja.js"></script>
+</body>
+</html>

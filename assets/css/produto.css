@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Página de produto
+   ========================================================================== */
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-block: var(--s-5);
+  font-family: var(--f-term);
+  font-size: 1.25rem;
+}
+.crumbs a { color: var(--ink-2); }
+.crumbs a:hover { color: var(--blue); }
+.crumbs span[aria-hidden] { color: var(--ink-2); }
+
+.pdp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+
+.pdp__media { position: sticky; top: var(--s-5); }
+.pdp__media .win__body { padding: 4px; }
+.pdp__media .art { border: 0; box-shadow: var(--bevel-in); }
+.pdp__media .win__status { font-size: 1rem; }
+.pdp__selo { position: absolute; left: 16px; top: 16px; z-index: 1; }
+.pdp__media-inner { position: relative; }
+.pdp__dither { right: -12%; bottom: -12%; width: 70%; height: 70%; z-index: -1; }
+
+.pdp__info { display: flex; flex-direction: column; gap: var(--s-5); padding-top: var(--s-2); }
+.pdp__title { font-family: var(--f-display); font-weight: 400; font-size: clamp(3rem, 5.6vw, 5rem); line-height: .9; letter-spacing: -.02em; }
+.pdp__sub { font-size: var(--t-lg); color: var(--ink-2); }
+.pdp__tags { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+.pdp__buy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  background: var(--paper-2);
+  border: var(--line);
+  box-shadow: var(--shadow);
+}
+.pdp__buy .price__now { font-size: 3rem; }
+.pdp__buy .price__old { font-size: var(--t-sm); }
+.pdp__pix { font-size: var(--t-sm); color: var(--ink-2); }
+.pdp__row { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; }
+.pdp__row .btn { flex: 1 1 200px; }
+.pdp__ship { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; font-family: var(--f-term); font-size: 1.25rem; line-height: 1.1; }
+.pdp__ship li::before { content: "✱ "; color: var(--blue); }
+
+.pdp__alert { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-4); background: var(--paper-2); border: var(--line); border-left: 10px solid var(--alert); font-size: var(--t-sm); }
+.pdp__alert b { display: block; margin-bottom: 2px; }
+
+/* abas estilo "propriedades" do Windows */
+.tabs__list { display: flex; gap: 2px; padding-left: 6px; }
+.tabs__tab {
+  position: relative;
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  background: var(--plastic);
+  border: 1px solid var(--ink);
+  border-bottom: 0;
+  box-shadow: inset 2px 2px 0 var(--plastic-hi);
+  font-family: var(--f-term);
+  font-size: 1.25rem;
+  top: 2px;
+}
+.tabs__tab[aria-selected="true"] { top: 0; min-height: 44px; background: var(--paper-2); z-index: 1; }
+.tabs__panel {
+  padding: var(--s-5);
+  background: var(--paper-2);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+  line-height: 1.6;
+}
+.tabs__panel p + p { margin-top: var(--s-3); }
+
+.related { padding-bottom: 0; }
+.related__head { display: grid; gap: var(--s-3); margin-bottom: var(--s-6); }
+
+.not-found { padding-block: var(--s-9); max-width: 460px; }
+.not-found__body { display: flex; gap: var(--s-4); align-items: flex-start; }
+.not-found__title { font-size: var(--t-lg); margin-bottom: 4px; }
+
+@media (max-width: 860px) {
+  .pdp { grid-template-columns: 1fr; }
+  .pdp__media { position: relative; top: 0; max-width: 520px; }
+}

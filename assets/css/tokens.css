@@ -1,0 +1,75 @@
+/* ==========================================================================
+   pílula* — design tokens
+   Paleta reduzida: papel, tinta, um azul (Win98 / IE) e o bege de PC antigo.
+   Verde aparece só na cruz de farmácia; vermelho só na tarja e em erros.
+   ========================================================================== */
+
+:root {
+  /* ---- superfícies ---- */
+  --paper: #F2EFE7;        /* fundo da página, papel levemente quente */
+  --paper-2: #FBFAF5;      /* cartões, campos */
+  --ink: #121216;          /* texto, contornos, sombras duras */
+  --ink-2: #46444E;        /* texto secundário (contraste 8.9:1 no papel) */
+
+  /* ---- azul: a única cor de destaque ---- */
+  --blue: #2340B8;         /* botões, links, rótulos */
+  --blue-ink: #152A7E;     /* barra de título das janelas, hover */
+  --blue-tint: #DDE4F5;    /* fundos de produto */
+  --blue-glow: #A9BBFF;    /* texto azul sobre o céu escuro */
+  --night: #0B153D;        /* céu de tempestade */
+  --night-2: #1B2D78;
+
+  /* ---- bege de computador ---- */
+  --plastic: #D9D3C3;
+  --plastic-hi: #F3EFE3;
+  --plastic-lo: #A39C89;
+  --plastic-dk: #5F5A4D;
+  --metal: #BFC1C6;
+
+  /* ---- funcionais ---- */
+  --cross: #1E7F47;        /* cruz de farmácia */
+  --alert: #B42A1A;        /* tarja vermelha, erros */
+
+  /* ---- tipografia ---- */
+  --f-display: 'Instrument Serif', 'Times New Roman', Times, serif;
+  --f-pixel: 'Silkscreen', ui-monospace, monospace;
+  --f-term: 'VT323', ui-monospace, monospace;
+  --f-body: 'Archivo', 'Helvetica Neue', system-ui, sans-serif;
+
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-md: 1rem;
+  --t-lg: 1.125rem;
+  --t-h3: 1.5rem;
+  --t-h2: clamp(2.6rem, 5.6vw, 4.6rem);
+  --t-h1: clamp(3.4rem, 8.4vw, 7.4rem);
+
+  /* ---- espaço ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 72px;
+  --s-9: 112px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --maxw: 1360px;
+
+  /* ---- bordas e sombras ---- */
+  --line: 2px solid var(--ink);
+  --radius: 4px;
+  --pill: 999px;
+  --shadow: 5px 5px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
+  --shadow-lg: 8px 8px 0 var(--ink);
+  --bevel-out: inset 2px 2px 0 var(--plastic-hi), inset -2px -2px 0 var(--plastic-lo);
+  --bevel-in: inset 2px 2px 0 var(--plastic-lo), inset -2px -2px 0 var(--plastic-hi);
+
+  /* ---- texturas ---- */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  --clouds: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' preserveAspectRatio='none'><filter id='c' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.0032 .0068' numOctaves='5' seed='11'/><feGaussianBlur stdDeviation='3'/><feColorMatrix values='0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 1  1.75 0 0 0 -.74'/></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>");
+
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
