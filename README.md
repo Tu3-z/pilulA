@@ -2,12 +2,13 @@
 
 E-commerce de farmácia, front-end do **Projeto Integrador**, feito em **Angular 22**.
 
-A ideia de farmácia online é comum, então o diferencial está na direção de arte: **colagem anos 2000 / Windows 98**. Tem:
+A ideia de farmácia online é comum, então o diferencial está na direção de arte: um visual **limpo de farmácia moderna** com **toques de anos 2000 / Windows 98** em pontos escolhidos:
 
-- céu de tempestade com nuvens;
-- um computador bege desenhado em CSS;
-- janelas e pop-ups do Windows, disquetes e retícula de impressão;
-- títulos em serifa com letras pixeladas misturadas.
+- carrossel na home com uma **caixa de remédio em 3D** (CSS puro) e **parallax** que segue o mouse;
+- fotos reais de produtos, com ilustração em SVG quando não há foto;
+- detalhes retrô: o chat com cara de MSN/Windows 98, o pop-up "leu a bula?", o asterisco pixelado da marca e a "tela azul" do 404.
+
+O retrô fica isolado na classe `.retro` (ver `src/styles/tokens.css`): qualquer bloco com essa classe volta a usar o bege de PC, as fontes pixeladas e as sombras duras.
 
 ## Como rodar (localhost)
 
@@ -33,8 +34,8 @@ npm start       # ng serve --open → http://localhost:4200
 
 | Rota | Página | O que tem |
 |---|---|---|
-| `/` | Início | Hero com o PC retrô, categorias em disquetes, "Pense antes de tomar", destaques, envio de receita, chat com farmacêutico, newsletter |
-| `/loja` | Loja | Catálogo numa janela do "Windows Explorer": pastas e subpastas, marca, busca, ordenação. Todos os filtros ficam na URL: `/loja?cat=dermo&sub=protetor&marca=ISDIN&ordem=menor` |
+| `/` | Início | Carrossel (remédio 3D com parallax, cupom, farmacêutico), categorias, destaques, "Pense antes de tomar", envio de receita, chat com farmacêutico, newsletter |
+| `/loja` | Loja | Catálogo com pastas e subpastas, marca, busca, ordenação. Todos os filtros ficam na URL: `/loja?cat=dermo&sub=protetor&marca=ISDIN&ordem=menor` |
 | `/produto/:id` | Produto | Visualizador, preço, parcelas, quantidade, abas acessíveis e relacionados |
 | `/carrinho` | Carrinho | Itens, cupom, frete grátis, receita obrigatória e checkout em etapas: dados → entrega → pagamento |
 | `/entrar` | Entrar | Login e cadastro na caixa de "Logon" do Windows (`/entrar?voltar=/carrinho`) |
@@ -68,14 +69,16 @@ src/
     │       └── texto.ts               escape, formatação, storage seguro
     ├── shared/                    ← peças reutilizáveis
     │   ├── components/  header (navbar + menu Iniciar + busca), footer, janela, produto-card,
-    │   │                preco, arte, icone, avisos, erro-campo
+    │   │                preco, arte (foto ou SVG), caixa-3d, icone, avisos, erro-campo
     │   └── directives/  mascara (plMascara="cpf")
     └── pages/                     ← uma pasta por rota (ts + html + css)
-        home · loja · produto · carrinho · entrar · nao-encontrada
+        home (+ carrossel) · loja · produto · carrinho · entrar · nao-encontrada
 
 public/
-├── dados/catalogo.json            ← "API" mock: 55 produtos, 6 categorias, 24 subcategorias
-└── img/favicon.svg
+├── dados/catalogo.json            ← "API" mock: 57 produtos, 6 categorias, 24 subcategorias
+└── img/
+    ├── favicon.svg
+    └── produtos/                  ← fotos reais (.webp) + faixa lateral usada na caixa 3D
 ```
 
 ### Conceitos de Angular usados
@@ -104,8 +107,8 @@ public/
 
 A estética é forte, então algumas regras garantem que ela não atrapalhe o uso:
 
-- **Nada se mexe enquanto a pessoa lê.** A faixa de benefícios é fixa, sem letreiro rolando. Os pop-ups não flutuam e nenhum texto pisca. Tudo respeita `prefers-reduced-motion`.
-- **Só parece botão o que é botão.** Os `_ □ ×` das janelas decorativas ficam apagados. Os pop-ups e avisos que fecham de verdade têm um `×` real. A tela do PC no topo é só ilustração.
+- **Nada se mexe enquanto a pessoa lê.** A faixa de benefícios é fixa, sem letreiro rolando. O carrossel para quando o mouse ou o foco estão nele e tem botão de pausa. Tudo respeita `prefers-reduced-motion`.
+- **Só parece botão o que é botão.** Os `_ □ ×` decorativos só aparecem nas janelas retrô, e apagados. Os pop-ups e avisos que fecham de verdade têm um `×` real.
 - **Nomes claros.** O botão da navbar se chama **Categorias** (não "Iniciar"). O caminho na página de produto usa nomes reais: Início › Loja › Medicamentos › Dor e febre. Os rótulos de formulário usam fonte de leitura, não a pixelada.
 - **Uma busca só.** A busca fica no cabeçalho e, na loja, mostra o termo atual.
 - **Loja escaneável:**
@@ -126,24 +129,32 @@ A estética é forte, então algumas regras garantem que ela não atrapalhe o us
   - alvos de toque com no mínimo 44 px;
   - nada vaza para fora da tela no celular.
 
+## Carrossel e caixa 3D
+
+- **Carrossel** (`pages/home/carrossel`): troca a cada 7 s, com barrinha de progresso. Pausa com o mouse em cima, com o foco dentro e pelo botão ⏸. Também não troca sozinho para quem pediu "reduzir movimento" no sistema. Funciona com setas, bolinhas, ← → do teclado e arrastando no celular. Os slides escondidos ficam `inert`, então o Tab não cai em links invisíveis.
+- **Parallax**: cada enfeite do slide (`.camada`) tem uma profundidade `--p`. O mouse define `--mx` e `--my` (de -1 a 1), e cada camada anda `--p` pixels. Quanto maior o `--p`, mais "perto" a camada parece.
+- **Caixa 3D** (`shared/components/caixa-3d`): seis faces com `transform-style: preserve-3d`. A frente é a foto do produto e as laterais são uma faixa tirada da borda da foto. A caixa balança sozinha e, com o mouse, gira seguindo o ponteiro, com um brilho que corre pela frente.
+- **Vídeo (opcional)**: dá para trocar a caixa por um vídeo do remédio girando, gerado no **Higgsfield** a partir da foto. Coloque o MP4 em `public/video/` e preencha `VIDEO_DOR` em `carrossel.ts`.
+
+**Fotos de produtos.** Basta colocar `"foto": "img/produtos/<id>.webp"` no produto do `catalogo.json`. Se a foto não existir ou não carregar, aparece a ilustração SVG.
+
 ## Design system
 
 **Paleta.** São poucas cores, todas definidas em `src/styles/tokens.css`:
 
 | Token | Uso |
 |---|---|
-| `--paper` `#F2EFE7` / `--paper-2` `#FBFAF5` | fundos e cartões |
+| `--paper` `#F5F4F0` / `--paper-2` `#FFFFFF` | fundos e cartões |
 | `--ink` `#121216` | texto, contornos e sombras duras |
 | `--blue` `#2340B8` | **única cor de destaque**: botões, links, rótulos |
 | `--night` `#0B153D` | céu de tempestade (hero e faixas) |
-| `--plastic` `#D9D3C3` | bege de computador: janelas, botões de sistema |
+| `--plastic` `#F0F1F5` | superfície neutra (vira o bege de PC `#D9D3C3` dentro de `.retro`) |
 | `--cross` / `--alert` | verde só na cruz da farmácia; vermelho só na tarja e em erros |
 
 **Tipografia.**
 - *Instrument Serif* para títulos.
-- *Silkscreen* para letras pixeladas e rótulos.
-- *VT323* para texto de terminal e preços.
-- *Archivo* para o texto corrido.
+- *Archivo* para texto, rótulos e preços.
+- *Silkscreen* e *VT323* (pixeladas) só nos detalhes retrô.
 
 ## Funcionalidades
 

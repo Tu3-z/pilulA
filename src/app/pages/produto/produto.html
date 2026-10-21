@@ -22,18 +22,14 @@
 
     <article class="pdp">
       <div class="pdp__media">
-        <span class="dither pdp__dither" aria-hidden="true"></span>
-        <pl-janela [titulo]="p.id + '.bmp — visualizador'" [controles]="['_', '□', '×']">
+        <div class="win pdp__frame">
           <div class="win__body pdp__media-inner">
             @if (p.selo) {
               <span class="pdp__selo badge badge--dark">{{ p.selo }}</span>
             }
             <pl-arte [produto]="p" />
           </div>
-          <div class="win__status">
-            <span>200 × 200 px</span><span>{{ cat()?.nome }}</span>
-          </div>
-        </pl-janela>
+        </div>
       </div>
 
       <div class="pdp__info">
@@ -62,7 +58,7 @@
         }
 
         <div class="pdp__buy">
-          <pl-preco [produto]="p" />
+          <pl-preco class="price--lg" [produto]="p" />
           <p class="pdp__pix">
             @if (parcelas() > 1) {
               ou {{ parcelas() }}x de {{ p.preco / parcelas() | currency: 'BRL' }} sem juros no
@@ -162,7 +158,7 @@
   @if (relacionados().length) {
     <section class="container section related" aria-labelledby="rel-titulo">
       <header class="related__head">
-        <p class="eyebrow">da mesma pasta</p>
+        <p class="eyebrow">Da mesma categoria</p>
         <h2 id="rel-titulo" class="h2">Você também <span class="px">pode</span> gostar</h2>
       </header>
       <div class="grid">

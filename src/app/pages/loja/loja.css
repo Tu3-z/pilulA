@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Loja: o catálogo dentro de uma janela do "Windows Explorer"
+   Loja: o catálogo num painel com pastas (categorias) à esquerda
    ========================================================================== */
 
 .page-head {
@@ -37,7 +37,7 @@
   justify-content: flex-end;
   gap: var(--s-2) var(--s-4);
   padding: var(--s-3);
-  border-bottom: 1px solid var(--plastic-lo);
+  border-bottom: var(--line);
 }
 .explorer__sort {
   display: flex;
@@ -62,7 +62,8 @@
   margin-right: auto;
 }
 .explorer__toggle[aria-expanded='true'] {
-  box-shadow: var(--bevel-in);
+  background: var(--blue-tint);
+  border-color: var(--blue);
 }
 .explorer__toggle-n {
   display: inline-grid;
@@ -70,6 +71,7 @@
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
+  border-radius: var(--pill);
   background: var(--blue);
   color: var(--paper-2);
   font-size: 12px;
@@ -80,9 +82,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  margin: 4px;
   background: var(--paper-2);
-  box-shadow: var(--bevel-in);
 }
 .explorer__side {
   flex: 1 1 220px;
@@ -91,7 +91,7 @@
   flex-direction: column;
   gap: var(--s-5);
   padding: var(--s-4);
-  border-right: 1px solid var(--plastic);
+  border-right: var(--line);
 }
 .explorer__legend {
   padding: 0;
@@ -111,8 +111,8 @@
   align-items: center;
   gap: 10px;
   min-height: 40px;
-  padding: 4px 8px;
-  border: 1px dotted transparent;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
   font-size: var(--t-sm);
 }
 .folder input {
@@ -122,11 +122,11 @@
   height: 1px;
 }
 .folder:hover {
-  background: var(--blue-tint);
+  background: var(--plastic);
 }
 .folder:has(input:checked) {
-  background: var(--blue);
-  color: var(--paper-2);
+  background: var(--blue-tint);
+  color: var(--blue-ink);
   font-weight: 600;
 }
 .folder:has(input:focus-visible) {
@@ -137,7 +137,8 @@
 .folder__n {
   margin-left: auto;
   font-family: var(--f-term);
-  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
   opacity: 0.8;
 }
 .folder--sub {
@@ -175,9 +176,9 @@
 .explorer__tip {
   padding: 10px 12px;
   background: var(--blue-tint);
-  border: 1px dashed var(--blue);
-  font-size: 1.15rem;
-  line-height: 1.1;
+  border-radius: var(--radius-sm);
+  font-size: var(--t-sm);
+  line-height: 1.4;
   color: var(--blue-ink);
 }
 

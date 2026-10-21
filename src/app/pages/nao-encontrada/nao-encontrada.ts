@@ -36,7 +36,7 @@ import { Router, RouterLink } from '@angular/router';
       padding: 48px 16px;
       background: var(--blue-ink);
       color: #e8ecfa;
-      font-family: var(--f-term);
+      font-family: var(--f-retro-term);
       font-size: clamp(1.3rem, 2.4vw, 1.7rem);
       line-height: 1.25;
       border-bottom: var(--line);

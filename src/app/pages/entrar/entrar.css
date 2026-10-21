@@ -23,7 +23,7 @@
   color: #dce3fa;
 }
 .logon__note {
-  font-size: 1.25rem;
+  font-size: var(--t-sm);
   color: var(--blue-glow);
 }
 

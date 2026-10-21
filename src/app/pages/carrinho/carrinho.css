@@ -16,22 +16,25 @@
   padding: 0;
   list-style: none;
   font-family: var(--f-term);
-  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
 }
 .steps a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 40px;
-  padding: 0 12px;
-  background: var(--plastic);
-  color: var(--ink);
+  padding: 0 14px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-weight: 600;
   text-decoration: none;
-  border: 1px solid var(--ink);
-  box-shadow: var(--bevel-out);
+  border: 1px solid var(--border);
+  border-radius: var(--pill);
 }
 .steps a:hover {
-  background: var(--plastic-hi);
+  border-color: var(--border-strong);
+  color: var(--ink);
 }
 .steps a.is-ok pl-icone {
   color: var(--cross);
@@ -41,8 +44,8 @@
 }
 .steps a.is-on {
   background: var(--blue);
+  border-color: var(--blue);
   color: var(--paper-2);
-  box-shadow: var(--bevel-in);
 }
 
 .cart-empty {
@@ -89,11 +92,10 @@
 
 /* ---------- linhas ---------- */
 .lines {
-  margin: 4px;
+  margin: 0;
   padding: 0;
   list-style: none;
   background: var(--paper-2);
-  box-shadow: var(--bevel-in);
 }
 .line {
   display: grid;
@@ -104,7 +106,7 @@
   padding: var(--s-4);
 }
 .line + .line {
-  border-top: 1.5px dashed var(--plastic-lo);
+  border-top: var(--line);
 }
 .line .art {
   grid-area: art;
@@ -118,6 +120,7 @@
 }
 .line__brand {
   font-family: var(--f-pixel);
+  letter-spacing: 0.06em;
   font-size: 10px;
   text-transform: uppercase;
   color: var(--ink-2);
@@ -144,7 +147,8 @@
   grid-area: price;
   text-align: right;
   font-family: var(--f-term);
-  font-size: 1.6rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.15rem;
   line-height: 1;
 }
 .line__unit {
@@ -199,7 +203,8 @@
   padding: var(--s-5);
   background: var(--paper-2);
   border: var(--line);
-  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 .block__title {
   display: flex;
@@ -221,11 +226,11 @@
   place-items: center;
   width: 32px;
   height: 32px;
+  border-radius: 50%;
   background: var(--blue);
   color: var(--paper-2);
-  font-family: var(--f-pixel);
-  font-size: 1rem;
-  border: 1.5px solid var(--ink);
+  font-weight: 700;
+  font-size: var(--t-sm);
 }
 .block__hint {
   font-size: var(--t-sm);
@@ -240,7 +245,7 @@
 .store {
   padding: var(--s-4);
   background: var(--blue-tint);
-  border: 1.5px dashed var(--blue);
+  border-radius: var(--radius-sm);
   font-size: var(--t-sm);
   line-height: 1.5;
 }
@@ -251,8 +256,7 @@
   gap: var(--s-4);
   padding: var(--s-4);
   background: var(--paper);
-  border: 1px solid var(--ink);
-  box-shadow: var(--bevel-in);
+  border-radius: var(--radius-sm);
   font-size: var(--t-sm);
 }
 .troco {
@@ -267,22 +271,21 @@
   width: min(340px, 100%);
   aspect-ratio: 1.586;
   padding: 18px 20px;
-  border: var(--line);
-  border-radius: 12px;
+  border-radius: 14px;
   color: var(--paper-2);
   background:
     radial-gradient(120% 90% at 90% 0%, rgba(169, 187, 255, 0.35), transparent 60%),
-    var(--clouds) center / cover,
     linear-gradient(135deg, var(--night-2), var(--night));
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   font-family: var(--f-term);
+  font-variant-numeric: tabular-nums;
 }
 .card-preview__chip {
   width: 42px;
   height: 32px;
   border-radius: 6px;
   background: linear-gradient(135deg, #e9e0c6, var(--plastic-lo));
-  border: 1px solid var(--ink);
+  border: 1px solid var(--border);
 }
 .card-preview__brand {
   position: absolute;
@@ -295,15 +298,16 @@
 }
 .card-preview__num {
   align-self: center;
-  font-size: clamp(1.3rem, 4.6vw, 1.8rem);
-  letter-spacing: 0.06em;
+  font-size: clamp(1.1rem, 3.6vw, 1.35rem);
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 .card-preview__row {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-size: 1.15rem;
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   overflow: hidden;
   white-space: nowrap;
@@ -317,6 +321,7 @@
   padding: var(--s-5);
   background: var(--paper-2);
   border: var(--line);
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 .summary__title {
@@ -333,21 +338,22 @@
 }
 .ship__text {
   font-family: var(--f-term);
-  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
   line-height: 1.1;
 }
 .ship__bar {
-  height: 24px;
-  padding: 3px;
-  background: var(--paper-2);
-  border: 1px solid var(--ink);
-  box-shadow: var(--bevel-in);
+  height: 8px;
+  border-radius: var(--pill);
+  overflow: hidden;
+  background: var(--plastic);
 }
 .ship__fill {
   display: block;
   height: 100%;
   width: 0;
-  background: repeating-linear-gradient(90deg, var(--blue) 0 12px, transparent 12px 15px);
+  border-radius: inherit;
+  background: var(--blue);
   transition: width 0.5s var(--ease);
 }
 
@@ -370,7 +376,8 @@
   margin: 0;
   padding-left: var(--s-4);
   font-family: var(--f-term);
-  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
   line-height: 1;
 }
 .summary__list .is-total {
@@ -380,8 +387,7 @@
   font-weight: 700;
 }
 .summary__list dd.is-total {
-  font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 .summary__list .is-discount {
   color: var(--blue);
@@ -397,7 +403,7 @@
   text-transform: uppercase;
 }
 .coupon__msg {
-  font-size: 1.2rem;
+  font-size: var(--t-sm);
   min-height: 1.2em;
 }
 .coupon__msg.is-ok {
@@ -422,15 +428,16 @@
   gap: var(--s-2);
   align-items: flex-start;
   padding: var(--s-4);
-  background: var(--paper-2);
-  border: 1.5px dashed var(--ink);
+  background: #fbeeec;
+  border: 1px solid #f0c8c1;
+  border-radius: var(--radius);
   font-size: var(--t-sm);
 }
 .checkout__rx-title {
   font-size: inherit;
 }
 .checkout__rx-status {
-  font-size: 1.2rem;
+  font-size: var(--t-sm);
 }
 .checkout__rx-status.is-ok {
   color: var(--blue);
@@ -438,8 +445,8 @@
 
 .checkout__error {
   color: var(--alert);
-  font-size: 1.25rem;
-  line-height: 1.1;
+  font-size: var(--t-sm);
+  line-height: 1.3;
 }
 .checkout__fine {
   font-size: var(--t-xs);
@@ -470,6 +477,7 @@
   padding: 6px;
   background: var(--paper-2);
   border: var(--line);
+  border-radius: var(--radius-sm);
 }
 .pix__side {
   flex: 1 1 220px;
@@ -485,10 +493,11 @@
 .pix__code .field {
   flex: 1;
   min-width: 0;
-  font-size: 1.1rem;
+  font-size: var(--t-sm);
 }
 .pix__timer {
-  font-size: 1.3rem;
+  font-weight: 600;
+  font-size: var(--t-sm);
   color: var(--blue);
 }
 .dialog__actions .win__btn--link {

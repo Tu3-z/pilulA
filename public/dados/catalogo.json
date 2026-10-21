@@ -224,6 +224,25 @@
       "descricao": "Analgésico e antitérmico. Medicamento genérico."
     },
     {
+      "id": "dipirona-gotas-medley",
+      "categoria": "medicamentos",
+      "subcategoria": "dor-febre",
+      "nome": "Dipirona Gotas 500 mg/mL",
+      "marca": "Medley",
+      "sub": "frasco 20 ml",
+      "preco": 8.49,
+      "precoAntigo": 10.9,
+      "receita": "livre",
+      "destaque": true,
+      "selo": "-22%",
+      "arte": {
+        "forma": "gotas",
+        "rotulo": "500"
+      },
+      "foto": "img/produtos/dipirona-gotas-medley.webp",
+      "descricao": "Analgésico e antitérmico em gotas, para alívio de febre e dores. Medicamento genérico. Uso adulto e pediátrico acima de 3 meses."
+    },
+    {
       "id": "benegrip-12",
       "categoria": "medicamentos",
       "subcategoria": "gripe",
@@ -358,6 +377,22 @@
         "rotulo": "500 MG"
       },
       "descricao": "Antibiótico. Venda somente com receita médica, que fica retida na entrega."
+    },
+    {
+      "id": "codein-30",
+      "categoria": "medicamentos",
+      "subcategoria": "receita",
+      "nome": "Codein 30 mg",
+      "marca": "Cristália",
+      "sub": "30 comprimidos",
+      "preco": 42.9,
+      "receita": "retencao",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "30 MG"
+      },
+      "foto": "img/produtos/codein-30.webp",
+      "descricao": "Fosfato de codeína, analgésico opioide para dores moderadas. Venda sob prescrição médica, com retenção da receita na entrega. Uso adulto."
     },
     {
       "id": "losartana-50",

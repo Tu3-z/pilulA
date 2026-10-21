@@ -32,14 +32,15 @@
   color: var(--ink-2);
 }
 .field-hint.term {
-  font-size: 1.15rem;
-  line-height: 1.05;
+  font-size: var(--t-xs);
 }
 .field-error {
   margin-top: 6px;
   font-family: var(--f-term);
-  font-size: 1.15rem;
-  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  line-height: 1.3;
   color: var(--alert);
 }
 .field-error::before {
@@ -47,26 +48,25 @@
 }
 .field[aria-invalid='true'] {
   border-color: var(--alert);
-  box-shadow:
-    inset 2px 2px 0 #e7b3aa,
-    inset -2px -2px 0 var(--plastic-hi);
+  background: #fffafa;
 }
 
 .form-alert {
   padding: 10px 12px;
-  background: #f6e4e0;
-  border: 1.5px solid var(--alert);
-  color: var(--alert);
-  font-size: 1.25rem;
-  line-height: 1.1;
+  background: #fbeeec;
+  border: 1px solid #f0c8c1;
+  border-radius: var(--radius-sm);
+  color: #8e1f12;
+  font-size: var(--t-sm);
+  line-height: 1.4;
 }
 .form-alert--info {
   background: var(--blue-tint);
-  border-color: var(--blue);
+  border-color: #c9d4f3;
   color: var(--blue-ink);
 }
 .form-msg {
-  font-size: 1.2rem;
+  font-size: var(--t-sm);
   color: var(--blue);
   min-height: 1.2em;
 }
@@ -99,22 +99,19 @@
 }
 .pass__toggle {
   min-width: 84px;
-  font-size: 1.15rem;
+  font-size: var(--t-sm);
 }
 
 .strength {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 3px;
-  height: 10px;
+  height: 6px;
   margin-top: 8px;
-  padding: 2px;
-  background: var(--paper-2);
-  border: 1px solid var(--ink);
-  box-shadow: var(--bevel-in);
 }
 .strength span {
-  background: transparent;
+  border-radius: var(--pill);
+  background: var(--plastic);
 }
 .strength[data-nivel='1'] span:nth-child(-n + 1),
 .strength[data-nivel='2'] span:nth-child(-n + 2),
@@ -142,7 +139,7 @@
   accent-color: var(--blue);
 }
 
-/* opções tipo "botão de rádio" do Win98 */
+/* opções de rádio em formato de botão */
 .choice {
   display: flex;
   flex-wrap: wrap;
@@ -154,23 +151,24 @@
   gap: 8px;
   min-height: 44px;
   padding: 0 var(--s-4);
-  background: var(--plastic);
-  border: 1px solid var(--ink);
-  box-shadow: var(--bevel-out);
-  font-family: var(--f-term);
-  font-size: 1.3rem;
+  background: var(--paper-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--pill);
+  font-weight: 500;
+  font-size: var(--t-sm);
 }
 .choice__opt:has(input:checked) {
-  background: var(--blue);
-  color: var(--paper-2);
-  box-shadow: var(--bevel-in);
+  background: var(--blue-tint);
+  border-color: var(--blue);
+  color: var(--blue-ink);
+  box-shadow: inset 0 0 0 1px var(--blue);
 }
 .choice__opt:has(input:focus-visible) {
   outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
 .choice__opt input {
-  accent-color: var(--ink);
+  accent-color: var(--blue);
 }
 
 /* input de arquivo escondido, com o <label> estilizado como botão */

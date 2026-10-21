@@ -1,187 +1,77 @@
-<!-- ============ HERO ============ -->
-<section class="hero sky" aria-labelledby="hero-titulo">
-  <div class="container hero__grid">
-    <div class="hero__copy">
-      <p class="eyebrow eyebrow--light">farmácia online · desde 2000*</p>
-      <h1 id="hero-titulo" class="hero__title">
-        <span class="sr-only">Cuide de você primeiro.</span>
-        <span aria-hidden="true"
-          >Cuide de
-          <span class="nowrap">v<b class="px px--light">o</b>c<b class="px px--light">ê</b></span
-          ><br />primeiro<span class="star star--light">*</span></span
-        >
-      </h1>
-      <p class="hero__lead">
-        Remédios, vitaminas, dermocosméticos e higiene na sua porta em até 2 horas, com farmacêutico
-        de verdade no chat, a qualquer hora.
-      </p>
-      <div class="hero__ctas">
-        <a class="btn btn--primary" routerLink="/loja">Ir pra loja <pl-icone nome="seta" /></a>
-        <a class="btn btn--ghost-light" routerLink="/" fragment="receita">Enviar receita</a>
-      </div>
-      <ul class="hero__facts">
-        <li><b>2h</b><span>entrega na Grande SP</span></li>
-        <li><b>24h</b><span>farmacêutico online</span></li>
-        <li><b>R$ 99</b><span>frete grátis a partir de</span></li>
-      </ul>
-    </div>
+<h1 class="sr-only">pílula*: farmácia online com entrega em até 2 horas</h1>
 
-    <div class="hero__stage">
-      <p class="hero__sticker outline" aria-hidden="true">2026 vai ser o ano da sua saúde.</p>
+<!-- ============ CARROSSEL ============ -->
+<div class="container home-top">
+  <pl-carrossel />
 
-      <div class="pc" aria-hidden="true">
-        <div class="pc__monitor">
-          <div class="pc__screen">
-            <div class="screen">
-              <p class="screen__title">detalhes do pedido:</p>
-              <div class="screen__field screen__field--wide">
-                vitamina c 1g<span class="screen__caret" aria-hidden="true"></span>
-              </div>
-              <div class="screen__row">
-                <div>
-                  <p class="screen__label">Quantidade</p>
-                  <div class="screen__field">01</div>
-                </div>
-                <div>
-                  <p class="screen__label">Entrega</p>
-                  <div class="screen__field">em até 2h <span aria-hidden="true">▾</span></div>
-                </div>
-              </div>
-              <div class="screen__row">
-                <div>
-                  <p class="screen__label">Pagamento</p>
-                  <div class="screen__opts"><span class="is-on">pix</span><span>cartão</span></div>
-                </div>
-                <div>
-                  <p class="screen__label">Receita</p>
-                  <div class="screen__check">✓</div>
-                </div>
-              </div>
-              <div class="screen__btns">
-                <span class="pill pill--blue">Criar</span>
-                <span class="pill pill--dark">Fechar</span>
-              </div>
-            </div>
-          </div>
-          <div class="pc__chin" aria-hidden="true">
-            <span class="pc__brand">pílula*</span><span class="pc__slot"></span
-            ><span class="pc__led"></span>
-          </div>
-        </div>
-        <div class="pc__neck" aria-hidden="true"></div>
-        <div class="pc__kbd" aria-hidden="true">
-          <div class="pc__keys">
-            @for (escura of teclas; track $index) {
-              <i [class.k--dark]="escura"></i>
-            }
-            <i class="k--dark"></i><i></i><i></i><i></i><i class="k--space"></i><i></i><i></i><i></i
-            ><i class="k--dark"></i>
-          </div>
-        </div>
-        <div class="pc__mouse" aria-hidden="true"></div>
-        <div class="pc__disks" aria-hidden="true">
-          <span class="disk disk--ink"><span class="disk__label">receita.doc</span></span>
-          <span class="disk disk--blue"><span class="disk__label">saude.exe</span></span>
-        </div>
-      </div>
+  <ul class="facts" aria-label="Por que comprar aqui">
+    <li><b>2h</b><span>entrega na Grande SP</span></li>
+    <li><b>24h</b><span>farmacêutico online</span></li>
+    <li><b>R$&nbsp;99</b><span>frete grátis a partir de</span></li>
+    <li><b>3x</b><span>sem juros no cartão</span></li>
+  </ul>
+</div>
 
-      @if (popAgua()) {
-        <pl-janela
-          class="hero__popup"
-          titulo="Nova mensagem"
-          tituloId="pop-agua"
-          [fechavel]="true"
-          rotuloFechar="mensagem sobre beber água"
-          (fechar)="popAgua.set(false)"
-          role="complementary"
-          aria-labelledby="pop-agua"
-        >
-          <div class="win__body popup">
-            <p class="popup__q">
-              <pl-icone class="popup__icon" nome="boneco" /><span>já bebeu água hoje?</span>
-            </p>
-            <p class="popup__a" aria-live="polite">
-              @switch (agua()) {
-                @case ('sim') {
-                  boa! ✱ continua assim.
-                }
-                @case ('nao') {
-                  vai lá, a gente espera :)
-                }
-              }
-            </p>
-            <div class="popup__btns">
-              <button
-                type="button"
-                class="win__btn"
-                [attr.aria-pressed]="agua() === 'sim'"
-                (click)="agua.set('sim')"
-              >
-                Sim
-              </button>
-              <button
-                type="button"
-                class="win__btn"
-                [attr.aria-pressed]="agua() === 'nao'"
-                (click)="agua.set('nao')"
-              >
-                Não
-              </button>
-            </div>
-          </div>
-        </pl-janela>
-      }
-    </div>
-  </div>
-</section>
-
-<!-- ============ CATEGORIAS (disquetes) ============ -->
+<!-- ============ CATEGORIAS ============ -->
 <section id="categorias" class="section container" aria-labelledby="cat-titulo">
-  <header class="section__head">
-    <p class="eyebrow">01 / categorias</p>
-    <h2 id="cat-titulo" class="h2">Escolha um <span class="px px--ink">disquete</span></h2>
-    <p class="section__aside">As 6 categorias da farmácia. Cada disquete abre uma seção da loja.</p>
+  <header class="section__head section__head--row">
+    <div>
+      <p class="eyebrow">Categorias</p>
+      <h2 id="cat-titulo" class="h2">Do que você <span class="px">precisa</span>?</h2>
+    </div>
+    <p class="section__aside">Seis seções, do remédio pra dor ao protetor solar.</p>
   </header>
-  <ul class="floppies">
+  <ul class="cats">
     @for (c of catalogo.categorias(); track c.id) {
       <li>
-        <a
-          class="floppy"
-          [class]="'floppy--' + c.tom"
-          routerLink="/loja"
-          [queryParams]="{ cat: c.id }"
-        >
-          <span class="floppy__shutter" aria-hidden="true"></span>
-          <span class="floppy__label">
-            <span class="floppy__file" aria-hidden="true">{{ c.arquivo }}</span>
-            <span class="floppy__name">{{ c.rotulo || c.nome }}</span>
-            <span class="floppy__count">{{ catalogo.contar(c.id) }} itens</span>
+        <a class="cat" routerLink="/loja" [queryParams]="{ cat: c.id }">
+          <span class="cat__txt">
+            <span class="cat__nome">{{ c.nome }}</span>
+            <span class="cat__count">{{ catalogo.contar(c.id) }} produtos</span>
           </span>
-          <span class="floppy__notch" aria-hidden="true"></span>
+          @if (amostras()[c.id]; as p) {
+            <pl-arte class="cat__arte" [produto]="p" />
+          }
+          <pl-icone class="cat__seta" nome="seta" />
         </a>
       </li>
     }
   </ul>
 </section>
 
+<!-- ============ DESTAQUES ============ -->
+<section class="section container" aria-labelledby="dest-titulo">
+  <header class="section__head section__head--row">
+    <div>
+      <p class="eyebrow">Em destaque</p>
+      <h2 id="dest-titulo" class="h2">Acabou de <span class="px">chegar</span></h2>
+    </div>
+    <a class="btn btn--ghost" routerLink="/loja">Ver a loja toda <pl-icone nome="seta" /></a>
+  </header>
+  <div class="grid">
+    @for (p of catalogo.destaques(); track p.id) {
+      <pl-produto-card [produto]="p" />
+    }
+  </div>
+</section>
+
 <!-- ============ PENSE ANTES DE TOMAR ============ -->
 <section class="think" aria-labelledby="think-titulo">
   <div class="container think__grid">
     <div class="think__art">
-      <span class="dither think__dither" aria-hidden="true"></span>
       <h2 id="think-titulo" class="think__title">
-        <span class="sr-only">Pense antes de tomar.</span>
-        <span aria-hidden="true">
-          <span class="think__l1">Pen<b class="px px--ink">s</b>e</span>
-          <span class="think__l2"><b class="px px--ink think__big">A</b>ntes</span>
-          <span class="think__l3">de t<b class="px">o</b>mar<span class="px">.</span></span>
-        </span>
+        Pense antes<br />de <span class="px">tomar</span>.
       </h2>
+      <p class="think__lead">
+        Remédio bom é o remédio certo. Antes de colocar no carrinho, vale responder a quatro
+        perguntas.
+      </p>
+      <!-- o pop-up do Windows 98 é um dos detalhes retrô da home -->
       <pl-janela
-        class="think__popup"
+        class="think__popup retro"
         titulo="Nova mensagem"
         tituloId="pop-bula"
-        [controles]="[]"
+        [controles]="['×']"
         role="complementary"
         aria-labelledby="pop-bula"
       >
@@ -220,33 +110,12 @@
         </div>
       </pl-janela>
     </div>
-    <div class="think__qs">
-      <p class="think__wave" aria-label="faz sentido?">
-        @for (l of onda; track $index) {
-          <span aria-hidden="true" [style.--y]="l.y">{{ l.ch === ' ' ? ' ' : l.ch }}</span>
-        }
-      </p>
-      <p>é necessário?</p>
-      <p>tem receita?</p>
-      <p>já falou com o farmacêutico?</p>
-      <p class="think__end">bem-vindo à farmácia<br />sem automedicação!</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ DESTAQUES ============ -->
-<section class="section container" aria-labelledby="dest-titulo">
-  <header class="section__head section__head--row">
-    <div>
-      <p class="eyebrow">02 / em destaque</p>
-      <h2 id="dest-titulo" class="h2">Acabou de <span class="px">chegar</span></h2>
-    </div>
-    <a class="btn btn--ghost" routerLink="/loja">Ver a loja toda <pl-icone nome="seta" /></a>
-  </header>
-  <div class="grid">
-    @for (p of catalogo.destaques(); track p.id) {
-      <pl-produto-card [produto]="p" />
-    }
+    <ol class="think__qs">
+      <li><span>Faz sentido pro que estou sentindo?</span></li>
+      <li><span>É mesmo necessário?</span></li>
+      <li><span>Precisa de receita?</span></li>
+      <li><span>Já tirei a dúvida com o farmacêutico?</span></li>
+    </ol>
   </div>
 </section>
 
@@ -254,10 +123,8 @@
 <section id="receita" class="band sky" aria-labelledby="rec-titulo">
   <div class="container band__grid">
     <div class="band__copy">
-      <p class="eyebrow eyebrow--light">03 / receita</p>
-      <h2 id="rec-titulo" class="h2 h2--light">
-        Manda a r<b class="px px--light">e</b>ceita<span class="star star--light">*</span>
-      </h2>
+      <p class="eyebrow eyebrow--light">Receita</p>
+      <h2 id="rec-titulo" class="h2 h2--light">Manda a <span class="px">receita</span>.</h2>
       <p class="band__lead">
         Tira uma foto, a gente separa tudo e confirma com você no chat antes de sair pra entrega.
       </p>
@@ -277,9 +144,10 @@
       <p class="band__fine">Antibióticos e controlados: a receita original é retida na entrega.</p>
     </div>
 
+    <!-- o chat mantém a cara de Windows 98: outro detalhe retrô -->
     <pl-janela
       id="chat"
-      class="chat"
+      class="chat retro"
       tituloId="chat-titulo"
       [controles]="['_', '□', '×']"
       role="region"
@@ -380,8 +248,7 @@
 <!-- ============ NEWSLETTER ============ -->
 <section class="container" aria-labelledby="news-titulo">
   <div class="news">
-    <span class="dither news__dither" aria-hidden="true"></span>
-    <h2 id="news-titulo" class="h2">Fica lig<b class="px">a</b>do<span class="star">*</span></h2>
+    <h2 id="news-titulo" class="h2">Fica <span class="px">ligado</span>.</h2>
     <p class="news__lead">sem spam, só cuidado.</p>
     @if (!inscrito()) {
       <form class="news__form" (submit)="$event.preventDefault(); assinar()">
@@ -398,7 +265,7 @@
         <button type="submit" class="btn btn--dark">Assinar</button>
       </form>
     } @else {
-      <p class="news__ok term" role="status">valeu! ✱ confere teu e-mail</p>
+      <p class="news__ok term" role="status">Pronto! Confira seu e-mail.</p>
     }
   </div>
 </section>

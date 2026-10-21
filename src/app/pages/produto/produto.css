@@ -42,14 +42,10 @@
   top: var(--s-5);
 }
 .pdp__media .win__body {
-  padding: 4px;
+  padding: 8px;
 }
 .pdp__media .art {
-  border: 0;
-  box-shadow: var(--bevel-in);
-}
-.pdp__media .win__status {
-  font-size: 1rem;
+  border-radius: calc(var(--radius) - 6px);
 }
 .pdp__selo {
   position: absolute;
@@ -59,13 +55,6 @@
 }
 .pdp__media-inner {
   position: relative;
-}
-.pdp__dither {
-  right: -12%;
-  bottom: -12%;
-  width: 70%;
-  height: 70%;
-  z-index: -1;
 }
 
 .pdp__info {
@@ -77,6 +66,7 @@
 .pdp__brand {
   margin-bottom: var(--s-2);
   font-family: var(--f-pixel);
+  letter-spacing: 0.06em;
   font-size: var(--t-sm);
   text-transform: uppercase;
 }
@@ -108,13 +98,8 @@
   padding: var(--s-5);
   background: var(--paper-2);
   border: var(--line);
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
-}
-.pdp__buy .price__now {
-  font-size: 3rem;
-}
-.pdp__buy .price__old {
-  font-size: var(--t-sm);
 }
 .pdp__pix {
   font-size: var(--t-sm);
@@ -135,13 +120,13 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: var(--f-term);
-  font-size: 1.25rem;
-  line-height: 1.1;
+  font-size: var(--t-sm);
+  line-height: 1.3;
 }
 .pdp__ship li::before {
-  content: '✱ ';
-  color: var(--blue);
+  content: '✓ ';
+  font-weight: 700;
+  color: var(--cross);
 }
 
 .pdp__alert {
@@ -149,9 +134,10 @@
   gap: var(--s-3);
   align-items: flex-start;
   padding: var(--s-4);
-  background: var(--paper-2);
-  border: var(--line);
-  border-left: 10px solid var(--alert);
+  background: #fbeeec;
+  border: 1px solid #f0c8c1;
+  border-left: 6px solid var(--alert);
+  border-radius: var(--radius-sm);
   font-size: var(--t-sm);
 }
 .pdp__alert b {

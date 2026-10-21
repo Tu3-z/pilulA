@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CatalogoService } from '../../core/services/catalogo.service';
@@ -6,6 +6,9 @@ import { AvisoService } from '../../core/services/aviso.service';
 import { ProdutoCard } from '../../shared/components/produto-card/produto-card';
 import { Janela } from '../../shared/components/janela/janela';
 import { Icone } from '../../shared/components/icone/icone';
+import { Arte } from '../../shared/components/arte/arte';
+import { Produto } from '../../core/models/catalogo';
+import { Carrossel } from './carrossel/carrossel';
 
 interface Mensagem {
   quem: 'farma' | 'voce';
@@ -15,7 +18,7 @@ interface Mensagem {
 @Component({
   selector: 'pl-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ReactiveFormsModule, ProdutoCard, Janela, Icone],
+  imports: [RouterLink, ReactiveFormsModule, ProdutoCard, Janela, Icone, Arte, Carrossel],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -23,18 +26,17 @@ export class HomePage {
   protected readonly catalogo = inject(CatalogoService);
   private readonly avisos = inject(AvisoService);
 
-  /** teclado do PC: 3 fileiras de 15 teclas + fileira com espaço */
-  protected readonly teclas = Array.from({ length: 45 }, (_, i) => i % 15 === 0 || i % 15 === 14);
+  /** um produto de cada categoria, para ilustrar os cartões (prefere os que têm foto) */
+  protected readonly amostras = computed(() => {
+    const mapa: Record<string, Produto> = {};
+    for (const p of this.catalogo.produtos()) {
+      const atual = mapa[p.categoria];
+      if (!atual || (!atual.foto && p.foto)) mapa[p.categoria] = p;
+    }
+    return mapa;
+  });
 
-  /** "faz sentido?" com cada letra numa altura (texto em onda) */
-  protected readonly onda = [...'faz sentido?'].map((ch, i) => ({
-    ch,
-    y: (-Math.sin(i / 2.2) * 12).toFixed(1) + 'px',
-  }));
-
-  // ---------- pop-ups ----------
-  protected readonly agua = signal<'sim' | 'nao' | null>(null);
-  protected readonly popAgua = signal(true);
+  // ---------- pop-up ----------
   protected readonly bula = signal<'sim' | 'nao' | null>(null);
 
   // ---------- receita ----------
