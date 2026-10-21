@@ -85,7 +85,9 @@ export class LojaPage {
   protected readonly caminho = computed(() => {
     const c = this.categoria();
     const s = this.subcategoria();
-    return `C:\\pilula\\loja${c ? '\\' + c.arquivo.replace('.flp', '') : ''}${s ? '\\' + s.id : ''}${this.q() ? '\\busca?' + this.q() : ''}`;
+    return ['Loja', c?.nome, s?.nome, this.q() ? `busca: ${this.q()}` : '']
+      .filter(Boolean)
+      .join(' › ');
   });
 
   protected readonly cabecalho = computed(() => {

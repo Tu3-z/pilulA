@@ -12,7 +12,7 @@ import { Janela } from '../janela/janela';
   template: `
     @for (a of servico.avisos(); track a.id) {
       <pl-janela
-        titulo="pílula.exe"
+        titulo="Aviso"
         class="toast"
         [class.is-leaving]="a.saindo"
         [fechavel]="true"

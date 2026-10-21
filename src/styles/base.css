@@ -28,23 +28,7 @@ body {
   font-size: var(--t-md);
   line-height: 1.5;
   overflow-x: hidden;
-  /* cursor de seta pixelada, estilo Win98 */
-  cursor:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' shape-rendering='crispEdges'><path d='M1 1v16l4-4 3 7 3-1-3-7h6z' fill='white' stroke='black' stroke-width='1.5'/></svg>")
-      1 1,
-    auto;
-}
-
-/* grão de papel por cima de tudo */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  background-image: var(--grain);
-  opacity: 0.22;
-  mix-blend-mode: multiply;
+  -webkit-font-smoothing: antialiased;
 }
 
 img,
@@ -114,7 +98,7 @@ a:hover {
 .topbar :focus-visible {
   outline-color: var(--blue-glow);
 }
-/* janelas e cartões dentro do céu voltam ao foco azul */
+/* janelas e cartões dentro da faixa escura voltam ao foco azul */
 .sky .win :focus-visible {
   outline-color: var(--blue);
 }
@@ -134,27 +118,28 @@ main {
 }
 
 .section {
-  padding-block: clamp(56px, 8vw, 112px);
+  padding-block: clamp(48px, 6vw, 88px);
 }
 
 /* ---------- tipografia ---------- */
 .eyebrow {
-  font-family: var(--f-pixel);
+  font-family: var(--f-body);
+  font-weight: 600;
   font-size: var(--t-xs);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-2);
+  color: var(--blue);
 }
 .eyebrow--light {
-  color: #d3dcff;
+  color: var(--blue-glow);
 }
 
 .h1,
 .h2 {
   font-family: var(--f-display);
   font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
 }
 .h1 {
   font-size: var(--t-h1);
@@ -167,24 +152,33 @@ main {
   color: var(--paper-2);
 }
 
-/* letra pixelada dentro de um título serifado — a assinatura visual do site */
+/* destaque dentro de um título: itálico azul.
+   Dentro de .retro volta a ser a letra pixelada dos anos 2000. */
 .px {
-  font-family: var(--f-pixel);
+  font-style: italic;
+  font-weight: inherit;
+  color: var(--blue);
+}
+.retro .px {
+  font-family: var(--f-retro-pixel);
+  font-style: normal;
   font-weight: 700;
   font-size: 0.7em;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: var(--blue);
 }
 .px--ink {
   color: var(--ink);
 }
-.px--light {
+.px--light,
+.h1--light .px,
+.h2--light .px {
   color: var(--blue-glow);
 }
 
 .star {
-  font-family: var(--f-pixel);
+  /* asterisco pixelado: a marca da pílula*, um dos poucos detalhes retrô */
+  font-family: var(--f-retro-pixel);
   font-weight: 700;
   color: var(--blue);
   font-size: 0.62em;
@@ -208,50 +202,25 @@ main {
 
 .term {
   font-family: var(--f-term);
+  font-variant-numeric: tabular-nums;
 }
 
-/* ---------- texturas ---------- */
+/* ---------- faixa escura (hero, receita) ---------- */
 .sky {
   position: relative;
   isolation: isolate;
   color: var(--paper-2);
   background:
+    radial-gradient(70% 90% at 88% 0%, rgba(92, 122, 255, 0.35), transparent 70%),
+    radial-gradient(60% 80% at 0% 100%, rgba(35, 64, 184, 0.35), transparent 70%),
+    linear-gradient(160deg, var(--night-2), var(--night) 70%);
+}
+/* versão retrô: o céu de tempestade da primeira versão */
+.sky.retro {
+  background:
     radial-gradient(130% 90% at 50% 45%, transparent 55%, rgba(4, 8, 28, 0.65) 100%),
     var(--clouds) center / cover no-repeat,
     radial-gradient(120% 100% at 50% 40%, var(--night-2) 0%, var(--night) 70%);
-}
-.sky::before {
-  /* pontinhos de retícula sobre o céu */
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1.4px);
-  background-size: 5px 5px;
-  pointer-events: none;
-}
-
-.halftone {
-  background-image: radial-gradient(rgba(35, 64, 184, 0.16) 1.1px, transparent 1.6px);
-  background-size: 7px 7px;
-}
-
-/* nuvem de pontos azuis, a "poeira" pixelada da referência */
-.dither {
-  position: absolute;
-  pointer-events: none;
-  background-image:
-    radial-gradient(var(--blue) 1.2px, transparent 1.7px),
-    radial-gradient(var(--blue) 1px, transparent 1.5px);
-  background-size:
-    6px 6px,
-    11px 11px;
-  background-position:
-    0 0,
-    3px 5px;
-  -webkit-mask-image: radial-gradient(closest-side, #000 25%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 25%, transparent 100%);
-  opacity: 0.5;
 }
 
 /* ---------- utilitários ---------- */
@@ -275,8 +244,9 @@ main {
   padding: var(--s-2) var(--s-4);
   background: var(--ink);
   color: var(--paper-2);
-  font-family: var(--f-pixel);
-  font-size: var(--t-xs);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--t-sm);
 }
 .skip:focus {
   top: var(--s-4);

@@ -1,29 +1,32 @@
 /* ==========================================================================
    pílula* — design tokens
-   Paleta reduzida: papel, tinta, um azul (Win98 / IE) e o bege de PC antigo.
+   Visual limpo de farmácia moderna: papel claro, tinta, um azul de destaque.
+   O "anos 2000" aparece só em detalhes, dentro de .retro (ver o fim do arquivo).
    Verde aparece só na cruz de farmácia; vermelho só na tarja e em erros.
    ========================================================================== */
 
 :root {
   /* ---- superfícies ---- */
-  --paper: #f2efe7; /* fundo da página, papel levemente quente */
-  --paper-2: #fbfaf5; /* cartões, campos */
-  --ink: #121216; /* texto, contornos, sombras duras */
-  --ink-2: #46444e; /* texto secundário (contraste 8.9:1 no papel) */
+  --paper: #f5f4f0; /* fundo da página */
+  --paper-2: #ffffff; /* cartões, campos */
+  --ink: #15161c; /* texto */
+  --ink-2: #4a4b55; /* texto secundário (contraste 8.5:1 no papel) */
+  --border: #e0dfe6; /* contornos discretos */
+  --border-strong: #b9bac6; /* contorno de campos (contraste 3:1 exigido p/ controles) */
 
   /* ---- azul: a única cor de destaque ---- */
   --blue: #2340b8; /* botões, links, rótulos */
-  --blue-ink: #152a7e; /* barra de título das janelas, hover */
-  --blue-tint: #dde4f5; /* fundos de produto */
-  --blue-glow: #a9bbff; /* texto azul sobre o céu escuro */
-  --night: #0b153d; /* céu de tempestade */
+  --blue-ink: #152a7e; /* hover */
+  --blue-tint: #edf1fb; /* fundos de produto */
+  --blue-glow: #b9c7ff; /* texto azul sobre fundo escuro */
+  --night: #0b153d; /* faixas escuras (hero, receita) */
   --night-2: #1b2d78;
 
-  /* ---- bege de computador ---- */
-  --plastic: #d9d3c3;
-  --plastic-hi: #f3efe3;
-  --plastic-lo: #a39c89;
-  --plastic-dk: #5f5a4d;
+  /* ---- superfícies neutras (antes: bege de computador) ---- */
+  --plastic: #f0f1f5;
+  --plastic-hi: #ffffff;
+  --plastic-lo: #c9ccd6;
+  --plastic-dk: #5f6170;
   --metal: #bfc1c6;
 
   /* ---- funcionais ---- */
@@ -32,17 +35,20 @@
 
   /* ---- tipografia ---- */
   --f-display: 'Instrument Serif', 'Times New Roman', Times, serif;
-  --f-pixel: 'Silkscreen', ui-monospace, monospace;
-  --f-term: 'VT323', ui-monospace, monospace;
   --f-body: 'Archivo', 'Helvetica Neue', system-ui, sans-serif;
+  /* rótulos e números usam a fonte de leitura; as retrô ficam guardadas para os detalhes */
+  --f-pixel: var(--f-body);
+  --f-term: var(--f-body);
+  --f-retro-pixel: 'Silkscreen', ui-monospace, monospace;
+  --f-retro-term: 'VT323', ui-monospace, monospace;
 
   --t-xs: 0.75rem;
   --t-sm: 0.875rem;
   --t-md: 1rem;
   --t-lg: 1.125rem;
   --t-h3: 1.5rem;
-  --t-h2: clamp(2.6rem, 5.6vw, 4.6rem);
-  --t-h1: clamp(3.4rem, 8.4vw, 7.4rem);
+  --t-h2: clamp(2.4rem, 5vw, 4rem);
+  --t-h1: clamp(3rem, 7vw, 6rem);
 
   /* ---- espaço ---- */
   --s-1: 4px;
@@ -58,18 +64,53 @@
   --maxw: 1360px;
 
   /* ---- bordas e sombras ---- */
-  --line: 2px solid var(--ink);
-  --radius: 4px;
+  --line: 1px solid var(--border);
+  --radius: 14px;
+  --radius-sm: 8px;
   --pill: 999px;
+  --shadow: 0 1px 2px rgba(16, 22, 48, 0.06), 0 8px 24px rgba(16, 22, 48, 0.07);
+  --shadow-sm: 0 1px 2px rgba(16, 22, 48, 0.08);
+  --shadow-lg: 0 2px 4px rgba(16, 22, 48, 0.06), 0 18px 44px rgba(16, 22, 48, 0.13);
+  --bevel-out: 0 0 0 transparent;
+  --bevel-in: inset 0 1px 2px rgba(16, 22, 48, 0.05);
+
+  /* ---- barra de título das janelas ---- */
+  --win-bar-bg: var(--paper-2);
+  --win-bar-fg: var(--ink);
+  --win-bar-font: 600 var(--t-sm) / 1.2 var(--f-body);
+  --win-bar-line: var(--line);
+
+  /* ---- texturas (usadas só nos detalhes retrô) ---- */
+  --clouds: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' preserveAspectRatio='none'><filter id='c' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.0032 .0068' numOctaves='5' seed='11'/><feGaussianBlur stdDeviation='3'/><feColorMatrix values='0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 1  1.75 0 0 0 -.74'/></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>");
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   .retro — o "anos 2000" em doses pequenas.
+   Qualquer bloco com essa classe volta a usar o bege de PC, as fontes
+   pixeladas, os contornos pretos e as sombras duras (ex.: o chat da home
+   e a tela azul do 404).
+   -------------------------------------------------------------------------- */
+.retro {
+  --plastic: #d9d3c3;
+  --plastic-hi: #f3efe3;
+  --plastic-lo: #a39c89;
+  --plastic-dk: #5f5a4d;
+  --border: var(--ink);
+  --border-strong: var(--ink);
+  --f-pixel: var(--f-retro-pixel);
+  --f-term: var(--f-retro-term);
+  --line: 2px solid var(--ink);
+  --radius: 0;
+  --radius-sm: 0;
   --shadow: 5px 5px 0 var(--ink);
   --shadow-sm: 3px 3px 0 var(--ink);
   --shadow-lg: 8px 8px 0 var(--ink);
   --bevel-out: inset 2px 2px 0 var(--plastic-hi), inset -2px -2px 0 var(--plastic-lo);
   --bevel-in: inset 2px 2px 0 var(--plastic-lo), inset -2px -2px 0 var(--plastic-hi);
-
-  /* ---- texturas ---- */
-  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  --clouds: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' preserveAspectRatio='none'><filter id='c' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.0032 .0068' numOctaves='5' seed='11'/><feGaussianBlur stdDeviation='3'/><feColorMatrix values='0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 1  1.75 0 0 0 -.74'/></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>");
-
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --win-bar-bg: linear-gradient(90deg, var(--blue-ink), var(--blue));
+  --win-bar-fg: #fbfaf5;
+  --win-bar-font: 400 1.25rem / 1 var(--f-retro-term);
+  --win-bar-line: 0;
 }

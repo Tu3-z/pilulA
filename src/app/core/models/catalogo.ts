@@ -50,7 +50,10 @@ export interface Produto {
   destaque?: boolean;
   selo?: string;
   descricao: string;
+  /** ilustração usada quando não há foto */
   arte: { forma: FormaArte; rotulo: string };
+  /** foto real, relativa a public/ (ex.: "img/produtos/codein-30.webp"). Opcional. */
+  foto?: string;
 }
 
 export interface Catalogo {

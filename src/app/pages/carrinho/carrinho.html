@@ -1,7 +1,7 @@
 <div class="container">
   <header class="cart-head">
-    <p class="eyebrow">sua sacola</p>
-    <h1 class="h1">Carrinh<b class="px">o</b><span class="star">*</span></h1>
+    <p class="eyebrow">Sua sacola</p>
+    <h1 class="h1">Carrinho<span class="star">*</span></h1>
     @if (r().itens.length) {
       <nav aria-label="Etapas da compra">
         <ol class="steps">
@@ -34,7 +34,7 @@
   @if (!r().itens.length) {
     <!-- carrinho vazio -->
     <section class="cart-empty" aria-labelledby="vazio-titulo">
-      <pl-janela titulo="carrinho.exe">
+      <pl-janela titulo="Seu carrinho">
         <div class="win__body cart-empty__body">
           <pl-icone nome="info" />
           <div>
@@ -60,7 +60,7 @@
           aria-labelledby="itens-titulo"
         >
           <span titulo
-            >carrinho.exe — {{ carrinho.quantidade() }}
+            >Seu carrinho · {{ carrinho.quantidade() }}
             {{ carrinho.quantidade() === 1 ? 'item' : 'itens' }}</span
           >
           <ul class="lines">
