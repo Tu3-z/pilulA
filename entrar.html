@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Entrar — pílula*</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Remédios, vitaminas, dermocosméticos e higiene com entrega em até 2h e farmacêutico online 24h.">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/forms.css">
+  <link rel="stylesheet" href="assets/css/entrar.css">
+  <script type="module" src="assets/js/pages/entrar.js"></script>
+  <script>
+    // Os módulos JS não carregam quando o arquivo é aberto direto (file://). Mostra como rodar.
+    if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => document.body.insertAdjacentHTML('afterbegin',
+      '<p class="aviso-servidor">Abra pelo servidor local: dois cliques no <b>iniciar.bat</b> (ou Live Server do VS Code) e acesse <b>http://localhost:5500</b>.</p>'));
+  </script>
+</head>
+<body data-pagina="entrar">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="topo"></div>
+
+  <main id="conteudo" tabindex="-1">
+    <div class="logon sky">
+      <div class="container logon__grid">
+        <div class="logon__copy">
+          <p class="eyebrow eyebrow--light">Minha conta</p>
+          <h1 class="h1 h1--light">Bem-vindo<br>de <span class="px">volta</span>.</h1>
+          <p class="logon__lead">Entra pra acompanhar pedidos, guardar suas receitas e comprar mais rápido.</p>
+          <p class="logon__note term">protótipo: a conta fica salva só neste navegador.</p>
+        </div>
+
+        <div class="win logon__win">
+          <div class="win__bar"><span class="win__title">Sua conta pílula*</span></div>
+          <div class="logon__head">
+            <svg class="logon__key" width="52" height="52" viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">
+              <path fill="#121216" d="M5 1h6v1h1v5h-2V3H6v4H4V2h1z"/>
+              <path fill="#121216" d="M2 7h12v8H2z"/>
+              <path fill="#E9E0C6" d="M3 8h10v6H3z"/>
+              <path fill="#2340B8" d="M7 9h2v2H7zM7 11h1v2H7z"/>
+            </svg>
+            <p>Digite seus dados para entrar na pílula* ou crie uma conta nova.</p>
+          </div>
+
+          <div class="tabs__list logon__tabs" role="tablist" aria-label="Entrar ou criar conta">
+            <button class="tabs__tab" role="tab" id="tab-entrar" aria-controls="painel-entrar" aria-selected="true" tabindex="0">Entrar</button>
+            <button class="tabs__tab" role="tab" id="tab-criar" aria-controls="painel-criar" aria-selected="false" tabindex="-1">Criar conta</button>
+          </div>
+
+          <!-- ENTRAR -->
+          <section class="tabs__panel logon__panel" role="tabpanel" id="painel-entrar" aria-labelledby="tab-entrar">
+            <form class="form" id="form-login" novalidate>
+              <p class="form-alert form-alert--info term" id="ja-conectado" hidden></p>
+              <div class="form-field">
+                <label class="label" for="login-email">E-mail</label>
+                <input class="field" id="login-email" name="email" type="email" autocomplete="email" data-regras="obrigatorio email" data-msg-obrigatorio="digite seu e-mail." aria-describedby="login-email-erro">
+                <p class="field-error" id="login-email-erro" hidden></p>
+              </div>
+              <div class="form-field">
+                <label class="label" for="login-senha">Senha</label>
+                <div class="pass">
+                  <input class="field" id="login-senha" name="senha" type="password" autocomplete="current-password" data-regras="obrigatorio" data-msg-obrigatorio="digite sua senha." aria-describedby="login-senha-erro">
+                  <button type="button" class="win__btn pass__toggle" data-mostrar="login-senha" aria-pressed="false">mostrar</button>
+                </div>
+                <p class="field-error" id="login-senha-erro" hidden></p>
+              </div>
+              <p class="form-alert term" id="erro-login" role="alert" hidden></p>
+              <div class="form__actions">
+                <button type="button" class="link-btn" id="esqueci">Esqueci minha senha</button>
+                <button type="submit" class="btn btn--primary">Entrar</button>
+              </div>
+              <p class="form-msg term" id="msg-esqueci" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <!-- CRIAR CONTA -->
+          <section class="tabs__panel logon__panel" role="tabpanel" id="painel-criar" aria-labelledby="tab-criar" hidden>
+            <form class="form" id="form-cadastro" novalidate>
+              <div class="form-grid">
+              <div class="form-field form-field--full">
+                <label class="label" for="cad-nome">Nome completo</label>
+                <input class="field" id="cad-nome" name="nome" autocomplete="name" data-regras="obrigatorio nome" data-msg-obrigatorio="digite nome e sobrenome." aria-describedby="cad-nome-erro">
+                <p class="field-error" id="cad-nome-erro" hidden></p>
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-cpf">CPF</label>
+                <input class="field" id="cad-cpf" name="cpf" data-mascara="cpf" inputmode="numeric" placeholder="000.000.000-00" data-regras="obrigatorio cpf" data-msg-obrigatorio="CPF obrigatório." aria-describedby="cad-cpf-erro">
+                <p class="field-error" id="cad-cpf-erro" hidden></p>
+              </div>
+              <div class="form-field">
+                <label class="label" for="cad-cel">Celular</label>
+                <input class="field" id="cad-cel" name="celular" data-mascara="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(11) 90000-0000" data-regras="obrigatorio celular" data-msg-obrigatorio="celular com DDD." aria-describedby="cad-cel-erro">
+                <p class="field-error" id="cad-cel-erro" hidden></p>
+              </div>
+              <div class="form-field form-field--full">
+                <label class="label" for="cad-email">E-mail</label>
+                <input class="field" id="cad-email" name="email" type="email" autocomplete="email" data-regras="obrigatorio email" data-msg-obrigatorio="digite seu e-mail." aria-describedby="cad-email-erro">
+                <p class="field-error" id="cad-email-erro" hidden></p>
+              </div>
+                <div class="form-field">
+                  <label class="label" for="cad-senha">Senha</label>
+                  <div class="pass">
+                    <input class="field" id="cad-senha" name="senha" type="password" autocomplete="new-password" data-regras="obrigatorio senha" data-msg-obrigatorio="crie uma senha." aria-describedby="forca-txt cad-senha-erro">
+                    <button type="button" class="win__btn pass__toggle" data-mostrar="cad-senha" aria-pressed="false">mostrar</button>
+                  </div>
+                  <div class="strength" id="forca" aria-hidden="true" data-nivel="0"><span></span><span></span><span></span><span></span></div>
+                  <p class="field-hint" id="forca-txt">mín. 8 caracteres</p>
+                  <p class="field-error" id="cad-senha-erro" hidden></p>
+                </div>
+                <div class="form-field">
+                  <label class="label" for="cad-senha2">Confirmar senha</label>
+                  <input class="field" id="cad-senha2" name="senha2" type="password" autocomplete="new-password" data-regras="obrigatorio" data-igual="senha" data-msg-obrigatorio="repita a senha." aria-describedby="cad-senha2-erro">
+                  <p class="field-error" id="cad-senha2-erro" hidden></p>
+                </div>
+                <div class="form-field form-field--full">
+                  <label class="check-row">
+                    <input type="checkbox" id="cad-termos" name="termos" data-regras="obrigatorio" data-msg-obrigatorio="é preciso aceitar os termos para continuar." aria-describedby="cad-termos-erro">
+                    <span>Li e aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a> (LGPD).</span>
+                  </label>
+                  <p class="field-error" id="cad-termos-erro" hidden></p>
+                </div>
+                <div class="form-field form-field--full">
+                  <label class="check-row"><input type="checkbox" name="ofertas"> <span>Quero receber ofertas por e-mail. Sem spam, só cuidado.</span></label>
+                </div>
+              </div>
+              <p class="form-alert term" id="erro-cadastro" role="alert" hidden></p>
+              <div class="form__actions">
+                <span></span>
+                <button type="submit" class="btn btn--primary">Criar conta</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="rodape"></div>
+</body>
+</html>

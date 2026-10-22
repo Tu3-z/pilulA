@@ -1,0 +1,59 @@
+/* "Tela azul" do Windows 98 (página 404) — um dos detalhes retrô. */
+
+.bsod {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  padding: 48px 16px;
+  background: var(--blue-ink);
+  color: #e8ecfa;
+  font-family: var(--f-retro-term);
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  line-height: 1.25;
+  border-bottom: var(--line);
+}
+.bsod__box {
+  width: min(720px, 100%);
+}
+.bsod__title {
+  display: table;
+  margin: 0 auto 1.5em;
+  padding: 0 0.4em;
+  background: #e8ecfa;
+  color: var(--blue-ink);
+  font-weight: 400;
+  font-size: 1em;
+  font-family: inherit;
+}
+.bsod p {
+  margin: 0 0 1em;
+}
+.bsod a:not(.bsod__btn) {
+  color: #fff;
+}
+.bsod__center {
+  text-align: center;
+}
+.bsod__btn {
+  display: inline-block;
+  margin-top: 0.5em;
+  padding: 0.2em 0.8em;
+  background: #e8ecfa;
+  color: var(--blue-ink);
+  text-decoration: none;
+}
+.bsod__btn:hover,
+.bsod__btn:focus-visible {
+  background: #fff;
+  color: var(--blue-ink);
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+.bsod__blink {
+  animation: piscar 1s steps(2) infinite;
+}
+@keyframes piscar {
+  50% {
+    opacity: 0;
+  }
+}
