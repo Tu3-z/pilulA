@@ -3,13 +3,13 @@
    ========================================================================== */
 
 /* ---------- topo: carrossel + números ---------- */
+/* faixa de números logo abaixo do carrossel */
 .home-top {
   padding-top: var(--s-5);
 }
 .facts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: var(--s-4);
   background: var(--paper-2);
   border: var(--line);
   border-radius: var(--radius);
