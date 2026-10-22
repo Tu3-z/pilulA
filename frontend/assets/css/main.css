@@ -1,0 +1,23 @@
+/* ==========================================================================
+   pílula* — estilos comuns a todas as páginas.
+   A ORDEM IMPORTA: os arquivos de baixo podem sobrescrever os de cima.
+   Cada página carrega este arquivo + o seu próprio CSS (assets/css/pages/).
+   ========================================================================== */
+
+/* base: variáveis (cores, fontes, espaços), reset e tipografia */
+@import url('base/tokens.css');
+@import url('base/base.css');
+
+/* componentes usados em várias páginas */
+@import url('components/cabecalho.css');
+@import url('components/botoes.css');
+@import url('components/janela.css');
+@import url('components/campos.css');
+@import url('components/selos.css');
+@import url('components/produto-card.css');
+@import url('components/avisos.css');
+@import url('components/abas.css');
+@import url('components/rodape.css');
+
+/* formulários (erros, força da senha, opções) */
+@import url('base/forms.css');

@@ -21,5 +21,8 @@ public class Subcategoria {
   @ManyToOne
   private Categoria categoria;
 
+  /** posição dentro da categoria */
+  private Integer ordem;
+
 
 }

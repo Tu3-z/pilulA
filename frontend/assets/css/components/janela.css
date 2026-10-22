@@ -1,0 +1,192 @@
+/* ==========================================================================
+   Janela / painel e caixa de diálogo
+   ========================================================================== */
+
+/* ---------- janela / painel ----------
+   No visual padrão é um painel branco com cabeçalho discreto.
+   Dentro de .retro vira a janela do Windows 98 (barra azul, bege, botões _ □ ×). */
+.win {
+  color: var(--ink);
+  background: var(--paper-2);
+  border: var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-out), var(--shadow);
+  overflow: hidden;
+}
+.retro.win,
+.retro .win {
+  background: var(--plastic);
+}
+.win__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  min-height: 32px;
+  padding: 3px 4px 3px 10px;
+  background: var(--win-bar-bg);
+  color: var(--win-bar-fg);
+  border-bottom: var(--win-bar-line);
+  font: var(--win-bar-font);
+}
+/* fora do retrô, os _ □ × de enfeite somem */
+.win__ctls--deco {
+  display: none !important;
+}
+.retro .win__ctls--deco {
+  display: flex !important;
+}
+.win__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.win__ctls {
+  display: flex;
+  gap: 3px;
+  flex: none;
+}
+.win__ctl {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 24px;
+  padding: 0;
+  background: var(--plastic);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--bevel-out);
+  font-family: var(--f-pixel);
+  font-size: 11px;
+  line-height: 1;
+}
+button.win__ctl {
+  width: 44px;
+  height: 28px;
+}
+.win__body {
+  padding: var(--s-4);
+}
+
+.win__btn {
+  min-width: 88px;
+  min-height: 44px;
+  padding: 0 var(--s-4);
+  background: var(--paper-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--pill);
+  box-shadow: var(--bevel-out);
+  font-family: var(--f-term);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.win__btn:hover {
+  background: var(--plastic);
+}
+.win__btn:active,
+.win__btn[aria-pressed='true'] {
+  box-shadow: var(--bevel-in);
+  background: var(--blue-tint);
+  border-color: var(--blue);
+}
+.retro .win__btn {
+  border-radius: 0;
+  background: var(--plastic);
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+.retro .win__btn[aria-pressed='true'] {
+  background: var(--plastic);
+  border-color: var(--ink);
+}
+.win__btn--link {
+  display: inline-grid;
+  place-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+.win__btn--link:hover {
+  color: var(--ink);
+}
+
+.win__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  border-top: var(--line);
+  color: var(--ink-2);
+  font-family: var(--f-term);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+}
+.win__status > * {
+  flex: 1 1 auto;
+  padding: 2px 8px;
+  box-shadow: var(--bevel-in);
+}
+
+/* ---------- caixa de diálogo (modal) ---------- */
+.dialog {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: min(440px, calc(100vw - 32px));
+  width: 100%;
+}
+.dialog::backdrop {
+  background: rgba(11, 21, 61, 0.55);
+}
+.dialog .win__body {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+  font-size: var(--t-md);
+}
+.dialog__icon {
+  flex: none;
+}
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  padding: 0 var(--s-4) var(--s-4);
+}
+
+/* controles _ □ × que são só enfeite: apagados, para não parecerem clicáveis */
+.win__ctls--deco .win__ctl {
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: default;
+}
+/* × de verdade (fecha pop-ups e avisos) */
+.win__close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 16px;
+  font-family: var(--f-body);
+  font-weight: 700;
+  cursor: pointer;
+}
+.win__close:hover {
+  background: var(--plastic);
+}
+.retro .win__close {
+  width: 28px;
+  height: 26px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--plastic);
+}
+.win__close:active {
+  box-shadow: var(--bevel-in);
+}

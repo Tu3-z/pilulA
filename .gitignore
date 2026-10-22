@@ -1,10 +1,13 @@
 # Node (o front não precisa de npm install; isso é só para quem usar ferramentas)
-/node_modules
+node_modules/
 npm-debug.log
 
 # restos da versão em Angular (ver a branch "angular")
-/.angular
-/dist
+.angular/
+dist/
+
+# back-end (Maven)
+backend/target/
 
 # editores
 .idea/

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Loja — pílula*</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Remédios, vitaminas, dermocosméticos e higiene com entrega em até 2h e farmacêutico online 24h.">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/pages/loja.css">
+  <script type="module" src="assets/js/pages/loja.js"></script>
+  <script>
+    // Os módulos JS não carregam quando o arquivo é aberto direto (file://). Mostra como rodar.
+    if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => document.body.insertAdjacentHTML('afterbegin',
+      '<p class="aviso-servidor">Abra pelo servidor local: dois cliques no <b>iniciar.bat</b> (ou Live Server do VS Code) e acesse <b>http://localhost:5500</b>.</p>'));
+  </script>
+</head>
+<body data-pagina="loja">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="topo"></div>
+
+  <main id="conteudo" tabindex="-1">
+    <section class="page-head sky">
+      <div class="container page-head__inner">
+        <p class="eyebrow eyebrow--light">Catálogo completo</p>
+        <h1 class="h1 h1--light">Loja<span class="star star--light">*</span></h1>
+        <p class="page-head__lead">Tudo que a farmácia tem, organizado por categoria. Filtre por marca, preço e receita, ou use a busca lá em cima.</p>
+      </div>
+    </section>
+
+    <div class="container explorer-wrap">
+      <div class="win explorer">
+        <div class="win__bar">
+          <span class="win__title explorer__titulo"><span data-icone="pasta"></span><span id="caminho">Loja</span></span>
+        </div>
+
+        <div class="explorer__tools">
+          <button type="button" class="win__btn explorer__toggle" id="botao-filtros" aria-controls="explorer-filtros" aria-expanded="false">
+            <span data-icone="filtro"></span> Filtros <span class="explorer__toggle-n" id="filtros-n" hidden></span>
+          </button>
+          <div class="explorer__sort">
+            <label class="explorer__label" for="filtro-marca">Marca</label>
+            <select class="field" id="filtro-marca">
+              <option value="">Todas as marcas</option>
+            </select>
+          </div>
+          <div class="explorer__sort">
+            <label class="explorer__label" for="filtro-ordem">Ordenar por</label>
+            <select class="field" id="filtro-ordem">
+              <option value="relevancia">Relevância</option>
+              <option value="menor">Menor preço</option>
+              <option value="maior">Maior preço</option>
+              <option value="az">Nome (A–Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="explorer__body">
+          <aside class="explorer__side" id="explorer-filtros" aria-label="Categorias e filtros">
+            <fieldset>
+              <legend class="explorer__legend">Categorias</legend>
+              <div class="folders" id="pastas"></div>
+            </fieldset>
+            <fieldset>
+              <legend class="explorer__legend">Filtros</legend>
+              <label class="check"><input type="checkbox" id="filtro-livre"> <span>Só sem receita</span></label>
+              <label class="check"><input type="checkbox" id="filtro-oferta"> <span>Em oferta</span></label>
+            </fieldset>
+            <div class="explorer__tip">dica: o cupom <b>PILULA10</b> dá 10% na primeira compra.</div>
+          </aside>
+
+          <section class="explorer__main" aria-labelledby="resultado-titulo">
+            <div class="explorer__head">
+              <h2 id="resultado-titulo" class="explorer__heading">Todos os produtos</h2>
+              <p class="explorer__count" id="contagem" aria-live="polite"></p>
+            </div>
+            <div class="chips" id="chips" role="group" aria-label="Filtros aplicados" hidden></div>
+            <div class="grid" id="resultado"></div>
+          </section>
+        </div>
+
+        <div class="win__status">
+          <span id="status-objetos"></span>
+          <span>frete grátis acima de R$ 99</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="rodape"></div>
+</body>
+</html>
