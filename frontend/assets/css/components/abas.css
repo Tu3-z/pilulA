@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Abas
+   ========================================================================== */
+
+/* ---------- abas ---------- */
+.tabs__list {
+  display: flex;
+  gap: var(--s-2);
+  border-bottom: var(--line);
+}
+.tabs__tab {
+  position: relative;
+  top: 1px;
+  min-height: 44px;
+  padding: 0 var(--s-4);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-2);
+  font-weight: 600;
+  font-size: var(--t-sm);
+}
+.tabs__tab:hover {
+  color: var(--ink);
+}
+.tabs__tab[aria-selected='true'] {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+.tabs__panel {
+  padding: var(--s-5) 0;
+  line-height: 1.6;
+}
+.tabs__panel p + p {
+  margin-top: var(--s-3);
+}

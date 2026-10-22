@@ -37,5 +37,11 @@ public class Produto {
   @Embedded
   private Arte arte;
 
+  /** caminho da foto no front-end, ex.: "assets/img/produtos/codein-30.webp" (opcional) */
+  private String foto;
+
+  /** posição na vitrine (ordem de "relevância") */
+  private Integer ordem;
+
 
 }

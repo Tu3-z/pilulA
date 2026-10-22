@@ -19,6 +19,9 @@ public class Categoria {
   private String arquivo;
   private String tom;
 
+  /** posição no menu */
+  private Integer ordem;
+
 
 
 
