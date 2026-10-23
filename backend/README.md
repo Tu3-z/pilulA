@@ -41,6 +41,20 @@ O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
 - Mexeu na estrutura de uma tabela? Ajuste também a entidade em `model/`.
 - Os testes (`./mvnw test`) usam um banco **H2 em memória** com as mesmas migrations V1 e V2, sem internet e sem tocar no Supabase.
 
+## Documentação da API (Scalar)
+
+Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com todos os endpoints, os parâmetros, os formatos de resposta (com exemplos) e um botão **Test Request** para chamar cada endpoint ali mesmo.
+
+- A página é gerada sozinha a partir dos controllers pelo **springdoc**, que monta a especificação OpenAPI em http://localhost:8080/v3/api-docs. O **Scalar** só desenha essa especificação.
+- Endpoint novo aparece lá automaticamente. Para ficar bem documentado, use as anotações:
+  - `@Tag`: o grupo, no controller;
+  - `@Operation`: resumo e descrição, em cada método;
+  - `@Parameter`: descrição e exemplo de um parâmetro;
+  - `@ApiResponse`: as respostas possíveis, como 404;
+  - `@Schema`: descrição e exemplo dos campos, nos DTOs.
+- Título e descrição gerais ficam em `config/OpenApiConfig.java`.
+- O Postman e o Insomnia também importam a especificação: é só colar a URL `/v3/api-docs`.
+
 ## Endpoints
 
 | Método e rota | O que devolve |
@@ -56,14 +70,15 @@ O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e s
 
 ```
 backend/
-├── pom.xml                         ← dependências (Spring Web, JPA, Flyway, Security, Validation, PostgreSQL, Lombok; H2 só nos testes)
+├── pom.xml                         ← dependências (Spring Web, JPA, Flyway, Security, Validation, PostgreSQL, Lombok, springdoc + Scalar; H2 só nos testes)
 ├── .env.example                    ← modelo do .env (dados de acesso ao Supabase; o .env de verdade não vai pro Git)
 ├── mvnw, mvnw.cmd, .mvn/           ← Maven Wrapper
 └── src/
     ├── main/
     │   ├── java/pilula/com/pilula/
     │   │   ├── PilulaApplication.java      ← ponto de entrada
-    │   │   ├── config/                     ← configurações: SecurityConfig (acesso), CorsConfig (libera o front)
+    │   │   ├── config/                     ← configurações: SecurityConfig (acesso), CorsConfig (libera o front),
+    │   │   │                                 OpenApiConfig (título e descrição da documentação no Scalar)
     │   │   ├── model/                      ← entidades JPA (tabelas): Categoria, Subcategoria, Produto
     │   │   │                                 + Arte (embutida) e os enums TipoReceita e FormaArte
     │   │   ├── repository/                 ← acesso ao banco (Spring Data JPA): uma interface por entidade

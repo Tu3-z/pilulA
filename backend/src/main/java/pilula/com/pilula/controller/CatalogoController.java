@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import pilula.com.pilula.dto.CatalogoDTO;
 import pilula.com.pilula.dto.CategoriaDTO;
 import pilula.com.pilula.dto.ProdutoDTO;
@@ -23,6 +27,7 @@ import pilula.com.pilula.service.CatalogoService;
  */
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Catálogo", description = "Categorias e produtos da farmácia (só leitura)")
 public class CatalogoController {
 
   private final CatalogoService service;
@@ -31,23 +36,34 @@ public class CatalogoController {
     this.service = service;
   }
 
+  @Operation(
+      summary = "Catálogo completo",
+      description = "Categorias (com as subcategorias) e todos os produtos, no mesmo formato do catalogo.json do front-end.")
   @GetMapping("/catalogo")
   public CatalogoDTO catalogo() {
     return service.catalogo();
   }
 
+  @Operation(summary = "Lista as categorias", description = "Na ordem do menu, cada uma com as suas subcategorias.")
   @GetMapping("/categorias")
   public List<CategoriaDTO> categorias() {
     return service.listarCategorias();
   }
 
+  @Operation(summary = "Lista os produtos", description = "Todos os produtos, ou só os de uma categoria.")
   @GetMapping("/produtos")
-  public List<ProdutoDTO> produtos(@RequestParam(required = false) String categoria) {
+  public List<ProdutoDTO> produtos(
+      @Parameter(description = "id da categoria (opcional)", example = "dermo")
+      @RequestParam(required = false) String categoria) {
     return service.listarProdutos(categoria);
   }
 
+  @Operation(summary = "Busca um produto pelo id")
+  @ApiResponse(responseCode = "200", description = "Produto encontrado")
+  @ApiResponse(responseCode = "404", description = "Não existe produto com esse id")
   @GetMapping("/produtos/{id}")
-  public ProdutoDTO produto(@PathVariable String id) {
+  public ProdutoDTO produto(
+      @Parameter(description = "id do produto", example = "dipirona-gotas-medley") @PathVariable String id) {
     return service.buscarProduto(id);
   }
 }
