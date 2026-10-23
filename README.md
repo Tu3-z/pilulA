@@ -17,13 +17,16 @@ pilulA/
 │       ├── data/          catalogo.json (dados de teste)
 │       └── img/           favicon e fotos dos produtos
 ├── backend/           ← API REST em Spring Boot. Detalhes em backend/README.md
-│   └── src/main/java/pilula/com/pilula/
-│       ├── config/        segurança e CORS
-│       ├── model/         entidades (tabelas)
-│       ├── repository/    acesso ao banco
-│       ├── service/       regras de negócio
-│       ├── dto/           formato das respostas
-│       └── controller/    endpoints /api/...
+│   ├── .env.example       modelo dos dados de acesso ao Supabase (o .env não vai pro Git)
+│   └── src/main/
+│       ├── java/pilula/com/pilula/
+│       │   ├── config/        segurança e CORS
+│       │   ├── model/         entidades (tabelas)
+│       │   ├── repository/    acesso ao banco
+│       │   ├── service/       regras de negócio
+│       │   ├── dto/           formato das respostas
+│       │   └── controller/    endpoints /api/...
+│       └── resources/db/      migrations do Flyway: criam e populam as tabelas no Supabase
 ├── .vscode/           ← Live Server já configurado para servir a pasta frontend/
 └── README.md          ← este arquivo
 ```
@@ -33,9 +36,9 @@ pilulA/
 | O quê | Como | Endereço |
 |---|---|---|
 | **Front-end** | dois cliques em `frontend/iniciar.bat`, ou **Go Live** no VS Code (com a raiz do repositório aberta) | http://localhost:5500 |
-| **Back-end** | `cd backend` e `mvnw spring-boot:run` (precisa do Java 21) | http://localhost:8080/api/catalogo |
+| **Back-end** | criar o `backend/.env` com os dados do Supabase (passo a passo em [backend/README.md](backend/README.md)), depois `cd backend` e `mvnw spring-boot:run` (precisa do Java 21) | http://localhost:8080/api/catalogo |
 
-O front funciona sozinho, lendo `frontend/assets/data/catalogo.json`. Para ele usar a API, troque `URL_CATALOGO` em `frontend/assets/js/services/catalogo.js` (a linha já está pronta, comentada).
+O banco é **PostgreSQL no Supabase** (nuvem). As tabelas e os produtos são criados pelo Flyway na primeira vez que a API sobe. O site lê o catálogo da API; se ela estiver desligada, usa o JSON local (`frontend/assets/data/catalogo.json`) e continua funcionando.
 
 ## Histórico
 

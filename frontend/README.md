@@ -85,7 +85,7 @@ O carrinho e a sessão avisam quando mudam (`aoMudar(fn)`), e cada parte da tela
 
 **Formulários.** As regras ficam no próprio HTML: `<input data-regras="obrigatorio cpf" data-mascara="cpf">`. O `ligarValidacao(form)` valida ao sair do campo e mostra a mensagem no `<p class="field-error" id="<id do campo>-erro">`, ligado ao campo por `aria-describedby`. Campos dentro de um bloco escondido (`hidden`), como o endereço quando a pessoa escolhe retirar na loja, são ignorados.
 
-**Ligar no back-end.** Suba o back-end e troque `URL_CATALOGO` em `assets/js/services/catalogo.js` para `http://localhost:8080/api/catalogo` (a linha já está lá, comentada). A API devolve exatamente o mesmo formato do JSON. Carrinho e sessão podem virar chamadas `fetch` depois, sem mudar as páginas.
+**Back-end.** O `assets/js/services/catalogo.js` tenta primeiro a API (`http://localhost:8080/api/catalogo`, que lê do banco no Supabase). Se ela não responder, usa o `assets/data/catalogo.json`, então o site funciona com ou sem o back-end ligado. O console do navegador (F12) mostra qual das duas fontes foi usada. Carrinho e sessão podem virar chamadas `fetch` depois, sem mudar as páginas.
 
 ## Carrossel e caixa 3D
 

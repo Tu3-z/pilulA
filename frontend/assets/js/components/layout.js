@@ -500,7 +500,7 @@ function mostrarErroDeCarga() {
             local
               ? `<p>Você abriu o arquivo direto no navegador. O site precisa de um servidor local para carregar os produtos.</p>
                  <p style="margin-top: 12px">Dê dois cliques no <b>iniciar.bat</b> (ou use o <b>Live Server</b> do VS Code) e abra <b>http://localhost:5500</b>.</p>`
-              : `<p>O catálogo de produtos não respondeu. Confira se o arquivo <code>${esc(catalogo.URL_CATALOGO)}</code> existe e recarregue a página.</p>`
+              : `<p>O catálogo de produtos não respondeu. Confira se o arquivo <code>${esc(catalogo.URL_JSON)}</code> existe e recarregue a página.</p>`
           }
         </div>
       </div>

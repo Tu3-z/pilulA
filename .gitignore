@@ -9,6 +9,10 @@ dist/
 # back-end (Maven)
 backend/target/
 
+# senhas e dados de acesso ao banco (cada um tem o seu)
+.env
+!.env.example
+
 # editores
 .idea/
 .vscode/*
