@@ -23,7 +23,8 @@ import pilula.com.pilula.service.CatalogoService;
  *   GET /api/catalogo              → categorias + produtos (mesmo formato do catalogo.json do front)
  *   GET /api/categorias            → categorias com subcategorias
  *   GET /api/produtos?categoria=x  → produtos (todos ou de uma categoria, pelo slug dela)
- *   GET /api/produtos/{slug}       → um produto (404 se não existir)
+ *   GET /api/produtos/{id}         → um produto pelo id numérico (404 se não existir)
+ *   GET /api/produtos/slug/{slug}  → um produto pelo código público, ex.: dorflex-36
  */
 @RestController
 @RequestMapping("/api")
@@ -58,12 +59,22 @@ public class CatalogoController {
     return service.listarProdutos(categoria);
   }
 
-  @Operation(summary = "Busca um produto pelo slug", description = "O slug é o código público do produto, o mesmo usado no link do site.")
+  @Operation(summary = "Busca um produto pelo id", description = "O id é o número gerado pelo banco (1, 2, 3…).")
+  @ApiResponse(responseCode = "200", description = "Produto encontrado")
+  @ApiResponse(responseCode = "404", description = "Não existe produto com esse id")
+  @GetMapping("/produtos/{id}")
+  public ProdutoDTO produto(@Parameter(description = "id do produto", example = "1") @PathVariable Long id) {
+    return service.buscarProduto(id);
+  }
+
+  @Operation(
+      summary = "Busca um produto pelo slug",
+      description = "O slug é o código público do produto, o mesmo usado no link do site (produto.html?id=dorflex-36).")
   @ApiResponse(responseCode = "200", description = "Produto encontrado")
   @ApiResponse(responseCode = "404", description = "Não existe produto com esse slug")
-  @GetMapping("/produtos/{slug}")
-  public ProdutoDTO produto(
+  @GetMapping("/produtos/slug/{slug}")
+  public ProdutoDTO produtoPorSlug(
       @Parameter(description = "slug do produto", example = "dipirona-gotas-medley") @PathVariable String slug) {
-    return service.buscarProduto(slug);
+    return service.buscarProdutoPorSlug(slug);
   }
 }

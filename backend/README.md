@@ -66,12 +66,13 @@ Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com tod
 
 | Método e rota | O que devolve |
 |---|---|
-| `GET /api/catalogo` | categorias (com subcategorias) + produtos, **no mesmo formato** de `frontend/assets/data/catalogo.json` |
+| `GET /api/catalogo` | categorias (com subcategorias) + produtos, no formato que o front usa (igual a `frontend/assets/data/catalogo.json`, mais o `slug` e o `id` numérico) |
 | `GET /api/categorias` | só as categorias, com as subcategorias dentro |
 | `GET /api/produtos` | todos os produtos (`?categoria=dermo` filtra por categoria) |
 
-**Ids.** No banco, cada tabela tem um `id` numérico (chave primária, usado nas relações) e um `slug` em texto (único, usado nos links). Na API, o campo `id` mostra o **slug**, o mesmo formato do `catalogo.json` do front; o número fica só dentro do back-end.
-| `GET /api/produtos/{slug}` | um produto pelo código público (ex.: `/api/produtos/dorflex-36`), ou **404** se não existir |
+**Ids.** Cada categoria, subcategoria e produto tem um `id` numérico (gerado pelo banco, usado nas relações e na busca `/api/produtos/{id}`) e um `slug` em texto (único, usado nos links do site). A API devolve os dois. Nos produtos, `categoria` e `subcategoria` vêm pelo slug. O front usa o slug como identificador (ver `comSlug` em `frontend/assets/js/services/catalogo.js`).
+| `GET /api/produtos/{id}` | um produto pelo id numérico (ex.: `/api/produtos/1`), ou **404** se não existir |
+| `GET /api/produtos/slug/{slug}` | um produto pelo código público (ex.: `/api/produtos/slug/dorflex-36`), ou **404** |
 
 O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e só usa o JSON local se ela não responder. O CORS para o front em `http://localhost:5500` e `http://127.0.0.1:5500` já está liberado.
 
