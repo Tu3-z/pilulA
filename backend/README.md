@@ -21,7 +21,12 @@ Cada pessoa do grupo faz isso uma vez no próprio computador. O banco é um só,
    ./mvnw spring-boot:run        # Windows: mvnw spring-boot:run
    ```
    Na primeira vez, o Flyway cria as tabelas e coloca os 57 produtos. Dá pra ver tudo no Supabase em **Table Editor**.
-5. **Conferir.** Abra http://localhost:8080/api/catalogo. Depois abra o site (Live Server); no console do navegador (F12) deve aparecer `catálogo carregado da API`.
+5. **Fechar a tabela do Flyway (uma vez só, por quem criou o projeto).** No Supabase, abra o **SQL Editor** e rode:
+   ```sql
+   ALTER TABLE flyway_schema_history ENABLE ROW LEVEL SECURITY;
+   ```
+   As outras tabelas a migration V3 já protege. Esta é a do próprio Flyway, que não pode ser alterada enquanto ele roda.
+6. **Conferir.** Abra http://localhost:8080/api/catalogo. Depois abra o site (Live Server); no console do navegador (F12) deve aparecer `catálogo carregado da API`.
 
 Se a API estiver desligada, o site continua funcionando com o JSON local (`frontend/assets/data/catalogo.json`).
 
@@ -33,7 +38,7 @@ As tabelas **não** são criadas pelo Hibernate. Quem cuida delas são as *migra
 |---|---|
 | `db/migration/V1__criar_tabelas_catalogo.sql` | cria `categoria`, `subcategoria` e `produto` (com chaves, `CHECK` de preço/receita e índices) |
 | `db/migration/V2__popular_catalogo.sql` | coloca as 6 categorias, 24 subcategorias e 57 produtos |
-| `db/supabase/V3__habilitar_rls.sql` | liga o RLS no Supabase, para ninguém mexer nas tabelas pela API pública dele (só o nosso back-end acessa) |
+| `db/supabase/V3__habilitar_rls.sql` | liga o RLS no Supabase (em `categoria`, `subcategoria` e `produto`), para ninguém mexer nas tabelas pela API pública dele (só o nosso back-end acessa) |
 
 O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
 
