@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pilula.com.pilula.model.Categoria;
 
 /** Acesso às categorias no banco. O Spring Data cria a implementação sozinho. */
-public interface CategoriaRepository extends JpaRepository<Categoria, String> {
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
   List<Categoria> findAllByOrderByOrdemAsc();
 }

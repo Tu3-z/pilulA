@@ -12,8 +12,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 
 public class Produto {
+  /** chave interna, gerada pelo banco (1, 2, 3…); é ela que as outras tabelas referenciam */
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  /** código público e único, usado nos links do site (ex.: "dorflex-36") */
+  @Column(nullable = false, unique = true)
+  private String slug;
+
   private String nome;
   private String marca;
   private String sub;

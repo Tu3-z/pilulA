@@ -10,6 +10,7 @@ import pilula.com.pilula.model.Categoria;
 public record CategoriaDTO(String id, String nome, String rotulo, String arquivo, String tom, List<SubcategoriaDTO> subs) {
 
   public static CategoriaDTO de(Categoria c, List<SubcategoriaDTO> subs) {
-    return new CategoriaDTO(c.getId(), c.getNome(), c.getRotulo(), c.getArquivo(), c.getTom(), subs);
+    // "id" na API é o slug (ex.: "dermo"), como no catalogo.json do front
+    return new CategoriaDTO(c.getSlug(), c.getNome(), c.getRotulo(), c.getArquivo(), c.getTom(), subs);
   }
 }

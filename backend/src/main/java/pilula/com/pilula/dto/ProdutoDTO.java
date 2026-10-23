@@ -8,13 +8,14 @@ import pilula.com.pilula.model.Produto;
 
 /**
  * Produto no mesmo formato do catalogo.json do front-end:
- * categoria e subcategoria viram só o id, e os enums vão em minúsculas ("livre", "caixa"…).
+ * "id" é o slug (código público, ex.: "dorflex-36"; o id numérico do banco fica só no back-end),
+ * categoria e subcategoria vão pelo slug, e os enums em minúsculas ("livre", "caixa"…).
  */
 @Schema(name = "Produto")
 public record ProdutoDTO(
-    @Schema(example = "dipirona-gotas-medley") String id,
-    @Schema(description = "id da categoria", example = "medicamentos") String categoria,
-    @Schema(description = "id da subcategoria", example = "dor-febre") String subcategoria,
+    @Schema(description = "código público do produto (slug)", example = "dipirona-gotas-medley") String id,
+    @Schema(description = "slug da categoria", example = "medicamentos") String categoria,
+    @Schema(description = "slug da subcategoria", example = "dor-febre") String subcategoria,
     @Schema(example = "Dipirona Gotas 500 mg/mL") String nome,
     @Schema(example = "Medley") String marca,
     @Schema(description = "apresentação", example = "frasco 20 ml") String sub,
@@ -37,9 +38,9 @@ public record ProdutoDTO(
         ? null
         : new ArteDTO(p.getArte().getForma().name().toLowerCase(), p.getArte().getRotulo());
     return new ProdutoDTO(
-        p.getId(),
-        p.getCategoria() == null ? null : p.getCategoria().getId(),
-        p.getSubcategoria() == null ? null : p.getSubcategoria().getId(),
+        p.getSlug(),
+        p.getCategoria() == null ? null : p.getCategoria().getSlug(),
+        p.getSubcategoria() == null ? null : p.getSubcategoria().getSlug(),
         p.getNome(),
         p.getMarca(),
         p.getSub(),

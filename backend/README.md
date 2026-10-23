@@ -39,6 +39,8 @@ As tabelas **não** são criadas pelo Hibernate. Quem cuida delas são as *migra
 | `db/migration/V1__criar_tabelas_catalogo.sql` | cria `categoria`, `subcategoria` e `produto` (com chaves, `CHECK` de preço/receita e índices) |
 | `db/migration/V2__popular_catalogo.sql` | coloca as 6 categorias, 24 subcategorias e 57 produtos |
 | `db/supabase/V3__habilitar_rls.sql` | liga o RLS no Supabase (em `categoria`, `subcategoria` e `produto`), para ninguém mexer nas tabelas pela API pública dele (só o nosso back-end acessa) |
+| `db/migration/V4__ids_numericos_e_slug.sql` | troca as chaves: cada tabela ganha um `id` numérico gerado pelo banco (1, 2, 3…) e o código em texto (`dorflex-36`) vira a coluna `slug`, única, usada nos links do site. Os dados são copiados sem perder nada |
+| `db/supabase/V5__habilitar_rls_tabelas_novas.sql` | liga o RLS de novo, porque a V4 recriou as tabelas |
 
 O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
 
@@ -67,7 +69,9 @@ Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com tod
 | `GET /api/catalogo` | categorias (com subcategorias) + produtos, **no mesmo formato** de `frontend/assets/data/catalogo.json` |
 | `GET /api/categorias` | só as categorias, com as subcategorias dentro |
 | `GET /api/produtos` | todos os produtos (`?categoria=dermo` filtra por categoria) |
-| `GET /api/produtos/{id}` | um produto, ou **404** se não existir |
+
+**Ids.** No banco, cada tabela tem um `id` numérico (chave primária, usado nas relações) e um `slug` em texto (único, usado nos links). Na API, o campo `id` mostra o **slug**, o mesmo formato do `catalogo.json` do front; o número fica só dentro do back-end.
+| `GET /api/produtos/{slug}` | um produto pelo código público (ex.: `/api/produtos/dorflex-36`), ou **404** se não existir |
 
 O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e só usa o JSON local se ela não responder. O CORS para o front em `http://localhost:5500` e `http://127.0.0.1:5500` já está liberado.
 
