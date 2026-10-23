@@ -1,7 +1,8 @@
 -- ==========================================================================
--- Dados iniciais do catálogo (gerado a partir de frontend/assets/data/catalogo.json).
--- O Spring roda este arquivo toda vez que a aplicação sobe, depois que o
--- Hibernate cria as tabelas (ver spring.jpa.defer-datasource-initialization).
+-- V2 · Catálogo inicial: 6 categorias, 24 subcategorias e 57 produtos
+-- (os mesmos de frontend/assets/data/catalogo.json).
+-- Produtos novos? Crie uma migration nova (V4__novos_produtos.sql…)
+-- ou cadastre pelo painel do Supabase (Table Editor).
 -- ==========================================================================
 
 -- categorias

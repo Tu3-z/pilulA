@@ -1,14 +1,18 @@
 import { semAcento } from '../utils/texto.js';
 
 /**
- * Catálogo de produtos.
- * Por padrão vem de um JSON estático (funciona sem o back-end).
- * O back-end (Spring Boot) tem o endpoint GET /api/catalogo, que devolve exatamente
- * o mesmo formato; o CORS para http://localhost:5500 já está liberado lá (config/CorsConfig.java).
+ * Catálogo de produtos. De onde vem:
+ *  1. da API do back-end (Spring Boot + banco no Supabase), se ela estiver no ar;
+ *  2. senão, do JSON estático (assets/data/catalogo.json), para o site nunca ficar vazio.
+ * O console do navegador mostra qual das duas fontes foi usada.
  */
-export const URL_CATALOGO = 'assets/data/catalogo.json';
-// com o back-end rodando (cd backend → mvnw spring-boot:run), troque pela linha abaixo:
-// export const URL_CATALOGO = 'http://localhost:8080/api/catalogo';
+export const URL_API = 'http://localhost:8080/api/catalogo';
+export const URL_JSON = 'assets/data/catalogo.json';
+/** quanto tempo esperar a API antes de desistir e usar o JSON */
+const ESPERA_API_MS = 2500;
+
+/** 'api' ou 'json': de onde o catálogo foi carregado */
+export let fonteCatalogo = null;
 
 export const RECEITA = {
   livre: {
@@ -30,18 +34,35 @@ let produtos = [];
 let porId = new Map();
 let carregando = null;
 
+async function buscarJson(url, ms) {
+  const controle = new AbortController();
+  const tempo = ms ? setTimeout(() => controle.abort(), ms) : null;
+  try {
+    const r = await fetch(url, { signal: controle.signal });
+    if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
+    return await r.json();
+  } finally {
+    clearTimeout(tempo);
+  }
+}
+
 /** Carrega o catálogo uma vez só (as outras chamadas reaproveitam a mesma promessa). */
 export function carregarCatalogo() {
-  carregando ??= fetch(URL_CATALOGO)
-    .then((r) => {
-      if (!r.ok) throw new Error(`Catálogo: HTTP ${r.status}`);
-      return r.json();
-    })
-    .then((dados) => {
-      categorias = dados.categorias;
-      produtos = dados.produtos;
-      porId = new Map(produtos.map((p) => [p.id, p]));
-    });
+  carregando ??= (async () => {
+    let dados;
+    try {
+      dados = await buscarJson(URL_API, ESPERA_API_MS);
+      fonteCatalogo = 'api';
+      console.info(`[pílula*] catálogo carregado da API (${URL_API})`);
+    } catch {
+      dados = await buscarJson(URL_JSON);
+      fonteCatalogo = 'json';
+      console.info('[pílula*] API fora do ar: catálogo carregado do JSON local');
+    }
+    categorias = dados.categorias;
+    produtos = dados.produtos;
+    porId = new Map(produtos.map((p) => [p.id, p]));
+  })();
   return carregando;
 }
 

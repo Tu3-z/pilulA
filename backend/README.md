@@ -1,20 +1,45 @@
 # pílula\* — back-end
 
-API REST em **Spring Boot** (Java 21, Maven, JPA + banco H2 em memória). Visão geral do projeto no [README da raiz](../README.md).
+API REST em **Spring Boot** (Java 21, Maven, JPA) com banco **PostgreSQL no Supabase**. As tabelas são criadas e populadas pelo **Flyway**. Visão geral do projeto no [README da raiz](../README.md).
 
-## Como rodar
+## Primeira vez: ligar no Supabase
 
-Pré-requisito: **Java 21** (JDK). O Maven não precisa estar instalado: o projeto traz o `mvnw` ("Maven Wrapper").
+Cada pessoa do grupo faz isso uma vez no próprio computador. O banco é um só, na nuvem, e todo mundo usa o mesmo.
 
-```bash
-cd backend
-./mvnw spring-boot:run        # Windows: mvnw spring-boot:run
-```
+1. **Criar o projeto (só uma pessoa do grupo).** Em [supabase.com](https://supabase.com), clique em *New project*. Escolha a região **South America (São Paulo)** e anote a **senha do banco** (*Database Password*). Depois, convide o grupo em *Project Settings → Team*.
+2. **Pegar os dados de conexão.** No projeto, clique em **Connect** (no topo), aba **Connection String**. Escolha **Type: JDBC** e **Method: Session pooler**. O Session pooler funciona em qualquer rede; a conexão "Direct" pede IPv6.
+3. **Criar o arquivo `.env`.** Copie `backend/.env.example` para `backend/.env` e preencha:
+   ```properties
+   DB_URL=jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+   DB_USER=postgres.abcdefghijklmnop
+   DB_PASSWORD=a-senha-do-banco
+   ```
+   O `.env` está no `.gitignore`: **a senha nunca vai pro GitHub**. Passe pro grupo por mensagem privada, não no repositório.
+4. **Subir a API.** Pré-requisito: **Java 21** (`java -version`). O Maven vem junto (`mvnw`).
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run        # Windows: mvnw spring-boot:run
+   ```
+   Na primeira vez, o Flyway cria as tabelas e coloca os 57 produtos. Dá pra ver tudo no Supabase em **Table Editor**.
+5. **Conferir.** Abra http://localhost:8080/api/catalogo. Depois abra o site (Live Server); no console do navegador (F12) deve aparecer `catálogo carregado da API`.
 
-A API sobe em **http://localhost:8080**. Toda vez que ela sobe, o banco H2 é criado do zero e preenchido com o catálogo de `src/main/resources/data.sql`.
+Se a API estiver desligada, o site continua funcionando com o JSON local (`frontend/assets/data/catalogo.json`).
 
-- Console do banco: **http://localhost:8080/h2-console** (JDBC URL `jdbc:h2:mem:pilula`, usuário `sa`, sem senha).
-- Testes: `./mvnw test`.
+## Banco de dados (Flyway)
+
+As tabelas **não** são criadas pelo Hibernate. Quem cuida delas são as *migrations*, arquivos SQL numerados que o Flyway roda uma vez cada, em ordem, quando a API sobe:
+
+| Arquivo | O que faz |
+|---|---|
+| `db/migration/V1__criar_tabelas_catalogo.sql` | cria `categoria`, `subcategoria` e `produto` (com chaves, `CHECK` de preço/receita e índices) |
+| `db/migration/V2__popular_catalogo.sql` | coloca as 6 categorias, 24 subcategorias e 57 produtos |
+| `db/supabase/V3__habilitar_rls.sql` | liga o RLS no Supabase, para ninguém mexer nas tabelas pela API pública dele (só o nosso back-end acessa) |
+
+O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
+
+- **Para mudar o banco, crie um arquivo novo** (`V4__adiciona_estoque.sql`…). Nunca edite um V1/V2/V3 que já rodou: o Flyway confere o conteúdo e a API não sobe.
+- Mexeu na estrutura de uma tabela? Ajuste também a entidade em `model/`.
+- Os testes (`./mvnw test`) usam um banco **H2 em memória** com as mesmas migrations V1 e V2, sem internet e sem tocar no Supabase.
 
 ## Endpoints
 
@@ -25,13 +50,14 @@ A API sobe em **http://localhost:8080**. Toda vez que ela sobe, o banco H2 é cr
 | `GET /api/produtos` | todos os produtos (`?categoria=dermo` filtra por categoria) |
 | `GET /api/produtos/{id}` | um produto, ou **404** se não existir |
 
-Para o front usar a API, troque `URL_CATALOGO` em `frontend/assets/js/services/catalogo.js` por `http://localhost:8080/api/catalogo` (a linha já está lá, comentada). O CORS para o front em `http://localhost:5500` já está liberado.
+O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e só usa o JSON local se ela não responder. O CORS para o front em `http://localhost:5500` e `http://127.0.0.1:5500` já está liberado.
 
 ## Estrutura (arquitetura em camadas)
 
 ```
 backend/
-├── pom.xml                         ← dependências (Spring Web, JPA, Security, Validation, H2, PostgreSQL, Lombok)
+├── pom.xml                         ← dependências (Spring Web, JPA, Flyway, Security, Validation, PostgreSQL, Lombok; H2 só nos testes)
+├── .env.example                    ← modelo do .env (dados de acesso ao Supabase; o .env de verdade não vai pro Git)
 ├── mvnw, mvnw.cmd, .mvn/           ← Maven Wrapper
 └── src/
     ├── main/
@@ -45,15 +71,19 @@ backend/
     │   │   ├── dto/                        ← o que a API devolve (records), separado das entidades
     │   │   └── controller/                 ← endpoints REST: CatalogoController
     │   └── resources/
-    │       ├── application.properties      ← banco H2, console, carga do data.sql
-    │       └── data.sql                    ← catálogo inicial (6 categorias, 24 subcategorias, 57 produtos)
-    └── test/java/pilula/com/pilula/        ← testes
+    │       ├── application.properties      ← conexão com o Supabase (lida do .env) e Flyway
+    │       └── db/
+    │           ├── migration/              ← V1 cria as tabelas, V2 coloca os produtos
+    │           └── supabase/               ← V3 segurança (RLS), só no Supabase
+    └── test/
+        ├── java/pilula/com/pilula/         ← testes
+        └── resources/application.properties ← testes usam H2 em memória
 ```
 
 O caminho de uma requisição é sempre o mesmo:
 
 ```
-navegador → controller → service → repository → banco (H2)
+navegador → controller → service → repository → banco (Supabase)
                  ↑            ↓
                  └──── dto ←──┘   (a entidade nunca sai direto pela API)
 ```
@@ -67,4 +97,3 @@ navegador → controller → service → repository → banco (H2)
 
 - [ ] `PedidoController` + entidades `Pedido`/`ItemPedido` para finalizar a compra de verdade.
 - [ ] Cadastro e login (`UsuarioController`, senha com BCrypt do Spring Security).
-- [ ] Trocar o H2 pelo PostgreSQL (o driver já está no `pom.xml`): só mudar o `application.properties`.
