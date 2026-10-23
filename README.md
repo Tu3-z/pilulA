@@ -36,7 +36,7 @@ pilulA/
 | O quê | Como | Endereço |
 |---|---|---|
 | **Front-end** | dois cliques em `frontend/iniciar.bat`, ou **Go Live** no VS Code (com a raiz do repositório aberta) | http://localhost:5500 |
-| **Back-end** | criar o `backend/.env` com os dados do Supabase (passo a passo em [backend/README.md](backend/README.md)), depois `cd backend` e `mvnw spring-boot:run` (precisa do Java 21) | http://localhost:8080/api/catalogo |
+| **Back-end** | criar o `backend/.env` com os dados do Supabase (passo a passo em [backend/README.md](backend/README.md)), depois `cd backend` e `mvnw spring-boot:run` (precisa do Java 21) | http://localhost:8080/api/catalogo · documentação: http://localhost:8080/scalar |
 
 O banco é **PostgreSQL no Supabase** (nuvem). As tabelas e os produtos são criados pelo Flyway na primeira vez que a API sobe. O site lê o catálogo da API; se ela estiver desligada, usa o JSON local (`frontend/assets/data/catalogo.json`) e continua funcionando.
 

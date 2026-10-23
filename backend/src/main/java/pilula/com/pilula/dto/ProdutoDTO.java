@@ -2,29 +2,35 @@ package pilula.com.pilula.dto;
 
 import java.math.BigDecimal;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import pilula.com.pilula.model.Produto;
 
 /**
  * Produto no mesmo formato do catalogo.json do front-end:
  * categoria e subcategoria viram só o id, e os enums vão em minúsculas ("livre", "caixa"…).
  */
+@Schema(name = "Produto")
 public record ProdutoDTO(
-    String id,
-    String categoria,
-    String subcategoria,
-    String nome,
-    String marca,
-    String sub,
-    BigDecimal preco,
-    BigDecimal precoAntigo,
-    String receita,
-    boolean destaque,
-    String selo,
+    @Schema(example = "dipirona-gotas-medley") String id,
+    @Schema(description = "id da categoria", example = "medicamentos") String categoria,
+    @Schema(description = "id da subcategoria", example = "dor-febre") String subcategoria,
+    @Schema(example = "Dipirona Gotas 500 mg/mL") String nome,
+    @Schema(example = "Medley") String marca,
+    @Schema(description = "apresentação", example = "frasco 20 ml") String sub,
+    @Schema(example = "8.49") BigDecimal preco,
+    @Schema(description = "preço \"de\" (só quando está em oferta)", example = "10.90") BigDecimal precoAntigo,
+    @Schema(description = "tipo de receita", allowableValues = {"livre", "prescricao", "retencao"}, example = "livre") String receita,
+    @Schema(description = "aparece em \"Em destaque\" na home") boolean destaque,
+    @Schema(description = "selo no cartão do produto", example = "-22%") String selo,
     String descricao,
-    ArteDTO arte,
-    String foto) {
+    @Schema(description = "ilustração usada quando não há foto") ArteDTO arte,
+    @Schema(description = "caminho ou URL da foto (opcional)", example = "assets/img/produtos/dipirona-gotas-medley.webp") String foto) {
 
-  public record ArteDTO(String forma, String rotulo) {}
+  @Schema(name = "Arte")
+  public record ArteDTO(
+      @Schema(example = "gotas") String forma,
+      @Schema(example = "500") String rotulo) {}
 
   public static ProdutoDTO de(Produto p) {
     ArteDTO arte = p.getArte() == null || p.getArte().getForma() == null
