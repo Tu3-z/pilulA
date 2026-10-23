@@ -46,6 +46,14 @@ async function buscarJson(url, ms) {
   }
 }
 
+/**
+ * A API manda dois identificadores: "id" (número do banco) e "slug" (código em texto).
+ * No site, o "id" de tudo é o código em texto, porque ele vai nos links
+ * (produto.html?id=dorflex-36), no carrinho e nos filtros. O número fica em idBanco.
+ * O JSON local já vem só com o código, então passa direto.
+ */
+const comSlug = (x) => (x.slug ? { ...x, id: x.slug, idBanco: x.id } : x);
+
 /** Carrega o catálogo uma vez só (as outras chamadas reaproveitam a mesma promessa). */
 export function carregarCatalogo() {
   carregando ??= (async () => {
@@ -59,8 +67,8 @@ export function carregarCatalogo() {
       fonteCatalogo = 'json';
       console.info('[pílula*] API fora do ar: catálogo carregado do JSON local');
     }
-    categorias = dados.categorias;
-    produtos = dados.produtos;
+    categorias = dados.categorias.map((c) => ({ ...comSlug(c), subs: c.subs.map(comSlug) }));
+    produtos = dados.produtos.map(comSlug);
     porId = new Map(produtos.map((p) => [p.id, p]));
   })();
   return carregando;

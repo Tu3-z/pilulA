@@ -7,13 +7,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import pilula.com.pilula.model.Produto;
 
 /**
- * Produto no mesmo formato do catalogo.json do front-end:
- * "id" é o slug (código público, ex.: "dorflex-36"; o id numérico do banco fica só no back-end),
- * categoria e subcategoria vão pelo slug, e os enums em minúsculas ("livre", "caixa"…).
+ * Produto como a API devolve:
+ * - "id" é o número gerado pelo banco e "slug" o código público (vai nos links do site);
+ * - categoria e subcategoria vão pelo slug (ex.: "medicamentos"), como no catalogo.json do front;
+ * - os enums vão em minúsculas ("livre", "caixa"…).
  */
 @Schema(name = "Produto")
 public record ProdutoDTO(
-    @Schema(description = "código público do produto (slug)", example = "dipirona-gotas-medley") String id,
+    @Schema(description = "id gerado pelo banco", example = "5") Long id,
+    @Schema(description = "código público do produto, usado nos links do site", example = "dipirona-gotas-medley") String slug,
     @Schema(description = "slug da categoria", example = "medicamentos") String categoria,
     @Schema(description = "slug da subcategoria", example = "dor-febre") String subcategoria,
     @Schema(example = "Dipirona Gotas 500 mg/mL") String nome,
@@ -38,6 +40,7 @@ public record ProdutoDTO(
         ? null
         : new ArteDTO(p.getArte().getForma().name().toLowerCase(), p.getArte().getRotulo());
     return new ProdutoDTO(
+        p.getId(),
         p.getSlug(),
         p.getCategoria() == null ? null : p.getCategoria().getSlug(),
         p.getSubcategoria() == null ? null : p.getSubcategoria().getSlug(),

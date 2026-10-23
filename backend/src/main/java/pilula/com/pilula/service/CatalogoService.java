@@ -50,8 +50,15 @@ public class CatalogoService {
     return lista.stream().map(ProdutoDTO::de).toList();
   }
 
+  /** Busca pelo id numérico gerado pelo banco. */
+  public ProdutoDTO buscarProduto(Long id) {
+    return produtos.findById(id)
+        .map(ProdutoDTO::de)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado: " + id));
+  }
+
   /** Busca pelo código público (slug), ex.: "dorflex-36". */
-  public ProdutoDTO buscarProduto(String slug) {
+  public ProdutoDTO buscarProdutoPorSlug(String slug) {
     return produtos.findBySlug(slug)
         .map(ProdutoDTO::de)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado: " + slug));
