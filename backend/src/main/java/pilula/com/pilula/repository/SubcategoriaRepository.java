@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import pilula.com.pilula.model.Subcategoria;
 
-public interface SubcategoriaRepository extends JpaRepository<Subcategoria, String> {
+public interface SubcategoriaRepository extends JpaRepository<Subcategoria, Long> {
 
   /** subcategorias de uma categoria, na ordem do menu */
-  List<Subcategoria> findByCategoriaIdOrderByOrdemAsc(String categoriaId);
+  List<Subcategoria> findByCategoriaIdOrderByOrdemAsc(Long categoriaId);
 }

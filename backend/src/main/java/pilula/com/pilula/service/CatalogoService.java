@@ -42,17 +42,18 @@ public class CatalogoService {
         .toList();
   }
 
-  /** Todos os produtos, ou só os de uma categoria (se categoriaId não for nulo). */
-  public List<ProdutoDTO> listarProdutos(String categoriaId) {
-    var lista = categoriaId == null
+  /** Todos os produtos, ou só os de uma categoria (pelo slug dela, ex.: "dermo"). */
+  public List<ProdutoDTO> listarProdutos(String categoriaSlug) {
+    var lista = categoriaSlug == null
         ? produtos.findAllByOrderByOrdemAsc()
-        : produtos.findByCategoriaIdOrderByOrdemAsc(categoriaId);
+        : produtos.findByCategoriaSlugOrderByOrdemAsc(categoriaSlug);
     return lista.stream().map(ProdutoDTO::de).toList();
   }
 
-  public ProdutoDTO buscarProduto(String id) {
-    return produtos.findById(id)
+  /** Busca pelo código público (slug), ex.: "dorflex-36". */
+  public ProdutoDTO buscarProduto(String slug) {
+    return produtos.findBySlug(slug)
         .map(ProdutoDTO::de)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado: " + id));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado: " + slug));
   }
 }
