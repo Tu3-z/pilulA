@@ -13,8 +13,14 @@ Cada pessoa do grupo faz isso uma vez no próprio computador. O banco é um só,
    DB_URL=jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
    DB_USER=postgres.abcdefghijklmnop
    DB_PASSWORD=a-senha-do-banco
+   JWT_SECRET=uma-chave-aleatoria-com-pelo-menos-32-caracteres
    ```
    O `.env` está no `.gitignore`: **a senha nunca vai pro GitHub**. Passe pro grupo por mensagem privada, não no repositório.
+
+   O `JWT_SECRET` assina os tokens de login e precisa ter **no mínimo 32 caracteres**; sem ele a API não sobe. Gere um no PowerShell:
+   ```powershell
+   [Convert]::ToBase64String((1..48 | % { Get-Random -Max 256 }))
+   ```
 4. **Subir a API.** Pré-requisito: **Java 21** (`java -version`). O Maven vem junto (`mvnw`).
    ```bash
    cd backend
@@ -41,6 +47,8 @@ As tabelas **não** são criadas pelo Hibernate. Quem cuida delas são as *migra
 | `db/supabase/V3__habilitar_rls.sql` | liga o RLS no Supabase (em `categoria`, `subcategoria` e `produto`), para ninguém mexer nas tabelas pela API pública dele (só o nosso back-end acessa) |
 | `db/migration/V4__ids_numericos_e_slug.sql` | troca as chaves: cada tabela ganha um `id` numérico gerado pelo banco (1, 2, 3…) e o código em texto (`dorflex-36`) vira a coluna `slug`, única, usada nos links do site. Os dados são copiados sem perder nada |
 | `db/supabase/V5__habilitar_rls_tabelas_novas.sql` | liga o RLS de novo, porque a V4 recriou as tabelas |
+| `db/migration/V6__criar_tabela_usuario.sql` | tabela `usuario` (e-mail único, senha só como hash BCrypt) |
+| `db/supabase/V7__habilitar_rls_usuario.sql` | liga o RLS na `usuario` (sem isso a Data API do Supabase exporia os usuários) |
 
 O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
 
@@ -69,10 +77,15 @@ Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com tod
 | `GET /api/catalogo` | categorias (com subcategorias) + produtos, no formato que o front usa (igual a `frontend/assets/data/catalogo.json`, mais o `slug` e o `id` numérico) |
 | `GET /api/categorias` | só as categorias, com as subcategorias dentro |
 | `GET /api/produtos` | todos os produtos (`?categoria=dermo` filtra por categoria) |
-
-**Ids.** Cada categoria, subcategoria e produto tem um `id` numérico (gerado pelo banco, usado nas relações e na busca `/api/produtos/{id}`) e um `slug` em texto (único, usado nos links do site). A API devolve os dois. Nos produtos, `categoria` e `subcategoria` vêm pelo slug. O front usa o slug como identificador (ver `comSlug` em `frontend/assets/js/services/catalogo.js`).
 | `GET /api/produtos/{id}` | um produto pelo id numérico (ex.: `/api/produtos/1`), ou **404** se não existir |
 | `GET /api/produtos/slug/{slug}` | um produto pelo código público (ex.: `/api/produtos/slug/dorflex-36`), ou **404** |
+| `POST /api/auth/cadastrar` | cria a conta (`nome`, `email`, `senha` com 8+ caracteres, `cpf` e `celular` opcionais) e devolve o usuário + `token`. **409** se o e-mail já existe, **400** com os campos errados |
+| `POST /api/auth/entrar` | `email` + `senha` → usuário + `token`, ou **401** |
+| `GET /api/auth/eu` | 🔒 dados de quem está logado |
+
+**Ids.** Cada categoria, subcategoria e produto tem um `id` numérico (gerado pelo banco, usado nas relações e na busca `/api/produtos/{id}`) e um `slug` em texto (único, usado nos links do site). A API devolve os dois. Nos produtos, `categoria` e `subcategoria` vêm pelo slug. O front usa o slug como identificador (ver `comSlug` em `frontend/assets/js/services/catalogo.js`).
+
+**Login (JWT).** O cadastro e o login devolvem um `token`. As rotas marcadas com 🔒 exigem o cabeçalho `Authorization: Bearer <token>`; sem ele respondem **401**. O token vale 24h (`JWT_EXPIRACAO_MS`). O catálogo continua público. A senha é guardada só como hash BCrypt (`senha_hash`). No Scalar: faça o login, copie o `token` e cole em *Authentication*. Quem confere o token é o `security/JwtFiltro.java`; as regras de quais rotas são públicas ficam em `config/SecurityConfig.java`.
 
 O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e só usa o JSON local se ela não responder. O CORS para o front em `http://localhost:5500` e `http://127.0.0.1:5500` já está liberado.
 
@@ -121,4 +134,5 @@ navegador → controller → service → repository → banco (Supabase)
 ## Próximos passos (sugestões)
 
 - [ ] `PedidoController` + entidades `Pedido`/`ItemPedido` para finalizar a compra de verdade.
-- [ ] Cadastro e login (`UsuarioController`, senha com BCrypt do Spring Security).
+- [x] Cadastro e login (`AuthController`, JWT, senha com BCrypt).
+- [ ] Ligar as telas de entrar/cadastrar do front na API (`/api/auth/*`).

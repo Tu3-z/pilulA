@@ -1,5 +1,6 @@
 package pilula.com.pilula.service;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,14 @@ public class JwtService {
     public JwtService(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiracao-ms:86400000}") long expiracaoMs) {
-        this.chave = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = secret == null ? new byte[0] : secret.getBytes(StandardCharsets.UTF_8);
+        if (bytes.length < 32) {
+            // Sem isso o jjwt lança WeakKeyException com uma mensagem difícil de entender
+            throw new IllegalStateException(
+                "JWT_SECRET precisa ter pelo menos 32 caracteres (tem " + bytes.length
+                + "). Coloque uma chave aleatória no backend/.env; veja o .env.example.");
+        }
+        this.chave = Keys.hmacShaKeyFor(bytes);
         this.expiracaoMs = expiracaoMs;
     }
 
@@ -48,7 +56,7 @@ public class JwtService {
         try {
             extrairEmail(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

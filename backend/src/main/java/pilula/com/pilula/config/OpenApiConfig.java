@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 /**
@@ -26,9 +28,16 @@ public class OpenApiConfig {
             .description("""
                 API da farmácia online **pílula\\*** (Projeto Integrador).
 
-                Os dados ficam num PostgreSQL no Supabase. Por enquanto a API é só de leitura:
-                catálogo, categorias e produtos. O front-end usa o `GET /api/catalogo`.
+                Os dados ficam num PostgreSQL no Supabase. O catálogo é público e o front-end
+                usa o `GET /api/catalogo`.
+
+                **Login:** chame `POST /api/auth/entrar` (ou `/cadastrar`), copie o `token`
+                da resposta e cole em *Authentication → Bearer* para testar as rotas protegidas.
                 """))
+        .components(new Components().addSecuritySchemes("bearer", new SecurityScheme()
+            .type(SecurityScheme.Type.HTTP)
+            .scheme("bearer")
+            .bearerFormat("JWT")))
         .servers(List.of(new Server().url("http://localhost:8080").description("Local")));
   }
 }
