@@ -67,7 +67,7 @@ formLogin.addEventListener('submit', async (e) => {
   const r = await sessao.entrar(formLogin.email.value, formLogin.senha.value);
   if (!r.ok) {
     erroGeral.hidden = false;
-    erroGeral.textContent = `${r.erro} ainda não tem conta? clica em "Criar conta".`;
+    erroGeral.textContent = r.erro;
     return;
   }
   avisarNaProximaPagina('Conectado! Bem-vindo de volta.');

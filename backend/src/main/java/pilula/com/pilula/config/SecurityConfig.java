@@ -33,7 +33,7 @@ public class SecurityConfig {
     http
         // CSRF protege sessões com cookie; com token no cabeçalho ele não se aplica
         .csrf(csrf -> csrf.disable())
-        // usa as regras do CorsConfig (libera o front na porta 5500)
+        // usa o CorsConfigurationSource do CorsConfig (libera o front na porta 5500)
         .cors(Customizer.withDefaults())
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(a -> a

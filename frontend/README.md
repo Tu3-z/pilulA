@@ -56,7 +56,7 @@ frontend/
         ├── services/           ← estado e dados (sem tela)
         │   ├── catalogo.js         carrega o catálogo (JSON ou API) + busca
         │   ├── carrinho.js         carrinho no localStorage + frete, cupom e parcelas
-        │   └── sessao.js           login/cadastro de mentira (senha em hash SHA-256)
+        │   └── sessao.js           login/cadastro pela API (guarda o token JWT)
         ├── utils/              ← funções puras, reaproveitáveis
         │   ├── texto.js            escape de HTML, formatação de preço, localStorage seguro
         │   ├── validacao.js        máscaras, validações (CPF, celular, cartão/Luhn…) e validador de formulário
@@ -85,7 +85,7 @@ O carrinho e a sessão avisam quando mudam (`aoMudar(fn)`), e cada parte da tela
 
 **Formulários.** As regras ficam no próprio HTML: `<input data-regras="obrigatorio cpf" data-mascara="cpf">`. O `ligarValidacao(form)` valida ao sair do campo e mostra a mensagem no `<p class="field-error" id="<id do campo>-erro">`, ligado ao campo por `aria-describedby`. Campos dentro de um bloco escondido (`hidden`), como o endereço quando a pessoa escolhe retirar na loja, são ignorados.
 
-**Back-end.** O `assets/js/services/catalogo.js` tenta primeiro a API (`http://localhost:8080/api/catalogo`, que lê do banco no Supabase). Se ela não responder, usa o `assets/data/catalogo.json`, então o site funciona com ou sem o back-end ligado. O console do navegador (F12) mostra qual das duas fontes foi usada. Carrinho e sessão podem virar chamadas `fetch` depois, sem mudar as páginas.
+**Back-end.** O `assets/js/services/catalogo.js` tenta primeiro a API (`http://localhost:8080/api/catalogo`, que lê do banco no Supabase). Se ela não responder, usa o `assets/data/catalogo.json`, então o site funciona com ou sem o back-end ligado. O console do navegador (F12) mostra qual das duas fontes foi usada. O login e o cadastro (`assets/js/services/sessao.js`) usam a API (`/api/auth/entrar` e `/api/auth/cadastrar`) e guardam o token JWT no navegador; sem a API ligada, eles mostram um aviso. O carrinho ainda fica só no `localStorage`.
 
 ## Carrossel e caixa 3D
 
@@ -133,7 +133,7 @@ A estética é forte, então algumas regras garantem que ela não atrapalhe o us
 - **Entrega:** em casa, com o endereço completado pelo **ViaCEP**, ou retirada na loja.
 - **Pagamento:** **Pix** (QR ilustrativo, copia-e-cola e contador), **cartão** (prévia ao vivo, bandeira e validação de Luhn; para testar use `4111 1111 1111 1111`) e **na entrega** (com campo de troco).
 
-> ⚠️ O login é só de mentira, no `localStorage`, sem segurança real. Num sistema de verdade, a senha é validada no back-end (bcrypt/argon2) e a sessão fica num cookie `HttpOnly`. Nenhum dado de pagamento sai do navegador.
+> O login é validado no back-end: a senha fica no banco só como hash BCrypt e o navegador guarda apenas o token JWT (válido por 24h). Nenhum dado de pagamento sai do navegador.
 
 ---
 
