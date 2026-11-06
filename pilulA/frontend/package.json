@@ -1,0 +1,9 @@
+{
+  "name": "pilula",
+  "version": "1.0.0",
+  "private": true,
+  "description": "pílula* — front-end de farmácia online (HTML, CSS e JavaScript puros)",
+  "scripts": {
+    "start": "npx --yes http-server . -p 5500 -c-1 -o"
+  }
+}

@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Campos de formulário e rótulos
+   (erros, máscaras e opções de rádio ficam em base/forms.css)
+   ========================================================================== */
+
+/* ---------- campos ---------- */
+.field {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: var(--paper-2);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--bevel-in);
+  border-radius: var(--radius-sm);
+  font-size: var(--t-md);
+}
+.field:focus {
+  border-color: var(--blue);
+  outline: 3px solid rgba(35, 64, 184, 0.25);
+  outline-offset: 0;
+}
+.field[aria-invalid='true'] {
+  border-color: var(--alert);
+  outline-color: var(--alert);
+}
+select.field {
+  appearance: none;
+  padding-right: 36px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: var(--t-sm);
+}
