@@ -5,9 +5,17 @@ import { semAcento } from '../utils/texto.js';
  *  1. da API do back-end (Spring Boot + banco no Supabase), se ela estiver no ar;
  *  2. senão, do JSON estático (assets/data/catalogo.json), para o site nunca ficar vazio.
  * O console do navegador mostra qual das duas fontes foi usada.
+ *
+ * A URL da API é lida de window.APP_CONFIG.apiUrl, definida em assets/js/config.js.
+ * Isso evita ter a URL hardcoded aqui e facilita a troca entre ambiente local e produção.
  */
-export const URL_API = 'http://localhost:8080/api/catalogo';
+
+/** Lê a URL base da API de config.js; se não existir, cai no localhost para dev local. */
+const BASE_URL = (window.APP_CONFIG?.apiUrl ?? 'http://localhost:8080').replace(/\/+$/, '');
+
+export const URL_API = `${BASE_URL}/api/catalogo`;
 export const URL_JSON = 'assets/data/catalogo.json';
+
 /** quanto tempo esperar a API antes de desistir e usar o JSON */
 const ESPERA_API_MS = 2500;
 

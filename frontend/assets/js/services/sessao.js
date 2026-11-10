@@ -8,9 +8,15 @@ import { gravarStorage, lerStorage } from '../utils/texto.js';
  * As duas devolvem o usuário + um token JWT. O token fica guardado no navegador e vai no
  * cabeçalho "Authorization: Bearer ..." das rotas que exigem login (ver `comToken`).
  * A senha nunca fica no navegador: quem guarda (como hash BCrypt) é o back-end.
+ *
+ * A URL da API é lida de window.APP_CONFIG.apiUrl, definida em assets/js/config.js.
+ * Isso evita ter a URL hardcoded aqui e facilita a troca entre ambiente local e produção.
  */
 
-export const URL_AUTH = 'http://localhost:8080/api/auth';
+/** Lê a URL base da API de config.js; se não existir, cai no localhost para dev local. */
+const BASE_URL = (window.APP_CONFIG?.apiUrl ?? 'http://localhost:8080').replace(/\/+$/, '');
+
+export const URL_AUTH = `${BASE_URL}/api/auth`;
 const CHAVE_SESSAO = 'pilula:sessao:v2';
 const eventos = new EventTarget();
 

@@ -1,5 +1,0 @@
-package pilula.com.pilula.model;
-
-public enum FormaArte {
-  FRASCO, PUMP, BISNAGA, CAPSULA, BLISTER, CAIXA, KIT, ESCOVA, TERMOMETRO, BASTAO, PACOTE, GOTAS, SPRAY, POTE, APARELHO, FRALDA
-}

@@ -11,7 +11,7 @@
  */
 window.APP_CONFIG = {
   // ⚠️  TROQUE ESTA URL pela URL real do seu backend no Railway/Render:
-  apiUrl: 'https://pilula-backend.up.railway.app/',
+  apiUrl: 'https://pilula-backend.up.railway.app',
 
   // Para desenvolvimento local, comente a linha acima e descomente:
   // apiUrl: 'http://localhost:8080',
