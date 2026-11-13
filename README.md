@@ -11,8 +11,8 @@ A ideia de farmácia online é comum, então o diferencial está na direção de
 | Serviço | Plataforma | Endereço |
 |---|---|---|
 | **Front-end** | Vercel | [https://pilula-frontend.vercel.app](https://pilula-frontend.vercel.app) |
-| **Back-end (API)** | Railway | [https://pilula-backend.up.railway.app](https://pilula-backend.up.railway.app) |
-| **Documentação da API** | Scalar (OpenAPI) | [https://pilula-backend.up.railway.app/scalar](https://pilula-backend.up.railway.app/scalar) |
+| **Back-end (API)** | Railway | [https://pilula-api.up.railway.app](https://pilula-api.up.railway.app) |
+| **Documentação da API** | Scalar (OpenAPI) | [https://pilula-api.up.railway.app/scalar](https://pilula-api.up.railway.app/scalar) |
 
 > **Nota de resiliência:** O site consulta primeiro a API no Railway (`/api/catalogo`). Caso a API esteja em inicialização ou desligada, o front-end utiliza automaticamente o catálogo local de contingência (`frontend/assets/data/catalogo.json`), mantendo a navegação sempre funcional.
 
@@ -69,7 +69,7 @@ pilulA/
 4. Em [`frontend/assets/js/config.js`](frontend/assets/js/config.js), certifique-se de que a `apiUrl` aponte para o domínio do Railway:
    ```javascript
    window.APP_CONFIG = {
-     apiUrl: 'https://pilula-backend.up.railway.app'
+     apiUrl: 'https://pilula-api.up.railway.app'
    };
    ```
 
@@ -80,12 +80,15 @@ pilulA/
 
 | Variável | Descrição | Exemplo |
 |---|---|---|
-| `DB_URL` | URL JDBC do Session Pooler do Supabase | `jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require` |
+| `DB_URL` | URL JDBC do Session Pooler do Supabase | `jdbc:postgresql://aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require` |
 | `DB_USER` | Usuário do Session Pooler (**atenção ao formato!**) | `postgres.<SEU_PROJECT_REF>` |
 | `DB_PASSWORD` | Senha do banco no Supabase | `sua-senha-do-banco` |
 | `JWT_SECRET` | Chave HMAC de 32+ caracteres para tokens de autenticação | Chave gerada aleatoriamente |
 | `CORS_ORIGINS` | URLs do front-end autorizadas (separadas por vírgula) | `https://pilula-frontend.vercel.app,https://pilula-frontend-txvins-projects.vercel.app,http://localhost:5500,http://127.0.0.1:5500` |
 | `PORT` | Porta de escuta | Injetada automaticamente pelo Railway |
+| `SHOW_SQL` | Mostra o SQL no log (opcional) | `false` em produção |
+
+O **Healthcheck Path** do serviço é `/api/categorias`, com timeout de 300 s: o Spring + Flyway levam um tempo para subir, e o Railway só troca para a versão nova depois que essa rota responde.
 
 > ⚠️ **Importante sobre o Supabase:** Ao conectar através do Session Pooler (`pooler.supabase.com`), o `DB_USER` **deve obrigatoriamente** seguir o formato `postgres.<project-ref>`. Não utilize apenas `postgres` nem inverta com a senha, sob pena de erro de tenant não encontrado (`FATAL: tenant/user ... not found`).
 
