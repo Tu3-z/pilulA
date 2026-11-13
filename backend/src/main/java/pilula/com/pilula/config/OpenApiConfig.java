@@ -38,6 +38,8 @@ public class OpenApiConfig {
             .type(SecurityScheme.Type.HTTP)
             .scheme("bearer")
             .bearerFormat("JWT")))
-        .servers(List.of(new Server().url("http://localhost:8080").description("Local")));
+        // "/" = o mesmo endereço onde a documentação foi aberta: localhost:8080 no seu
+        // computador, https://pilula-api.up.railway.app em produção
+        .servers(List.of(new Server().url("/").description("Este servidor")));
   }
 }
