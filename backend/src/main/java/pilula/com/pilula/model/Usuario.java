@@ -30,6 +30,10 @@ public class Usuario {
     private String cpf;
     private String celular;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Perfil perfil = Perfil.COMPRADOR;
+
     @Column(name = "criado_em", nullable = false, updatable = false)
     private OffsetDateTime criadoEm = OffsetDateTime.now();
 }

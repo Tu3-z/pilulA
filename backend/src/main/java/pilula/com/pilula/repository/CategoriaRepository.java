@@ -1,6 +1,7 @@
 package pilula.com.pilula.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ import pilula.com.pilula.model.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
   List<Categoria> findAllByOrderByOrdemAsc();
+
+  Optional<Categoria> findBySlug(String slug);
 }

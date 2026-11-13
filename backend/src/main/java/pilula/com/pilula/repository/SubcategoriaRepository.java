@@ -1,6 +1,7 @@
 package pilula.com.pilula.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ public interface SubcategoriaRepository extends JpaRepository<Subcategoria, Long
 
   /** subcategorias de uma categoria, na ordem do menu */
   List<Subcategoria> findByCategoriaIdOrderByOrdemAsc(Long categoriaId);
+
+  Optional<Subcategoria> findBySlugAndCategoriaSlug(String slug, String categoriaSlug);
 }

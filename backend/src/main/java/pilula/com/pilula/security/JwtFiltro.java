@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,6 +13,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pilula.com.pilula.repository.UsuarioRepository;
 import pilula.com.pilula.service.JwtService;
 
 /**
@@ -28,9 +30,11 @@ public class JwtFiltro extends OncePerRequestFilter {
   private static final String PREFIXO = "Bearer ";
 
   private final JwtService jwt;
+  private final UsuarioRepository usuarios;
 
-  public JwtFiltro(JwtService jwt) {
+  public JwtFiltro(JwtService jwt, UsuarioRepository usuarios) {
     this.jwt = jwt;
+    this.usuarios = usuarios;
   }
 
   @Override
@@ -40,8 +44,12 @@ public class JwtFiltro extends OncePerRequestFilter {
     if (cabecalho != null && cabecalho.startsWith(PREFIXO)) {
       String token = cabecalho.substring(PREFIXO.length()).trim();
       if (jwt.valido(token)) {
-        var auth = new UsernamePasswordAuthenticationToken(jwt.extrairEmail(token), null, List.of());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        String email = jwt.extrairEmail(token);
+        usuarios.findByEmail(email).ifPresent(usuario -> {
+          var autoridades = List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getPerfil().name()));
+          var auth = new UsernamePasswordAuthenticationToken(email, null, autoridades);
+          SecurityContextHolder.getContext().setAuthentication(auth);
+        });
       }
     }
     chain.doFilter(req, res);

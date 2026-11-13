@@ -30,8 +30,10 @@ O site também roda no **GitHub Pages** sem configuração extra.
 | Início | `index.html` | Carrossel (remédio 3D com parallax, cupom, farmacêutico), categorias, destaques, "Pense antes de tomar", envio de receita, chat com farmacêutico, newsletter |
 | Loja | `loja.html` | Catálogo com pastas e subpastas, marca, busca, ordenação e filtros. Tudo fica na URL: `loja.html?cat=dermo&sub=protetor&marca=ISDIN&ordem=menor` |
 | Produto | `produto.html?id=…` | Foto ou ilustração, preço, parcelas, quantidade, abas acessíveis e relacionados |
-| Carrinho | `carrinho.html` | Itens, cupom, frete grátis, receita obrigatória e checkout em etapas: dados → entrega → pagamento |
+| Carrinho | `carrinho.html` | Itens, cupom, frete grátis e checkout em etapas; o pagamento continua no Mercado Pago Checkout Pro |
 | Entrar | `entrar.html` | Login e cadastro (`entrar.html#criar`, `entrar.html?voltar=carrinho.html`) |
+| Administração | `admin.html` | Admin lista contas e promove compradores a vendedores |
+| Produtos | `vendedor.html` | Vendedor/admin cadastra, edita e remove produtos |
 | 404 | `404.html` | "Tela azul" do Windows 98 (qualquer tecla volta pro início). O GitHub Pages usa esse arquivo sozinho |
 
 ## Estrutura
@@ -131,9 +133,9 @@ A estética é forte, então algumas regras garantem que ela não atrapalhe o us
 - **Carrinho** salvo no `localStorage` e sincronizado entre abas: cupom `PILULA10`, frete grátis acima de R$ 99 e até 3x sem juros com parcela mínima de R$ 30.
 - **Cadastro e login:** CPF validado pelos dígitos verificadores, máscaras de CPF e celular, força da senha e aceite LGPD.
 - **Entrega:** em casa, com o endereço completado pelo **ViaCEP**, ou retirada na loja.
-- **Pagamento:** **Pix** (QR ilustrativo, copia-e-cola e contador), **cartão** (prévia ao vivo, bandeira e validação de Luhn; para testar use `4111 1111 1111 1111`) e **na entrega** (com campo de troco).
+- **Pagamento:** o backend cria uma preferência do Mercado Pago com preço recalculado no catálogo do servidor; cartão e Pix são digitados/processados apenas no Checkout Pro.
 
-> O login é validado no back-end: a senha fica no banco só como hash BCrypt e o navegador guarda apenas o token JWT (válido por 24h). Nenhum dado de pagamento sai do navegador.
+> O login é validado no back-end: a senha fica no banco só como hash BCrypt e o navegador guarda apenas o token JWT (válido por 24h). O cadastro público cria compradores; somente admins podem promover vendedores. Os dados de cartão não passam pelo site. O checkout ainda não confirma automaticamente pagamentos por webhook nem emite nota fiscal; veja o [guia do back-end](../backend/README.md#mercado-pago-checkout-pro).
 
 ---
 

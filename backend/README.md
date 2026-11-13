@@ -14,6 +14,8 @@ Cada pessoa do grupo faz isso uma vez no próprio computador. O banco é um só,
    DB_USER=postgres.abcdefghijklmnop
    DB_PASSWORD=a-senha-do-banco
    JWT_SECRET=uma-chave-aleatoria-com-pelo-menos-32-caracteres
+   MERCADOPAGO_ACCESS_TOKEN=TEST-seu_access_token_de_teste
+   FRONTEND_URL=http://localhost:5500
    ```
    O `.env` está no `.gitignore`: **a senha nunca vai pro GitHub**. Passe pro grupo por mensagem privada, não no repositório.
 
@@ -49,6 +51,7 @@ As tabelas **não** são criadas pelo Hibernate. Quem cuida delas são as *migra
 | `db/supabase/V5__habilitar_rls_tabelas_novas.sql` | liga o RLS de novo, porque a V4 recriou as tabelas |
 | `db/migration/V6__criar_tabela_usuario.sql` | tabela `usuario` (e-mail único, senha só como hash BCrypt) |
 | `db/supabase/V7__habilitar_rls_usuario.sql` | liga o RLS na `usuario` (sem isso a Data API do Supabase exporia os usuários) |
+| `db/migration/V8__adicionar_perfil_usuario.sql` | adiciona o perfil (`COMPRADOR`, `VENDEDOR` ou `ADMIN`); contas existentes começam como comprador |
 
 O Flyway anota o que já rodou na tabela `flyway_schema_history`. Regras:
 
@@ -82,12 +85,39 @@ Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com tod
 | `POST /api/auth/cadastrar` | cria a conta (`nome`, `email`, `senha` com 8+ caracteres, `cpf` e `celular` opcionais) e devolve o usuário + `token`. **409** se o e-mail já existe, **400** com os campos errados |
 | `POST /api/auth/entrar` | `email` + `senha` → usuário + `token`, ou **401** |
 | `GET /api/auth/eu` | 🔒 dados de quem está logado |
+| `POST /api/checkout/preferencia` | Recalcula o carrinho pelo banco e cria uma preferência do Mercado Pago Checkout Pro |
+| `GET /api/admin/usuarios` | 🔒 lista contas para administradores |
+| `PATCH /api/admin/usuarios/{id}/perfil` | 🔒 altera um perfil; não remove o último admin |
+| `/api/vendedor/produtos` (`GET`, `POST`, `PUT /{id}`, `DELETE /{id}`) | 🔒 gerencia produtos para vendedor/admin |
 
 **Ids.** Cada categoria, subcategoria e produto tem um `id` numérico (gerado pelo banco, usado nas relações e na busca `/api/produtos/{id}`) e um `slug` em texto (único, usado nos links do site). A API devolve os dois. Nos produtos, `categoria` e `subcategoria` vêm pelo slug. O front usa o slug como identificador (ver `comSlug` em `frontend/assets/js/services/catalogo.js`).
 
 **Login (JWT).** O cadastro e o login devolvem um `token`. As rotas marcadas com 🔒 exigem o cabeçalho `Authorization: Bearer <token>`; sem ele respondem **401**. O token vale 24h (`JWT_EXPIRACAO_MS`). O catálogo continua público. A senha é guardada só como hash BCrypt (`senha_hash`). No Scalar: faça o login, copie o `token` e cole em *Authentication*. Quem confere o token é o `security/JwtFiltro.java`; as regras de quais rotas são públicas ficam em `config/SecurityConfig.java`.
 
 O front já tenta a API primeiro (`frontend/assets/js/services/catalogo.js`) e só usa o JSON local se ela não responder. O CORS para o front em `http://localhost:5500` e `http://127.0.0.1:5500` já está liberado.
+
+## Mercado Pago Checkout Pro
+
+1. Crie uma aplicação em [Mercado Pago Developers](https://www.mercadopago.com.br/developers/panel) e, primeiro, use as **credenciais de teste**. Copie o **Access Token de teste** (não a Public Key) para `MERCADOPAGO_ACCESS_TOKEN` em `backend/.env`. O token fica somente no servidor e nunca deve ir para `frontend/assets/js/config.js` ou para o GitHub.
+2. Deixe `FRONTEND_URL=http://localhost:5500` no teste local. Em `frontend/assets/js/config.js`, troque temporariamente `apiUrl` para `http://localhost:8080`. Suba a API e o front-end; adicione um produto de receita livre e finalize. Informe nome, CPF, e-mail e celular; escolha entrega e preencha o endereço, ou selecione retirada. A API usa os preços do banco para calcular o valor e abre a URL de sandbox devolvida pelo Mercado Pago.
+3. Use uma conta compradora de teste e os meios de pagamento de teste fornecidos no painel do Mercado Pago. Não use seu cartão/conta real para simular compra.
+4. Em produção, configure `MERCADOPAGO_ACCESS_TOKEN` no painel do Railway (não no repositório) e `FRONTEND_URL` com o domínio HTTPS do site. O front precisa apontar para a API publicada.
+
+Este primeiro passo **cria a preferência e redireciona ao Mercado Pago**, mas ainda não salva um pedido no banco, não recebe webhook nem confirma automaticamente o pagamento. O retorno do navegador não é prova de pagamento: confira o status no painel do Mercado Pago. Para operar de verdade, falta implementar persistência de pedidos, webhook assinado, conciliação e processo de entrega.
+
+**Nota fiscal:** o Checkout Pro não emite NF-e/NFC-e. O projeto não tem empresa emissora, certificado fiscal, ERP ou integração com provedor fiscal; portanto não é possível gerar uma nota válida neste momento. O CPF preenchido é enviado ao Mercado Pago, mas isso não substitui a emissão. Escolha um ERP/provedor fiscal e confirme os requisitos com o contador antes de automatizar.
+
+**Medicamentos com receita:** o endpoint recusa produtos que exigem receita ou retenção porque o projeto ainda não envia nem revisa receitas com um farmacêutico. Não coloque esse catálogo em venda real até implementar a análise e atender aos requisitos regulatórios aplicáveis.
+
+## Perfis de comprador, vendedor e administrador
+
+O cadastro público cria sempre `COMPRADOR`; enviar `"perfil": "ADMIN"` ou `"VENDEDOR"` no JSON não altera essa regra. O perfil é persistido no banco e carregado pelo backend em cada requisição autenticada, então mudanças de perfil têm efeito imediato sem confiar no valor guardado no navegador.
+
+Para criar o primeiro admin localmente, defina temporariamente `ADMIN_BOOTSTRAP_EMAIL` e `ADMIN_BOOTSTRAP_PASSWORD` no `backend/.env`; a senha precisa ter de 16 a 72 bytes. Suba a API uma vez, faça login em `frontend/entrar.html` e **remova as duas variáveis**. A senha é salva somente com BCrypt. Se já existir uma conta para aquele e-mail, o bootstrap não a promove nem altera a senha.
+
+Na Railway, configure as mesmas duas variáveis temporariamente no serviço backend para criar o primeiro administrador depois que a migration V8 for aplicada; após confirmar o login, remova-as. O admin pode abrir `admin.html`, listar contas e promover compradores a vendedores. Vendedores e admins acessam `vendedor.html` para criar, editar e remover produtos. A API protege as rotas; esconder links no front-end não é a proteção.
+
+Quem controla `ADMIN_BOOTSTRAP_EMAIL` e `ADMIN_BOOTSTRAP_PASSWORD` pode obter acesso administrativo total: use uma senha única, longa e armazenada somente em secrets, não publique em Git e remova o bootstrap depois de criar o admin. Esta estrutura cobre contas e gerenciamento de catálogo; não implementa gestão de pedidos/pagamentos nem aprovação comercial formal de vendedor.
 
 ## Estrutura (arquitetura em camadas)
 

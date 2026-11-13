@@ -15,13 +15,15 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import pilula.com.pilula.security.JwtFiltro;
+import pilula.com.pilula.repository.UsuarioRepository;
 import pilula.com.pilula.service.JwtService;
 
 /**
  * Regras de acesso da API.
  *
  * - Catálogo, cadastro, login e a documentação (Scalar) são públicos.
- * - Todo o resto exige "Authorization: Bearer <token>" (o token vem do cadastro ou do login).
+ * - Administração e gerenciamento de produtos exigem perfil autorizado e token.
+ * - O restante exige "Authorization: Bearer <token>".
  * - Sem sessão no servidor (stateless): quem guarda o token é o front.
  */
 @Configuration
@@ -29,7 +31,7 @@ import pilula.com.pilula.service.JwtService;
 public class SecurityConfig {
 
   @Bean
-  public SecurityFilterChain filtros(HttpSecurity http, JwtService jwt) throws Exception {
+  public SecurityFilterChain filtros(HttpSecurity http, JwtService jwt, UsuarioRepository usuarios) throws Exception {
     http
         // CSRF protege sessões com cookie; com token no cabeçalho ele não se aplica
         .csrf(csrf -> csrf.disable())
@@ -39,14 +41,16 @@ public class SecurityConfig {
         .authorizeHttpRequests(a -> a
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/catalogo", "/api/categorias", "/api/produtos/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/auth/cadastrar", "/api/auth/entrar").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/auth/cadastrar", "/api/auth/entrar", "/api/checkout/preferencia").permitAll()
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .requestMatchers("/api/vendedor/**").hasAnyRole("VENDEDOR", "ADMIN")
             .requestMatchers("/scalar/**", "/v3/api-docs/**").permitAll()
             // página de erro do Spring: sem isso um 404 ou 400 viraria 401
             .requestMatchers("/error").permitAll()
             .anyRequest().authenticated())
         // sem token (ou token inválido) numa rota protegida → 401, não 403
         .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-        .addFilterBefore(new JwtFiltro(jwt), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(new JwtFiltro(jwt, usuarios), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

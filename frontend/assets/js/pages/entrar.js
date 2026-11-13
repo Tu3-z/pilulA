@@ -10,7 +10,11 @@ import { iniciarLayout } from '../components/layout.js';
 await iniciarLayout();
 
 /** Só aceita páginas internas (evita mandar a pessoa para outro site). */
-const destino = () => (/^[a-z-]+\.html$/i.test(param('voltar')) ? param('voltar') : 'index.html');
+const destino = () => {
+  if (/^[a-z-]+\.html$/i.test(param('voltar'))) return param('voltar');
+  const perfil = sessao.usuario()?.perfil;
+  return perfil === 'ADMIN' ? 'admin.html' : perfil === 'VENDEDOR' ? 'vendedor.html' : 'index.html';
+};
 
 const focarPrimeiroErro = (form) =>
   requestAnimationFrame(() => form.querySelector('[aria-invalid="true"]')?.focus());

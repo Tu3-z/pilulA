@@ -259,60 +259,6 @@
   border-radius: var(--radius-sm);
   font-size: var(--t-sm);
 }
-.troco {
-  max-width: 260px;
-}
-
-/* cartão desenhado, atualiza enquanto digita */
-.card-preview {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  width: min(340px, 100%);
-  aspect-ratio: 1.586;
-  padding: 18px 20px;
-  border-radius: 14px;
-  color: var(--paper-2);
-  background:
-    radial-gradient(120% 90% at 90% 0%, rgba(169, 187, 255, 0.35), transparent 60%),
-    linear-gradient(135deg, var(--night-2), var(--night));
-  box-shadow: var(--shadow-lg);
-  font-family: var(--f-term);
-  font-variant-numeric: tabular-nums;
-}
-.card-preview__chip {
-  width: 42px;
-  height: 32px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #e9e0c6, var(--plastic-lo));
-  border: 1px solid var(--border);
-}
-.card-preview__brand {
-  position: absolute;
-  right: 20px;
-  top: 16px;
-  font-family: var(--f-body);
-  font-weight: 800;
-  font-style: italic;
-  font-size: 1.1rem;
-}
-.card-preview__num {
-  align-self: center;
-  font-size: clamp(1.1rem, 3.6vw, 1.35rem);
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-.card-preview__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: var(--t-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 /* ---------- resumo ---------- */
 .summary {
   display: flex;
@@ -436,13 +382,6 @@
 .checkout__rx-title {
   font-size: inherit;
 }
-.checkout__rx-status {
-  font-size: var(--t-sm);
-}
-.checkout__rx-status.is-ok {
-  color: var(--blue);
-}
-
 .checkout__error {
   color: var(--alert);
   font-size: var(--t-sm);
@@ -452,54 +391,4 @@
   font-size: var(--t-xs);
   color: var(--ink-2);
   text-align: center;
-}
-
-/* ---------- confirmação + Pix ---------- */
-.dialog--wide {
-  max-width: min(600px, calc(100vw - 32px));
-}
-.confirm {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3);
-  min-width: 0;
-}
-.pix {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-4);
-  align-items: flex-start;
-  margin-top: var(--s-2);
-}
-.pix__qr {
-  width: 150px;
-  flex: none;
-  padding: 6px;
-  background: var(--paper-2);
-  border: var(--line);
-  border-radius: var(--radius-sm);
-}
-.pix__side {
-  flex: 1 1 220px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-.pix__code {
-  display: flex;
-  gap: 6px;
-}
-.pix__code .field {
-  flex: 1;
-  min-width: 0;
-  font-size: var(--t-sm);
-}
-.pix__timer {
-  font-weight: 600;
-  font-size: var(--t-sm);
-  color: var(--blue);
-}
-.dialog__actions .win__btn--link {
-  margin-right: auto;
 }

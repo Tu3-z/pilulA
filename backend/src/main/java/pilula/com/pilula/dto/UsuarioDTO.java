@@ -9,9 +9,11 @@ public record UsuarioDTO(
     String email,
     String cpf,
     String celular,
+    String perfil,
     String token
 ) {
     public static UsuarioDTO de(Usuario u, String token) {
-        return new UsuarioDTO(u.getId(), u.getNome(), u.getEmail(), u.getCpf(), u.getCelular(), token);
+        return new UsuarioDTO(
+            u.getId(), u.getNome(), u.getEmail(), u.getCpf(), u.getCelular(), u.getPerfil().name(), token);
     }
 }

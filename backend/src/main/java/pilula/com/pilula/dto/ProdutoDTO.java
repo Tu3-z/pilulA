@@ -28,7 +28,8 @@ public record ProdutoDTO(
     @Schema(description = "selo no cartão do produto", example = "-22%") String selo,
     String descricao,
     @Schema(description = "ilustração usada quando não há foto") ArteDTO arte,
-    @Schema(description = "caminho ou URL da foto (opcional)", example = "assets/img/produtos/dipirona-gotas-medley.webp") String foto) {
+    @Schema(description = "caminho ou URL da foto (opcional)", example = "assets/img/produtos/dipirona-gotas-medley.webp") String foto,
+    Integer ordem) {
 
   @Schema(name = "Arte")
   public record ArteDTO(
@@ -54,6 +55,7 @@ public record ProdutoDTO(
         p.getSelo(),
         p.getDescricao(),
         arte,
-        p.getFoto());
+        p.getFoto(),
+        p.getOrdem());
   }
 }

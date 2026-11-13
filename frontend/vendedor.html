@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Produtos — pílula*</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/pages/painel.css">
+  <script src="assets/js/config.js"></script>
+  <script type="module" src="assets/js/pages/vendedor.js"></script>
+</head>
+<body data-pagina="vendedor">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="topo"></div>
+  <main id="conteudo" class="container panel" tabindex="-1">
+    <header class="panel__head">
+      <p class="eyebrow">Área do vendedor</p>
+      <h1 class="h1">Produtos<span class="star">*</span></h1>
+      <p>Cadastre, edite e remova produtos do catálogo.</p>
+    </header>
+    <section class="win panel__box" aria-labelledby="produto-form-titulo">
+      <div class="win__bar"><span class="win__title" id="produto-form-titulo">Novo produto</span></div>
+      <form class="panel__form" id="produto-form">
+        <input type="hidden" name="id">
+        <input type="hidden" name="ordem">
+        <div class="form-grid">
+          <div class="form-field"><label class="label" for="slug">Código (slug)</label><input class="field" id="slug" name="slug" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" maxlength="80" placeholder="vitamina-c-500"></div>
+          <div class="form-field"><label class="label" for="nome">Nome</label><input class="field" id="nome" name="nome" required maxlength="150"></div>
+          <div class="form-field"><label class="label" for="marca">Marca</label><input class="field" id="marca" name="marca" required maxlength="100"></div>
+          <div class="form-field"><label class="label" for="sub">Apresentação</label><input class="field" id="sub" name="sub" maxlength="100" placeholder="30 comprimidos"></div>
+          <div class="form-field"><label class="label" for="categoria">Categoria</label><select class="field" id="categoria" name="categoria" required></select></div>
+          <div class="form-field"><label class="label" for="subcategoria">Subcategoria</label><select class="field" id="subcategoria" name="subcategoria"><option value="">Sem subcategoria</option></select></div>
+          <div class="form-field"><label class="label" for="preco">Preço (R$)</label><input class="field" id="preco" name="preco" type="number" min="0.01" step="0.01" required></div>
+          <div class="form-field"><label class="label" for="precoAntigo">Preço antigo (R$)</label><input class="field" id="precoAntigo" name="precoAntigo" type="number" min="0.01" step="0.01"></div>
+          <div class="form-field"><label class="label" for="receita">Tipo de receita</label><select class="field" id="receita" name="receita"><option value="livre">Livre</option><option value="prescricao">Prescrição</option><option value="retencao">Retenção</option></select></div>
+          <div class="form-field"><label class="label" for="forma">Ilustração</label><select class="field" id="forma" name="forma"><option value="">Sem ilustração</option><option>frasco</option><option>pump</option><option>bisnaga</option><option>capsula</option><option>blister</option><option>caixa</option><option>kit</option><option>escova</option><option>termometro</option><option>bastao</option><option>pacote</option><option>gotas</option><option>spray</option><option>pote</option><option>aparelho</option><option>fralda</option></select></div>
+          <div class="form-field"><label class="label" for="rotulo">Rótulo da ilustração</label><input class="field" id="rotulo" name="rotulo" maxlength="40"></div>
+          <div class="form-field"><label class="label" for="selo">Selo</label><input class="field" id="selo" name="selo" maxlength="30" placeholder="-10%, novo"></div>
+          <div class="form-field"><label class="label" for="foto">Foto (URL HTTPS ou arquivo do site)</label><input class="field" id="foto" name="foto" maxlength="255"></div>
+          <div class="form-field form-field--full"><label class="label" for="descricao">Descrição</label><textarea class="field" id="descricao" name="descricao" maxlength="500" rows="3"></textarea></div>
+          <div class="form-field form-field--full"><label class="check-row"><input type="checkbox" name="destaque"><span>Exibir como destaque</span></label></div>
+        </div>
+        <div class="form__actions">
+          <button type="button" class="win__btn" id="limpar">Novo produto</button>
+          <button type="submit" class="btn btn--primary" id="salvar">Salvar produto</button>
+        </div>
+      </form>
+    </section>
+    <p class="panel__status term" id="status" role="status" aria-live="polite">Carregando…</p>
+    <section class="win panel__box" aria-labelledby="produtos-titulo">
+      <div class="win__bar"><span class="win__title" id="produtos-titulo">Catálogo</span></div>
+      <div class="panel__table-wrap">
+        <table class="panel__table">
+          <thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Ações</th></tr></thead>
+          <tbody id="produtos"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <div id="rodape"></div>
+</body>
+</html>

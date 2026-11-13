@@ -44,6 +44,7 @@ function abrirSessao(u) {
     email: u.email,
     cpf: u.cpf ?? '',
     celular: u.celular ?? '',
+    perfil: u.perfil ?? 'COMPRADOR',
     token: u.token,
   };
   gravarStorage(CHAVE_SESSAO, sessao);
@@ -132,8 +133,18 @@ export function sair() {
  */
 if (sessao?.token) {
   fetch(`${URL_AUTH}/eu`, { headers: comToken() })
-    .then((r) => {
-      if (r.status === 401) sair();
+    .then(async (r) => {
+      if (r.status === 401) {
+        sair();
+        return;
+      }
+      if (!r.ok) return;
+      const atual = await r.json();
+      if (atual.perfil && atual.perfil !== sessao?.perfil) {
+        sessao = { ...sessao, perfil: atual.perfil };
+        gravarStorage(CHAVE_SESSAO, sessao);
+        eventos.dispatchEvent(new Event('mudou'));
+      }
     })
     .catch(() => {});
 }

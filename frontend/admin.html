@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Administração — pílula*</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B153D">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&family=VT323&display=swap">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/pages/painel.css">
+  <script src="assets/js/config.js"></script>
+  <script type="module" src="assets/js/pages/admin.js"></script>
+</head>
+<body data-pagina="admin">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div id="topo"></div>
+  <main id="conteudo" class="container panel" tabindex="-1">
+    <header class="panel__head">
+      <p class="eyebrow">Administração</p>
+      <h1 class="h1">Contas<span class="star">*</span></h1>
+      <p>Promova compradores a vendedores ou administre os perfis existentes.</p>
+    </header>
+    <section class="win panel__box" aria-labelledby="contas-titulo">
+      <div class="win__bar"><span class="win__title" id="contas-titulo">Usuários cadastrados</span></div>
+      <p class="panel__status term" id="status" role="status" aria-live="polite">Carregando…</p>
+      <div class="panel__table-wrap">
+        <table class="panel__table">
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Ação</th></tr></thead>
+          <tbody id="usuarios"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <div id="rodape"></div>
+</body>
+</html>

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pilula.com.pilula.dto.CadastroDTO;
 import pilula.com.pilula.dto.LoginDTO;
 import pilula.com.pilula.dto.UsuarioDTO;
+import pilula.com.pilula.model.Perfil;
 import pilula.com.pilula.model.Usuario;
 import pilula.com.pilula.repository.UsuarioRepository;
 
@@ -41,6 +42,7 @@ public class AuthService {
     u.setSenhaHash(senhas.encode(dados.senha()));
     u.setCpf(vazioViraNulo(dados.cpf()));
     u.setCelular(vazioViraNulo(dados.celular()));
+    u.setPerfil(Perfil.COMPRADOR);
     u = usuarios.save(u);
     return UsuarioDTO.de(u, jwt.gerar(u.getEmail()));
   }

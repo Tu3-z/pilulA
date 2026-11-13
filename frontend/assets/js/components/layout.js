@@ -196,8 +196,11 @@ function desenharConta() {
     </button>
     <div class="win dropdown" id="menu-conta" hidden>
       <p class="dropdown__who">${esc(u.email)}</p>
+      <p class="dropdown__who">Perfil: ${esc(u.perfil === 'ADMIN' ? 'administrador' : u.perfil === 'VENDEDOR' ? 'vendedor' : 'comprador')}</p>
       <a href="carrinho.html">Meu carrinho</a>
       <a href="index.html#receita">Enviar receita</a>
+      ${u.perfil === 'VENDEDOR' || u.perfil === 'ADMIN' ? '<a href="vendedor.html">Gerenciar produtos</a>' : ''}
+      ${u.perfil === 'ADMIN' ? '<a href="admin.html">Gerenciar usuários</a>' : ''}
       <button type="button" data-sair>Sair</button>
     </div>`;
   const botao = el.querySelector('.hdr-btn');
