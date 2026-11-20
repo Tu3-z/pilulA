@@ -39,7 +39,7 @@ public class OpenApiConfig {
             .scheme("bearer")
             .bearerFormat("JWT")))
         // "/" = o mesmo endereço onde a documentação foi aberta: localhost:8080 no seu
-        // computador, https://pilula-api.up.railway.app em produção
+        // computador, https://pilula-backend.up.railway.app em produção
         .servers(List.of(new Server().url("/").description("Este servidor")));
   }
 }

@@ -33,11 +33,22 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration cfg = new CorsConfiguration();
 
-    List<String> origens = Arrays.asList(origensPermitidas.split(","));
-    cfg.setAllowedOrigins(origens);
+    List<String> origens = Arrays.stream(origensPermitidas.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isBlank())
+        .toList();
 
-    cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    cfg.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+    cfg.setAllowedOriginPatterns(List.of(
+        "https://*.vercel.app",
+        "http://localhost:*",
+        "http://127.0.0.1:*"
+    ));
+    for (String o : origens) {
+      cfg.addAllowedOriginPattern(o);
+    }
+
+    cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+    cfg.setAllowedHeaders(List.of("*"));
     cfg.setAllowCredentials(false);
     cfg.setMaxAge(3600L);
 
