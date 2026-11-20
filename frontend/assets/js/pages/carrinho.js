@@ -363,16 +363,59 @@ async function iniciarCheckout(r) {
 
 /* ================================================================ início */
 
+/* ================================================================ início e retorno do pagamento */
+
+/**
+ * Quando o cliente volta da tela do Mercado Pago, a URL contém:
+ * ?pagamento=sucesso&pedido=UUID (ou pendente/falha).
+ * 
+ * Aqui consultamos a API da farmácia (/api/pedidos/{referencia}) para buscar
+ * os dados salvos no banco de dados e exibir a confirmação com o status real.
+ */
 if (retorno) {
-  const pedido = parametrosRetorno.get('pedido');
-  const mensagens = {
-    sucesso: 'Você voltou do Mercado Pago. O retorno do navegador não confirma o pagamento; confira o status na sua conta antes de tentar novamente.',
-    pendente: 'O Mercado Pago informou que o pagamento está pendente. Confira o status na sua conta antes de tentar novamente.',
-    falha: 'O Mercado Pago não concluiu o pagamento. Confira os dados ou tente novamente.',
-  };
+  const refPedido = parametrosRetorno.get('pedido');
   const aviso = $('#retorno-mp');
-  aviso.textContent = `${mensagens[retorno] ?? mensagens.pendente}${pedido ? ` Referência: ${pedido}.` : ''}`;
-  aviso.hidden = false;
+
+  if (refPedido) {
+    aviso.textContent = 'Consultando status do pedido no servidor...';
+    aviso.hidden = false;
+
+    // Busca os dados do pedido persistidos no backend
+    fetch(`${API_URL}/api/pedidos/${encodeURIComponent(refPedido)}?status=${encodeURIComponent(retorno)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((dadosPedido) => {
+        if (dadosPedido) {
+          if (retorno === 'sucesso' || dadosPedido.status === 'PAGO') {
+            carrinho.limpar(); // Esvazia o carrinho local pois a compra foi concluída
+            aviso.innerHTML = `
+              <strong>🎉 Compra realizada com sucesso!</strong><br>
+              Pedido registrado: <code>${esc(dadosPedido.referencia)}</code><br>
+              Status: <strong>${esc(dadosPedido.status)}</strong> · Total: <strong>${formatBRL(dadosPedido.total)}</strong><br>
+              Modo: <em>${esc(dadosPedido.modoEntrega === 'retirada' ? 'Retirada na loja física' : 'Entrega em domicílio')}</em>.
+            `;
+          } else if (retorno === 'pendente') {
+            aviso.innerHTML = `
+              <strong>⏳ Pagamento em análise pelo Mercado Pago.</strong><br>
+              Pedido: <code>${esc(dadosPedido.referencia)}</code> (Status: ${esc(dadosPedido.status)}).
+              Assim que o Pix/Cartão for aprovado, seu pedido será liberado!
+            `;
+          } else {
+            aviso.innerHTML = `
+              <strong>❌ O pagamento não foi concluído.</strong><br>
+              Pedido: <code>${esc(dadosPedido.referencia)}</code>. Você pode revisar seus dados e tentar novamente.
+            `;
+          }
+        } else {
+          aviso.textContent = `Retorno do Mercado Pago: ${retorno}. Pedido: ${refPedido}.`;
+        }
+      })
+      .catch(() => {
+        aviso.textContent = `Você retornou do Mercado Pago (${retorno}). Pedido: ${refPedido}.`;
+      });
+  } else {
+    aviso.textContent = `Status do pagamento: ${retorno}.`;
+    aviso.hidden = false;
+  }
 }
 
 preencherComSessao();

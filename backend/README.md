@@ -85,7 +85,9 @@ Com a API rodando, abra **http://localhost:8080/scalar**. É uma página com tod
 | `POST /api/auth/cadastrar` | cria a conta (`nome`, `email`, `senha` com 8+ caracteres, `cpf` e `celular` opcionais) e devolve o usuário + `token`. **409** se o e-mail já existe, **400** com os campos errados |
 | `POST /api/auth/entrar` | `email` + `senha` → usuário + `token`, ou **401** |
 | `GET /api/auth/eu` | 🔒 dados de quem está logado |
-| `POST /api/checkout/preferencia` | Recalcula o carrinho pelo banco e cria uma preferência do Mercado Pago Checkout Pro |
+| `POST /api/checkout/preferencia` | Recalcula o carrinho pelo banco, salva o pedido como `PENDENTE` e cria a preferência do Mercado Pago |
+| `POST /api/checkout/webhook` | Recebe avisos automáticos de pagamento aprovado do Mercado Pago e atualiza o pedido para `PAGO` |
+| `GET /api/pedidos/{referencia}` | Consulta dados e status de um pedido pelo UUID público |
 | `GET /api/admin/usuarios` | 🔒 lista contas para administradores |
 | `PATCH /api/admin/usuarios/{id}/perfil` | 🔒 altera um perfil; não remove o último admin |
 | `/api/vendedor/produtos` (`GET`, `POST`, `PUT /{id}`, `DELETE /{id}`) | 🔒 gerencia produtos para vendedor/admin |
@@ -163,6 +165,6 @@ navegador → controller → service → repository → banco (Supabase)
 
 ## Próximos passos (sugestões)
 
-- [ ] `PedidoController` + entidades `Pedido`/`ItemPedido` para finalizar a compra de verdade.
+- [x] `PedidoController` + entidades `Pedido`/`ItemPedido` para persistir pedidos, salvar itens e atualizar status com Webhook do Mercado Pago.
 - [x] Cadastro e login (`AuthController`, JWT, senha com BCrypt).
-- [ ] Ligar as telas de entrar/cadastrar do front na API (`/api/auth/*`).
+- [x] Ligar as telas de entrar/cadastrar e checkout do front na API.

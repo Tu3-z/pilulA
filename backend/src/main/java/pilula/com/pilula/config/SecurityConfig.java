@@ -40,8 +40,8 @@ public class SecurityConfig {
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(a -> a
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/catalogo", "/api/categorias", "/api/produtos/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/auth/cadastrar", "/api/auth/entrar", "/api/checkout/preferencia").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/catalogo", "/api/categorias", "/api/produtos/**", "/api/pedidos/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/auth/cadastrar", "/api/auth/entrar", "/api/checkout/**").permitAll()
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .requestMatchers("/api/vendedor/**").hasAnyRole("VENDEDOR", "ADMIN")
             .requestMatchers("/scalar/**", "/v3/api-docs/**").permitAll()
