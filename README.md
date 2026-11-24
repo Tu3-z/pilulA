@@ -11,8 +11,8 @@ A ideia de farmácia online é comum, então o diferencial está na direção de
 | Serviço | Plataforma | Endereço |
 |---|---|---|
 | **Front-end** | Vercel | [https://pilula-farmaceutica.vercel.app](https://pilula-farmaceutica.vercel.app) |
-| **Back-end (API)** | Railway | [https://pilula-backend.up.railway.app](https://pilula-backend.up.railway.app) |
-| **Documentação da API** | Scalar (OpenAPI) | [https://pilula-backend.up.railway.app/scalar](https://pilula-backend.up.railway.app/scalar) |
+| **Back-end (API)** | Railway | [https://pilula-api.up.railway.app](https://pilula-api.up.railway.app) |
+| **Documentação da API** | Scalar (OpenAPI) | [https://pilula-api.up.railway.app/scalar](https://pilula-api.up.railway.app/scalar) |
 
 > **Nota de resiliência:** O site consulta primeiro a API no Railway (`/api/catalogo`). Caso a API esteja em inicialização ou desligada, o front-end utiliza automaticamente o catálogo local de contingência (`frontend/assets/data/catalogo.json`), mantendo a navegação sempre funcional.
 
@@ -109,7 +109,7 @@ O cadastro público cria compradores. Para obter acesso administrativo, configur
 4. Em [`frontend/assets/js/config.js`](frontend/assets/js/config.js), certifique-se de que a `apiUrl` aponte para o domínio do Railway:
    ```javascript
    window.APP_CONFIG = {
-     apiUrl: 'https://pilula-backend.up.railway.app'
+     apiUrl: 'https://pilula-api.up.railway.app'
    };
    ```
 
