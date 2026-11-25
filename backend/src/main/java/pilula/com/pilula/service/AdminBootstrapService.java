@@ -30,17 +30,17 @@ public class AdminBootstrapService {
     if (!StringUtils.hasText(email) && !StringUtils.hasText(senha)) return;
     if (!StringUtils.hasText(email) || !StringUtils.hasText(senha)
         || email.length() > 254 || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$")
-        || senha.length() < 16 || senha.getBytes(StandardCharsets.UTF_8).length > 72) {
+        || senha.length() < 6 || senha.getBytes(StandardCharsets.UTF_8).length > 72) {
       throw new IllegalStateException(
-          "Configure ADMIN_BOOTSTRAP_EMAIL válido e ADMIN_BOOTSTRAP_PASSWORD com 16 a 72 bytes, ou remova ambas as variáveis.");
+          "Configure ADMIN_BOOTSTRAP_EMAIL válido e ADMIN_BOOTSTRAP_PASSWORD com 6 a 72 bytes, ou remova ambas as variáveis.");
     }
 
     var existente = usuarios.findByEmail(email);
     if (existente.isPresent()) {
-      if (existente.get().getPerfil() != Perfil.ADMIN) {
-        throw new IllegalStateException(
-            "ADMIN_BOOTSTRAP_EMAIL já pertence a uma conta não administradora. Remova as variáveis ou escolha outro e-mail.");
-      }
+      Usuario adminExistente = existente.get();
+      adminExistente.setSenhaHash(senhas.encode(senha));
+      adminExistente.setPerfil(Perfil.ADMIN);
+      usuarios.save(adminExistente);
       return;
     }
 
