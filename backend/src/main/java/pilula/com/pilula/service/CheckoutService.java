@@ -77,6 +77,17 @@ public class CheckoutService {
       ProdutoRepository produtos,
       PedidoRepository pedidos,
       UsuarioRepository usuarios,
+      RestClient.Builder restClientBuilder,
+      String accessToken,
+      String frontendUrl) {
+    this(produtos, pedidos, usuarios, restClientBuilder, accessToken, frontendUrl, "");
+  }
+
+  @Autowired
+  public CheckoutService(
+      ProdutoRepository produtos,
+      PedidoRepository pedidos,
+      UsuarioRepository usuarios,
       @Autowired(required = false) RestClient.Builder restClientBuilder,
       @Value("${mercadopago.access-token:}") String accessToken,
       @Value("${frontend.url:http://localhost:5500}") String frontendUrl,
