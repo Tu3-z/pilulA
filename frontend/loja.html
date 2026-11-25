@@ -67,6 +67,19 @@
               <div class="folders" id="pastas"></div>
             </fieldset>
             <fieldset>
+              <legend class="explorer__legend">Faixa de preço</legend>
+              <div class="price-filter">
+                <div class="price-filter__values">
+                  <span>Até <b id="preco-max-valor">R$ 150,00</b></span>
+                </div>
+                <input type="range" id="filtro-preco" min="5" max="150" step="5" value="150" class="range-slider" aria-label="Preço máximo">
+                <div class="price-filter__range">
+                  <span>R$ 5</span>
+                  <span>R$ 150</span>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
               <legend class="explorer__legend">Filtros</legend>
               <label class="check"><input type="checkbox" id="filtro-livre"> <span>Só sem receita</span></label>
               <label class="check"><input type="checkbox" id="filtro-oferta"> <span>Em oferta</span></label>

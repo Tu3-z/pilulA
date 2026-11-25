@@ -1,4 +1,4 @@
-import { $, esc } from '../utils/texto.js';
+import { $, esc, formatBRL } from '../utils/texto.js';
 import { icone } from '../utils/icones.js';
 import * as catalogo from '../services/catalogo.js';
 import { iniciarLayout, definirTermoBusca, preencherIcones } from '../components/layout.js';
@@ -22,6 +22,9 @@ const ORDENAR = {
 function lerFiltros() {
   const u = new URLSearchParams(location.search);
   const cat = catalogo.categoria(u.get('cat')) ? u.get('cat') : 'todos';
+  const precoMaxRaw = Number(u.get('precoMax'));
+  const precoMax =
+    Number.isFinite(precoMaxRaw) && precoMaxRaw >= 5 && precoMaxRaw <= 150 ? precoMaxRaw : 150;
   return {
     cat,
     sub: catalogo.sub(cat, u.get('sub')) ? u.get('sub') : '',
@@ -30,6 +33,7 @@ function lerFiltros() {
     ordem: ORDENAR[u.get('ordem')] ? u.get('ordem') : 'relevancia',
     livre: u.get('livre') === '1',
     oferta: u.get('oferta') === '1',
+    precoMax,
   };
 }
 
@@ -45,7 +49,8 @@ function filtrar(mudancas, empilhar = false, partirDoZero = false) {
       valor === '' ||
       valor === false ||
       valor === 'todos' ||
-      valor === 'relevancia'
+      valor === 'relevancia' ||
+      (chave === 'precoMax' && (Number(valor) >= 150 || !valor))
     )
       u.delete(chave);
     else u.set(chave, valor === true ? '1' : valor);
@@ -74,7 +79,8 @@ function desenhar() {
         (!f.sub || p.subcategoria === f.sub) &&
         (!f.marca || p.marca === f.marca) &&
         (!f.livre || p.receita === 'livre') &&
-        (!f.oferta || !!p.precoAntigo),
+        (!f.oferta || !!p.precoAntigo) &&
+        (f.precoMax >= 150 || p.preco <= f.precoMax),
     );
   if (f.q) lista = catalogo.buscar(f.q, lista);
   if (ORDENAR[f.ordem]) lista = [...lista].sort(ORDENAR[f.ordem]);
@@ -104,6 +110,8 @@ function desenhar() {
   $('#filtro-ordem').value = f.ordem;
   $('#filtro-livre').checked = f.livre;
   $('#filtro-oferta').checked = f.oferta;
+  if ($('#filtro-preco')) $('#filtro-preco').value = f.precoMax;
+  if ($('#preco-max-valor')) $('#preco-max-valor').textContent = formatBRL(f.precoMax);
   desenharPastas(f);
   desenharChips(f, categoria, subcategoria);
 
@@ -156,6 +164,8 @@ function desenharChips(f, categoria, subcategoria) {
   if (f.marca) chips.push({ rotulo: `Marca: ${f.marca}`, remover: { marca: null } });
   if (f.livre) chips.push({ rotulo: 'Só sem receita', remover: { livre: null } });
   if (f.oferta) chips.push({ rotulo: 'Em oferta', remover: { oferta: null } });
+  if (f.precoMax < 150)
+    chips.push({ rotulo: `Até ${formatBRL(f.precoMax)}`, remover: { precoMax: null } });
 
   const el = $('#chips');
   el.hidden = !chips.length;
@@ -184,6 +194,13 @@ $('#filtro-marca').addEventListener('change', (e) => filtrar({ marca: e.target.v
 $('#filtro-ordem').addEventListener('change', (e) => filtrar({ ordem: e.target.value }));
 $('#filtro-livre').addEventListener('change', (e) => filtrar({ livre: e.target.checked }));
 $('#filtro-oferta').addEventListener('change', (e) => filtrar({ oferta: e.target.checked }));
+$('#filtro-preco')?.addEventListener('input', (e) => {
+  const val = Number(e.target.value);
+  if ($('#preco-max-valor')) $('#preco-max-valor').textContent = formatBRL(val);
+});
+$('#filtro-preco')?.addEventListener('change', (e) => {
+  filtrar({ precoMax: Number(e.target.value) });
+});
 
 $('#pastas').addEventListener('change', (e) => {
   const r = e.target;
