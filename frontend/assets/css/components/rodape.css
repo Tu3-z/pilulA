@@ -49,6 +49,21 @@
 .footer a:hover {
   color: var(--blue);
 }
+.footer__btn-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer__btn-link:hover {
+  color: var(--blue);
+}
 .footer__tag {
   margin-top: var(--s-3);
   font-family: var(--f-display);

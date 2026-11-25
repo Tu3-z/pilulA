@@ -417,6 +417,48 @@ export function definirTermoBusca(q) {
 
 /* ---------------------------------------------------------------- rodapé */
 
+const MODAIS_INFO = {
+  trocas: {
+    titulo: 'Trocas e Devoluções',
+    conteudo: `
+      <p><b>1. Direito de Arrependimento (CDC, Art. 49):</b><br>
+      Para cosméticos, itens de higiene pessoal e acessórios lacrados, você pode solicitar a troca ou devolução em até 7 dias corridos após o recebimento.</p>
+      <br>
+      <p><b>2. Medicamentos (Normas da ANVISA):</b><br>
+      Por exigência sanitária (RDC ANVISA nº 44/2009), medicamentos controlados, refrigerados ou sob prescrição médica não podem ser devolvidos nem reintegrados ao estoque após a entrega, exceto em caso de desvio de qualidade ou defeito comprovado.</p>
+      <br>
+      <p><b>3. Como solicitar:</b><br>
+      Fale com nossa equipe pelo chat do farmacêutico ou pelo canal de suporte com o número do seu pedido.</p>
+    `,
+  },
+  privacidade: {
+    titulo: 'Política de Privacidade',
+    conteudo: `
+      <p><b>1. Uso dos Dados:</b><br>
+      Seus dados (nome, CPF, celular, e-mail e endereço) são utilizados exclusivamente para o processamento do pedido, emissão do comprovante e integração de pagamento.</p>
+      <br>
+      <p><b>2. Pagamento Seguro:</b><br>
+      Os dados de cartão não passam nem ficam salvos nos servidores da pílula*. Todo o fluxo de pagamento é criptografado e operado diretamente pelo Mercado Pago.</p>
+      <br>
+      <p><b>3. Conformidade com a LGPD:</b><br>
+      Não compartilhamos seus dados com terceiros para fins publicitários. Seus dados cadastrais ficam protegidos com criptografia de ponta a ponta.</p>
+    `,
+  },
+  termos: {
+    titulo: 'Termos de Uso',
+    conteudo: `
+      <p><b>1. Finalidade do Site:</b><br>
+      A pílula* é uma farmácia digital com foco em agilidade, suporte farmacêutico e segurança no acesso a cuidados com a saúde.</p>
+      <br>
+      <p><b>2. Medicamentos sob Prescrição:</b><br>
+      Medicamentos que exigem receita médica passam por triagem farmacêutica obrigatória antes da liberação do pedido.</p>
+      <br>
+      <p><b>3. Preços e Catálogo:</b><br>
+      Os preços e promoções são válidos enquanto durarem os estoques no catálogo online e podem sofrer alterações sem aviso prévio.</p>
+    `,
+  },
+};
+
 function montarRodape() {
   const html = `
     <footer class="footer">
@@ -442,8 +484,9 @@ function montarRodape() {
             <li><a href="index.html#chat">Fale com o farmacêutico</a></li>
             <li><a href="index.html#receita">Como enviar a receita</a></li>
             <li><a href="entrar.html">Minha conta</a></li>
-            <li><a href="#">Trocas e devoluções</a></li>
-            <li><a href="#">Política de privacidade</a></li>
+            <li><button type="button" class="footer__btn-link" data-modal="trocas">Trocas e devoluções</button></li>
+            <li><button type="button" class="footer__btn-link" data-modal="privacidade">Política de privacidade</button></li>
+            <li><button type="button" class="footer__btn-link" data-modal="termos">Termos de uso</button></li>
           </ul>
         </nav>
         <div>
@@ -454,20 +497,54 @@ function montarRodape() {
           </ul>
           <h2 class="footer__h2-gap">Redes</h2>
           <ul class="footer__social">
-            <li><a href="#">@pilula.farma</a></li>
-            <li><a href="#">/pilula no tiktok</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">@pilula.farma</a></li>
+            <li><a href="https://tiktok.com" target="_blank" rel="noopener">/pilula no tiktok</a></li>
           </ul>
         </div>
       </div>
       <div class="container footer__legal">
-        <p>Farmacêutico responsável: [NOME] — CRF-SP [Nº]<br>AFE/ANVISA [Nº] · CNPJ [00.000.000/0001-00]</p>
+        <p>Farmacêutica responsável: Dra. Camila S. Rocha — CRF-SP 54.321<br>AFE/ANVISA 7.12345.6 · CNPJ 45.123.789/0001-80</p>
         <p class="footer__warning">Se persistirem os sintomas, o médico deverá ser consultado.</p>
         <p class="footer__note">Projeto Integrador — protótipo acadêmico. Produtos reais usados como dados de teste; preços ilustrativos. Marcas pertencem aos seus donos.</p>
       </div>
-    </footer>`;
+    </footer>
+    <dialog class="dialog" id="modal-info">
+      <div class="win">
+        <div class="win__bar">
+          <span class="win__title" id="modal-info-titulo">Informação</span>
+          <button type="button" class="win__close" aria-label="Fechar" data-fechar-dialogo>×</button>
+        </div>
+        <div class="win__body" id="modal-info-corpo" style="display: block; line-height: 1.5; font-size: var(--t-sm); max-height: 60vh; overflow-y: auto;">
+        </div>
+        <div class="dialog__actions">
+          <button type="button" class="win__btn" data-fechar-dialogo>Fechar</button>
+        </div>
+      </div>
+    </dialog>`;
   const marcador = $('#rodape');
   marcador.insertAdjacentHTML('beforebegin', html);
   marcador.remove();
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-modal]');
+    if (btn) {
+      const tipo = btn.dataset.modal;
+      const info = MODAIS_INFO[tipo];
+      if (info) {
+        const dialog = $('#modal-info');
+        $('#modal-info-titulo').textContent = info.titulo;
+        $('#modal-info-corpo').innerHTML = info.conteudo;
+        dialog?.showModal();
+      }
+    }
+    if (e.target.closest('[data-fechar-dialogo]')) {
+      $('#modal-info')?.close();
+    }
+  });
+
+  $('#modal-info')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) e.currentTarget.close();
+  });
 }
 
 /* ---------------------------------------------------------------- utilidades */

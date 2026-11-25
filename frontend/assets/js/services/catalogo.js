@@ -62,6 +62,24 @@ async function buscarJson(url, ms) {
  */
 const comSlug = (x) => (x.slug ? { ...x, id: x.slug, idBanco: x.id } : x);
 
+const CHAVE_CACHE = 'pilula:catalogo:cache:v2';
+
+function aplicarDados(dados) {
+  categorias = dados.categorias.map((c) => ({ ...comSlug(c), subs: c.subs.map(comSlug) }));
+  produtos = dados.produtos.map(comSlug);
+  porId = new Map(produtos.map((p) => [p.id, p]));
+}
+
+// Carrega imediatamente do cache da sessão (evita FOUC / cold start em navegações)
+try {
+  const cacheStr = sessionStorage.getItem(CHAVE_CACHE);
+  if (cacheStr) {
+    aplicarDados(JSON.parse(cacheStr));
+  }
+} catch {
+  /* sem sessionStorage */
+}
+
 /** Carrega o catálogo uma vez só (as outras chamadas reaproveitam a mesma promessa). */
 export function carregarCatalogo() {
   carregando ??= (async () => {
@@ -75,9 +93,10 @@ export function carregarCatalogo() {
       fonteCatalogo = 'json';
       console.info('[pílula*] API fora do ar: catálogo carregado do JSON local');
     }
-    categorias = dados.categorias.map((c) => ({ ...comSlug(c), subs: c.subs.map(comSlug) }));
-    produtos = dados.produtos.map(comSlug);
-    porId = new Map(produtos.map((p) => [p.id, p]));
+    aplicarDados(dados);
+    try {
+      sessionStorage.setItem(CHAVE_CACHE, JSON.stringify(dados));
+    } catch {}
   })();
   return carregando;
 }
