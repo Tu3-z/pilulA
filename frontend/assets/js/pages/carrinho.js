@@ -372,6 +372,111 @@ async function iniciarCheckout(r) {
  * Aqui consultamos a API da farmácia (/api/pedidos/{referencia}) para buscar
  * os dados salvos no banco de dados e exibir a confirmação com o status real.
  */
+function renderizarRecibo(pedido, statusRetorno) {
+  const reciboEl = $('#recibo-pedido');
+  const corpoEl = $('#recibo-conteudo');
+  if (!reciboEl || !corpoEl) return;
+
+  // Esconde os blocos padrão do carrinho
+  $('#carrinho-cheio').hidden = true;
+  $('#carrinho-vazio').hidden = true;
+  $('#etapas').hidden = true;
+  reciboEl.hidden = false;
+
+  const pago = statusRetorno === 'sucesso' || pedido.status === 'PAGO';
+  const pendente = statusRetorno === 'pendente' || pedido.status === 'PENDENTE';
+
+  const badgeClass = pago ? 'receipt__badge--success' : pendente ? 'receipt__badge--pending' : 'receipt__badge--alert';
+  const badgeTexto = pago ? '✓ Pagamento Aprovado' : pendente ? '⏳ Aguardando Aprovação (Pix/Boleto)' : '✕ Pagamento Não Concluído';
+
+  const enderecoHtml = pedido.modoEntrega === 'retirada'
+    ? '<strong>Retirada na Farmácia</strong><br>pílula* Paulista · Aberta 24h<br>Pronto para retirada em até 30 min'
+    : `<strong>Entrega em Domicílio (até 2h)</strong><br>${esc(pedido.rua)}, ${esc(pedido.numero)}${pedido.complemento ? ` · ${esc(pedido.complemento)}` : ''}<br>${esc(pedido.bairro)} · ${esc(pedido.cidade)}/${esc(pedido.uf)} · CEP ${esc(pedido.cep)}`;
+
+  const itensHtml = (pedido.itens || []).map(item => `
+    <li class="receipt__item">
+      <div>
+        <strong>${esc(item.nomeProduto || 'Produto')}</strong>
+        <span style="color: var(--ink-2); font-size: var(--t-xs);"> × ${item.quantidade}</span>
+      </div>
+      <span>${formatBRL(item.precoUnitario * item.quantidade)}</span>
+    </li>
+  `).join('');
+
+  const mensagemWhats = encodeURIComponent(`Olá! Acabei de fazer o pedido *${pedido.referencia.slice(0, 8)}* na pílula* no valor de ${formatBRL(pedido.total)}. Gostaria de acompanhar a entrega!`);
+
+  corpoEl.innerHTML = `
+    <div class="receipt__hero">
+      <span class="receipt__badge ${badgeClass}">${badgeTexto}</span>
+      <h2 class="receipt__title">${pago ? 'Pedido Realizado com Sucesso! 🎉' : pendente ? 'Pedido Registrado!' : 'Aviso sobre o Pagamento'}</h2>
+      <p class="receipt__lead">${pago ? 'Seu pedido já foi enviado para separação pelo nosso time farmacêutico.' : 'Assim que o pagamento for confirmado pelo Mercado Pago, seu pedido será separado.'}</p>
+      <div class="receipt__ref-box">
+        <span>Código do Pedido: <b>${esc(pedido.referencia)}</b></span>
+        <button type="button" class="win__btn" style="min-height: 28px; padding: 2px 8px; font-size: 11px;" id="copiar-ref">Copiar</button>
+      </div>
+    </div>
+
+    <div class="receipt__info-grid">
+      <div>
+        <p class="receipt__info-label">Comprador</p>
+        <p><b>${esc(pedido.nomeComprador)}</b><br>${esc(pedido.emailComprador)}<br>${esc(pedido.celularComprador)}</p>
+      </div>
+      <div>
+        <p class="receipt__info-label">Entrega / Retirada</p>
+        <p>${enderecoHtml}</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size: var(--t-sm); text-transform: uppercase; margin-bottom: 8px; color: var(--ink-2);">Itens do Pedido</h3>
+      <ul class="receipt__items-list">
+        ${itensHtml || '<li class="receipt__item"><span>Itens processados pelo checkout</span></li>'}
+      </ul>
+    </div>
+
+    <div class="receipt__totals">
+      <div class="receipt__row">
+        <span>Subtotal</span>
+        <span>${formatBRL(pedido.subtotal)}</span>
+      </div>
+      ${pedido.desconto > 0 ? `
+      <div class="receipt__row" style="color: var(--blue);">
+        <span>Desconto ${pedido.cupom ? `(${esc(pedido.cupom)})` : ''}</span>
+        <span>-${formatBRL(pedido.desconto)}</span>
+      </div>` : ''}
+      <div class="receipt__row">
+        <span>Frete</span>
+        <span>${pedido.frete > 0 ? formatBRL(pedido.frete) : 'Grátis'}</span>
+      </div>
+      <div class="receipt__row receipt__row--total">
+        <span>Total Pago</span>
+        <span>${formatBRL(pedido.total)}</span>
+      </div>
+    </div>
+
+    <div class="receipt__actions">
+      <button type="button" class="btn btn--secondary" onclick="window.print()">
+        <span data-icone="doc"></span> Imprimir Comprovante
+      </button>
+      <a class="btn btn--secondary" href="https://wa.me/?text=${mensagemWhats}" target="_blank" rel="noopener">
+        Receber no WhatsApp
+      </a>
+      <a class="btn btn--primary" href="loja.html">
+        Continuar Comprando
+      </a>
+    </div>
+  `;
+
+  $('#copiar-ref')?.addEventListener('click', () => {
+    navigator.clipboard?.writeText(pedido.referencia);
+    const btn = $('#copiar-ref');
+    if (btn) {
+      btn.textContent = 'Copiado!';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 2000);
+    }
+  });
+}
+
 if (retorno) {
   const refPedido = parametrosRetorno.get('pedido');
   const aviso = $('#retorno-mp');
@@ -386,25 +491,10 @@ if (retorno) {
       .then((dadosPedido) => {
         if (dadosPedido) {
           if (retorno === 'sucesso' || dadosPedido.status === 'PAGO') {
-            carrinho.limpar(); // Esvazia o carrinho local pois a compra foi concluída
-            aviso.innerHTML = `
-              <strong>🎉 Compra realizada com sucesso!</strong><br>
-              Pedido registrado: <code>${esc(dadosPedido.referencia)}</code><br>
-              Status: <strong>${esc(dadosPedido.status)}</strong> · Total: <strong>${formatBRL(dadosPedido.total)}</strong><br>
-              Modo: <em>${esc(dadosPedido.modoEntrega === 'retirada' ? 'Retirada na loja física' : 'Entrega em domicílio')}</em>.
-            `;
-          } else if (retorno === 'pendente') {
-            aviso.innerHTML = `
-              <strong>⏳ Pagamento em análise pelo Mercado Pago.</strong><br>
-              Pedido: <code>${esc(dadosPedido.referencia)}</code> (Status: ${esc(dadosPedido.status)}).
-              Assim que o Pix/Cartão for aprovado, seu pedido será liberado!
-            `;
-          } else {
-            aviso.innerHTML = `
-              <strong>❌ O pagamento não foi concluído.</strong><br>
-              Pedido: <code>${esc(dadosPedido.referencia)}</code>. Você pode revisar seus dados e tentar novamente.
-            `;
+            carrinho.limpar();
           }
+          renderizarRecibo(dadosPedido, retorno);
+          aviso.hidden = true;
         } else {
           aviso.textContent = `Retorno do Mercado Pago: ${retorno}. Pedido: ${refPedido}.`;
         }

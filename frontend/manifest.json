@@ -1,0 +1,18 @@
+{
+  "name": "pílula* Farmácia Digital",
+  "short_name": "pílula*",
+  "description": "Remédios, vitaminas e dermocosméticos com entrega em até 2h e farmacêutico 24h.",
+  "start_url": "/loja.html",
+  "display": "standalone",
+  "background_color": "#0B153D",
+  "theme_color": "#0B153D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
