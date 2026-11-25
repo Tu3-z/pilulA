@@ -84,7 +84,16 @@ export function carregarCatalogo() {
 
 export const todasCategorias = () => categorias;
 export const todosProdutos = () => produtos;
-export const produto = (id) => (id && porId.get(id)) || null;
+export const produto = (id) => {
+  if (!id) return null;
+  const encontrado = porId.get(id);
+  if (encontrado) return encontrado;
+  const idNum = Number(id);
+  if (Number.isFinite(idNum) && idNum > 0) {
+    return produtos.find((p) => p.idBanco === idNum) ?? null;
+  }
+  return null;
+};
 export const categoria = (id) => categorias.find((c) => c.id === id) ?? null;
 export const sub = (catId, subId) => categoria(catId)?.subs.find((s) => s.id === subId) ?? null;
 export const destaques = () => produtos.filter((p) => p.destaque).slice(0, 8);
