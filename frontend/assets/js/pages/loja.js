@@ -116,7 +116,9 @@ function desenhar() {
   desenharChips(f, categoria, subcategoria);
 
   // produtos
-  $('#resultado').innerHTML = lista.length
+  const elResultado = $('#resultado');
+  elResultado.classList.add('loaded');
+  elResultado.innerHTML = lista.length
     ? lista.map(cardHtml).join('')
     : `
       <div class="win empty__win">

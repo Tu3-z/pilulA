@@ -355,3 +355,28 @@
     padding: var(--s-4);
   }
 }
+
+/* ---------- Skeleton loader (cold start) ---------- */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton-card {
+  border-radius: 6px;
+  height: 280px;
+  background: linear-gradient(
+    90deg,
+    var(--paper-2) 25%,
+    var(--plastic) 50%,
+    var(--paper-2) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* Remove skeleton assim que o JS inserir um card real */
+#resultado:not(:has(.skeleton-card)) .skeleton-card,
+#resultado.loaded .skeleton-card {
+  display: none;
+}

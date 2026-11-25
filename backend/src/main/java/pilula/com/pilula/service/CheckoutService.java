@@ -71,6 +71,7 @@ public class CheckoutService {
   private final RestClient mercadoPago;
   private final String accessToken;
   private final String frontendUrl;
+  private final String backendUrl;
 
   public CheckoutService(
       ProdutoRepository produtos,
@@ -78,7 +79,8 @@ public class CheckoutService {
       UsuarioRepository usuarios,
       @Autowired(required = false) RestClient.Builder restClientBuilder,
       @Value("${mercadopago.access-token:}") String accessToken,
-      @Value("${frontend.url:http://localhost:5500}") String frontendUrl) {
+      @Value("${frontend.url:http://localhost:5500}") String frontendUrl,
+      @Value("${backend.url:}") String backendUrl) {
     this.produtos = produtos;
     this.pedidos = pedidos;
     this.usuarios = usuarios;
@@ -86,6 +88,7 @@ public class CheckoutService {
     this.mercadoPago = builder.baseUrl("https://api.mercadopago.com").build();
     this.accessToken = accessToken.trim();
     this.frontendUrl = frontendUrl.replaceAll("/+$", "");
+    this.backendUrl = backendUrl.replaceAll("/+$", "");
   }
 
   /**
@@ -198,10 +201,9 @@ public class CheckoutService {
     preferencia.put("external_reference", referencia);
 
     // Endereço de notificação automática (Webhook) no backend
-    // Se estiver rodando no Railway, o Mercado Pago envia a notificação para cá
-    String webhookUrl = frontendUrl.replace("vercel.app", "up.railway.app");
-    if (!webhookUrl.contains("localhost")) {
-      preferencia.put("notification_url", webhookUrl + "/api/checkout/webhook");
+    // Usa BACKEND_URL se configurado; ignora em localhost
+    if (!backendUrl.isBlank() && !backendUrl.contains("localhost")) {
+      preferencia.put("notification_url", backendUrl + "/api/checkout/webhook");
     }
 
     preferencia.put("metadata", Map.of(
