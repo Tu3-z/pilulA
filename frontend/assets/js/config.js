@@ -7,7 +7,7 @@
  * e não em uma variável de ambiente da Vercel.
  */
 window.APP_CONFIG = {
-  apiUrl: 'https://pilula-api.up.railway.app',
+  apiUrl: 'https://pilula-backend.up.railway.app',
 
   // Para desenvolvimento local, comente a linha acima e descomente:
   // apiUrl: 'http://localhost:8080',
