@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /vendedor.html
+
+Sitemap: https://pilula-five.vercel.app/sitemap.xml

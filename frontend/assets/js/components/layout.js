@@ -48,6 +48,27 @@ export async function iniciarLayout() {
   preencherIcones();
   trocarFotoQuebradaPorIlustracao();
   mostrarAvisoPendente();
+  ativarAnimacoes();
+}
+
+function ativarAnimacoes() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+
+  const observador = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+
+  // Observa seções e blocos interativos
+  document.querySelectorAll('.section, .think, .band, .news, .facts, .win, .perks, .cats li, .receipt').forEach((el) => {
+    el.classList.add('reveal');
+    observador.observe(el);
+  });
 }
 
 /** <span data-icone="seta"></span> recebe o SVG do ícone. */

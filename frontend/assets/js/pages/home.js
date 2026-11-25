@@ -76,7 +76,7 @@ function ligarPopupBula() {
   );
 }
 
-/* ---------- envio de receita (simulado) ---------- */
+/* ---------- envio de receita médica ---------- */
 function ligarReceita() {
   $('#receita-arquivo').addEventListener('change', (e) => {
     const arquivo = e.target.files?.[0];
@@ -85,9 +85,14 @@ function ligarReceita() {
       status.textContent = 'nenhum arquivo selecionado_';
       return;
     }
-    const kb = Math.max(1, Math.round(arquivo.size / 1024));
-    status.textContent = `${arquivo.name} (${kb} KB) ✓ recebido! a gente te chama no chat.`;
-    mostrarAviso('Receita recebida. Um farmacêutico vai conferir.');
+    const reader = new FileReader();
+    reader.onload = () => {
+      sessionStorage.setItem('receita_foto_temp', reader.result);
+      const kb = Math.max(1, Math.round(arquivo.size / 1024));
+      status.innerHTML = `${esc(arquivo.name)} (${kb} KB) ✓ salva! <a href="loja.html" style="color:var(--blue-glow);text-decoration:underline">Escolha seus medicamentos na loja →</a>`;
+      mostrarAviso('Receita recebida e anexada para sua compra.');
+    };
+    reader.readAsDataURL(arquivo);
   });
 }
 

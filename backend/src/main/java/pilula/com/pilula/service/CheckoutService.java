@@ -121,9 +121,11 @@ public class CheckoutService {
               .orElseThrow(() -> new ResponseStatusException(
                   HttpStatus.BAD_REQUEST, "Um produto do carrinho não está mais disponível."));
           if (produto.getReceita() != TipoReceita.LIVRE) {
-            throw new ResponseStatusException(
-                HttpStatus.CONFLICT,
-                "Este carrinho contém medicamento que exige validação farmacêutica. O checkout ainda não recebe nem valida receitas.");
+            if (dados.receitaUrl() == null || dados.receitaUrl().isBlank()) {
+              throw new ResponseStatusException(
+                  HttpStatus.CONFLICT,
+                  "Este carrinho contém medicamento que exige validação farmacêutica. Por favor, anexe a foto da receita médica.");
+            }
           }
           return new LinhaPedido(produto, item.quantidade());
         })
@@ -159,6 +161,13 @@ public class CheckoutService {
     pedido.setFrete(frete);
     pedido.setTotal(total);
     pedido.setStatus(StatusPedido.PENDENTE);
+
+    if (dados.receitaUrl() != null && !dados.receitaUrl().isBlank()) {
+      pedido.setReceitaUrl(dados.receitaUrl().trim());
+      pedido.setReceitaStatus("PENDENTE");
+    } else {
+      pedido.setReceitaStatus("NAO_EXIGIDA");
+    }
 
     // Se o comprador tiver conta cadastrada na farmácia com este e-mail, vincula
     usuarios.findByEmail(pedido.getEmailComprador()).ifPresent(pedido::setUsuario);

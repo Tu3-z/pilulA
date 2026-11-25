@@ -50,4 +50,15 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
    * Lista pedidos por status (ex: listar todos os PENDENTES ou PAGOS).
    */
   List<Pedido> findByStatusOrderByCriadoEmDesc(StatusPedido status);
+
+  /**
+   * Lista pedidos que possuem receita enviada aguardando revisão do farmacêutico.
+   * receitaStatus = 'PENDENTE' significa que a foto chegou mas ainda não foi avaliada.
+   */
+  List<Pedido> findByReceitaStatusOrderByCriadoEmDesc(String receitaStatus);
+
+  /**
+   * Lista pedidos que possuem qualquer receita (enviada pelo comprador).
+   */
+  List<Pedido> findByReceitaUrlIsNotNullOrderByCriadoEmDesc();
 }

@@ -24,7 +24,18 @@ public record CriarCheckoutDTO(
     @Size(max = 100) String bairro,
     @Size(max = 150) String cidade,
     @Size(max = 32) String cupom,
-    @NotEmpty @Size(max = 50) List<@Valid ItemDTO> itens) {
+    @NotEmpty @Size(max = 50) List<@Valid ItemDTO> itens,
+    String receitaUrl) {
+
+  /**
+   * Construtor de retrocompatibilidade para chamadas sem receitaUrl.
+   */
+  public CriarCheckoutDTO(
+      String nome, String email, String cpf, String celular, String modo,
+      String cep, String rua, String numero, String complemento, String bairro,
+      String cidade, String cupom, List<ItemDTO> itens) {
+    this(nome, email, cpf, celular, modo, cep, rua, numero, complemento, bairro, cidade, cupom, itens, null);
+  }
 
   public record ItemDTO(
       @NotBlank @Size(max = 80) String slug,

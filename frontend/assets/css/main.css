@@ -21,3 +21,6 @@
 
 /* formulários (erros, força da senha, opções) */
 @import url('base/forms.css');
+
+/* animações globais exageradas */
+@import url('components/animacoes.css');

@@ -1,0 +1,237 @@
+/* ==========================================================================
+   pílula* — animações globais exageradas e divertidas
+   ========================================================================== */
+
+/* ---- keyframes base ---- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%       { transform: translateY(-8px) rotate(2deg); }
+  66%       { transform: translateY(-4px) rotate(-1deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(35, 64, 184, 0); }
+  50%       { box-shadow: 0 0 0 12px rgba(35, 64, 184, 0.18); }
+}
+
+@keyframes bounce-in {
+  0%   { opacity: 0; transform: scale(0.6) translateY(30px); }
+  60%  { transform: scale(1.08) translateY(-6px); }
+  80%  { transform: scale(0.97) translateY(2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20%       { transform: rotate(-6deg); }
+  40%       { transform: rotate(6deg); }
+  60%       { transform: rotate(-3deg); }
+  80%       { transform: rotate(3deg); }
+}
+
+@keyframes shimmer-btn {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(12px) scale(0.8); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes spin-once {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  70%  { transform: scale(0.93); }
+  100% { transform: scale(1); }
+}
+
+/* ---- Observer: aparece ao entrar na tela ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* stagger delay para listas */
+.reveal-stagger > *:nth-child(1)  { transition-delay: 0.05s; }
+.reveal-stagger > *:nth-child(2)  { transition-delay: 0.12s; }
+.reveal-stagger > *:nth-child(3)  { transition-delay: 0.19s; }
+.reveal-stagger > *:nth-child(4)  { transition-delay: 0.26s; }
+.reveal-stagger > *:nth-child(5)  { transition-delay: 0.33s; }
+.reveal-stagger > *:nth-child(6)  { transition-delay: 0.40s; }
+.reveal-stagger > *:nth-child(7)  { transition-delay: 0.47s; }
+.reveal-stagger > *:nth-child(8)  { transition-delay: 0.54s; }
+
+/* ---- Cards de produto: hover exagerado ---- */
+.card {
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  will-change: transform;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.025);
+  box-shadow: 0 20px 48px rgba(16, 22, 48, 0.18);
+}
+.card:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* ---- Botões primários: shimmer + bounce ao clicar ---- */
+.btn--primary {
+  background-size: 200% auto;
+  background-image: linear-gradient(
+    90deg,
+    var(--blue) 0%,
+    var(--blue-ink) 40%,
+    var(--blue) 60%,
+    var(--blue-ink) 100%
+  );
+  transition: background-position 0.4s, transform 0.15s, box-shadow 0.2s;
+}
+.btn--primary:hover {
+  background-position: right center;
+  box-shadow: 0 6px 24px rgba(35, 64, 184, 0.4);
+  transform: translateY(-2px);
+}
+.btn--primary:active {
+  transform: scale(0.96) translateY(0);
+  animation: pop 0.3s var(--ease);
+}
+
+/* ---- Botões ghost: borda animada ---- */
+.btn--ghost:hover,
+.btn--ghost-light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(35, 64, 184, 0.2);
+}
+
+/* ---- Ícone de favorito / carrinho: wiggle ---- */
+[data-acao="favoritar"]:hover,
+[data-acao="adicionar"]:hover {
+  animation: wiggle 0.4s ease;
+}
+
+/* ---- Facts (2h, 24h): bounce ao entrar ---- */
+.facts li {
+  animation: bounce-in 0.5s var(--ease) both;
+}
+.facts li:nth-child(1) { animation-delay: 0.1s; }
+.facts li:nth-child(2) { animation-delay: 0.2s; }
+.facts li:nth-child(3) { animation-delay: 0.3s; }
+.facts li:nth-child(4) { animation-delay: 0.4s; }
+
+/* ---- Categorias: giro + zoom no hover ---- */
+.cats li a,
+.cats li button {
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.cats li a:hover,
+.cats li button:hover {
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0 12px 32px rgba(16, 22, 48, 0.14);
+}
+
+/* ---- Perk icons: float ---- */
+.perk__icon {
+  animation: float 3s ease-in-out infinite;
+  display: block;
+}
+.perk:nth-child(2) .perk__icon { animation-delay: 0.8s; }
+.perk:nth-child(3) .perk__icon { animation-delay: 1.6s; }
+
+/* ---- Selo de % desconto: pulse ---- */
+.palco__selo {
+  animation: pulse-glow 2s ease-in-out infinite, float-slow 4s ease-in-out infinite;
+}
+
+/* ---- Header / logo: slide + fade ---- */
+header,
+.cabecalho {
+  animation: slide-up 0.5s var(--ease) both;
+}
+
+/* ---- Seções: reveal por Observer (JS liga a classe .visible) ---- */
+.section,
+.band,
+.think,
+.news {
+  /* as seções individuais terão .reveal aplicado pelo JS */
+}
+
+/* ---- Input focus: pulse border ---- */
+.field:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(35, 64, 184, 0.25);
+  border-color: var(--blue);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* ---- Tag / badge de status: pop ao aparecer ---- */
+.selo,
+.badge {
+  animation: pop 0.35s var(--ease);
+}
+
+/* ---- Respeita prefers-reduced-motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal,
+  .reveal-left,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
+}

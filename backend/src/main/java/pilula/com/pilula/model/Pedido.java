@@ -144,6 +144,26 @@ public class Pedido {
   @Column(name = "checkout_url", columnDefinition = "TEXT")
   private String checkoutUrl;
 
+  // --- Receita Médica ---
+  /** URL da foto da receita enviada pelo comprador (pode ser link externo ou base64). */
+  @Column(name = "receita_url", columnDefinition = "TEXT")
+  private String receitaUrl;
+
+  /**
+   * Status da receita: NAO_EXIGIDA | PENDENTE | APROVADA | REJEITADA
+   * NAO_EXIGIDA = padrão; PENDENTE = foto enviada aguardando revisão
+   */
+  @Column(name = "receita_status", length = 30)
+  private String receitaStatus = "NAO_EXIGIDA";
+
+  /** Observação do farmacêutico ao revisar. */
+  @Column(name = "receita_obs", columnDefinition = "TEXT")
+  private String receitaObs;
+
+  /** Data/hora em que a receita foi revisada. */
+  @Column(name = "receita_revisada_em")
+  private OffsetDateTime receitaRevisadaEm;
+
   // --- Auditoria de Datas ---
   @Column(name = "criado_em", nullable = false, updatable = false)
   private OffsetDateTime criadoEm;

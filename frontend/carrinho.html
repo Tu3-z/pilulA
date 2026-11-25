@@ -76,8 +76,18 @@
           <!-- checkout -->
           <form class="checkout" id="checkout" novalidate aria-label="Finalizar compra">
             <section class="checkout__rx" id="bloco-receita" aria-labelledby="rx-titulo" hidden>
-              <h2 id="rx-titulo" class="checkout__rx-title"><span class="tarja">receita obrigatória</span></h2>
-              <p>Este projeto ainda não envia nem valida receitas com um farmacêutico. Por segurança, não é possível finalizar a compra deste medicamento pelo site.</p>
+              <h2 id="rx-titulo" class="checkout__rx-title"><span class="tarja">receita médica obrigatória</span></h2>
+              <p>Este carrinho contém medicamento com retenção ou controle de receita. Conforme a RDC 471/2021 da Anvisa, anexe a foto ou PDF da prescrição médica para conferência do farmacêutico antes da entrega.</p>
+              <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+                <label class="btn btn--primary" for="carrinho-receita-arquivo" style="align-self:flex-start;cursor:pointer">
+                  📸 Anexar foto da receita
+                </label>
+                <input class="sr-only" type="file" id="carrinho-receita-arquivo" accept="image/*,.pdf">
+                <p class="term" id="carrinho-receita-status">Nenhuma receita anexada ainda_</p>
+                <div id="carrinho-receita-preview" style="display:none;max-width:220px;border-radius:var(--radius-sm);overflow:hidden;border:var(--line);box-shadow:var(--shadow-sm)">
+                  <img id="carrinho-receita-img" src="" alt="Prévia da receita" style="width:100%;height:auto;display:block">
+                </div>
+              </div>
             </section>
 
             <!-- 1. dados -->
