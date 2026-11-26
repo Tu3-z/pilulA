@@ -581,6 +581,7 @@
         "forma": "pump",
         "rotulo": "CETAPH"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/349/932/000/4558/front_en.4.400.jpg",
       "descricao": "Loção hidratante para pele seca e sensível."
     },
     {
@@ -596,6 +597,7 @@
         "forma": "pump",
         "rotulo": "CERAVE"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/789/970/615/9258/front_pt.4.400.jpg",
       "descricao": "Hidratante corporal com ceramidas e ácido hialurônico.",
       "destaque": true
     },
@@ -612,6 +614,7 @@
         "forma": "pote",
         "rotulo": "HYDRO"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/789/101/088/2983/front_es.11.400.jpg",
       "descricao": "Hidratante facial em gel com ácido hialurônico."
     },
     {
@@ -627,6 +630,7 @@
         "forma": "bisnaga",
         "rotulo": "EFFAC"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/333/787/570/8289/front_fr.5.400.jpg",
       "descricao": "Gel de limpeza facial para pele oleosa."
     },
     {
@@ -687,6 +691,7 @@
         "forma": "bisnaga",
         "rotulo": "TOTAL"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/009/917/648/0310/front_en.6.400.jpg",
       "descricao": "Creme dental com flúor."
     },
     {
@@ -763,6 +768,7 @@
         "forma": "spray",
         "rotulo": "DOVE"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/871/716/396/5030/front_en.3.400.jpg",
       "descricao": "Antitranspirante aerosol 48h."
     },
     {
@@ -1022,6 +1028,7 @@
         "forma": "frasco",
         "rotulo": "BABY"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/072/021/257/0626/front_es.8.400.jpg",
       "descricao": "Shampoo suave, fórmula sem lágrimas."
     },
     {
@@ -1330,6 +1337,7 @@
         "forma": "frasco",
         "rotulo": "FPS50"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/400/580/843/0208/front_en.14.400.jpg",
       "descricao": "Protetor solar com hidratação, resistente à água."
     },
     {
@@ -1360,6 +1368,7 @@
         "forma": "pote",
         "rotulo": "NIVEA"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/400/580/880/1053/front_en.27.400.jpg",
       "descricao": "Creme hidratante para rosto, corpo e mãos."
     },
     {
@@ -1390,6 +1399,7 @@
         "forma": "pump",
         "rotulo": "CERAVE"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/360/600/053/7194/front_en.4.400.jpg",
       "descricao": "Limpa a pele normal a oleosa sem ressecar, com ceramidas."
     },
     {
@@ -1420,6 +1430,7 @@
         "forma": "bisnaga",
         "rotulo": "DEEP"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/357/466/121/4771/front_fr.5.400.jpg",
       "descricao": "Gel de limpeza facial para pele oleosa."
     },
     {
@@ -1450,6 +1461,7 @@
         "forma": "bisnaga",
         "rotulo": "WHITE"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/750/954/605/4650/front_es.10.400.jpg",
       "descricao": "Creme dental clareador."
     },
     {
@@ -1495,6 +1507,7 @@
         "forma": "bastao",
         "rotulo": "B&W"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/000/004/239/7304/front_pt.3.400.jpg",
       "descricao": "Antitranspirante que não mancha roupas pretas nem brancas."
     },
     {
@@ -1510,6 +1523,7 @@
         "forma": "caixa",
         "rotulo": "DOVE"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/872/018/226/4664/front_en.32.400.jpg",
       "descricao": "Sabonete em barra com 1/4 de creme hidratante."
     },
     {
@@ -1525,6 +1539,7 @@
         "forma": "frasco",
         "rotulo": "H&S"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/750/043/524/2615/front_pt.3.400.jpg",
       "descricao": "Shampoo anticaspa de uso diário."
     },
     {
@@ -1677,6 +1692,7 @@
         "forma": "pump",
         "rotulo": "BABY"
       },
+      "foto": "https://images.openbeautyfacts.org/images/products/038/137/119/6654/front_en.9.400.jpg",
       "descricao": "Sabonete líquido suave para cabelo e corpo do bebê."
     }
   ]
