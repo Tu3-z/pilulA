@@ -1023,6 +1023,661 @@
         "rotulo": "BABY"
       },
       "descricao": "Shampoo suave, fórmula sem lágrimas."
+    },
+    {
+      "id": "advil-400",
+      "categoria": "medicamentos",
+      "subcategoria": "dor-febre",
+      "nome": "Advil 400 mg",
+      "marca": "Advil",
+      "sub": "8 cápsulas",
+      "preco": 19.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "capsula",
+        "rotulo": ""
+      },
+      "descricao": "Analgésico, antitérmico e anti-inflamatório (ibuprofeno)."
+    },
+    {
+      "id": "buscopan-composto",
+      "categoria": "medicamentos",
+      "subcategoria": "estomago",
+      "nome": "Buscopan Composto",
+      "marca": "Buscopan",
+      "sub": "20 comprimidos",
+      "preco": 27.9,
+      "precoAntigo": 32.9,
+      "selo": "-15%",
+      "receita": "livre",
+      "destaque": true,
+      "arte": {
+        "forma": "blister",
+        "rotulo": "BUSCO"
+      },
+      "descricao": "Alívio de cólicas e dores abdominais (escopolamina + dipirona)."
+    },
+    {
+      "id": "estomazil-sache",
+      "categoria": "medicamentos",
+      "subcategoria": "estomago",
+      "nome": "Estomazil sachê",
+      "marca": "Estomazil",
+      "sub": "6 envelopes de 5 g",
+      "preco": 14.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pacote",
+        "rotulo": "ESTOM"
+      },
+      "descricao": "Antiácido efervescente para azia e má digestão."
+    },
+    {
+      "id": "omeprazol-20",
+      "categoria": "medicamentos",
+      "subcategoria": "estomago",
+      "nome": "Omeprazol 20 mg",
+      "marca": "Genérico",
+      "sub": "28 cápsulas",
+      "preco": 15.9,
+      "receita": "prescricao",
+      "arte": {
+        "forma": "capsula",
+        "rotulo": ""
+      },
+      "descricao": "Reduz a produção de ácido no estômago. Medicamento genérico."
+    },
+    {
+      "id": "claritin-10",
+      "categoria": "medicamentos",
+      "subcategoria": "alergia",
+      "nome": "Claritin 10 mg",
+      "marca": "Claritin",
+      "sub": "12 comprimidos",
+      "preco": 29.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "10 MG"
+      },
+      "descricao": "Antialérgico que não dá sono (loratadina)."
+    },
+    {
+      "id": "vick-vaporub",
+      "categoria": "medicamentos",
+      "subcategoria": "gripe",
+      "nome": "Vick VapoRub",
+      "marca": "Vick",
+      "sub": "pote 30 g",
+      "preco": 24.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pote",
+        "rotulo": "VICK"
+      },
+      "descricao": "Pomada para aliviar a congestão nasal e a tosse do resfriado."
+    },
+    {
+      "id": "resfenol-20",
+      "categoria": "medicamentos",
+      "subcategoria": "gripe",
+      "nome": "Resfenol",
+      "marca": "Resfenol",
+      "sub": "20 cápsulas",
+      "preco": 19.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "capsula",
+        "rotulo": ""
+      },
+      "descricao": "Alívio dos sintomas de gripes e resfriados (paracetamol + clorfeniramina + fenilefrina)."
+    },
+    {
+      "id": "maresis-spray",
+      "categoria": "medicamentos",
+      "subcategoria": "gripe",
+      "nome": "Maresis spray nasal",
+      "marca": "Maresis",
+      "sub": "100 ml",
+      "preco": 29.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "spray",
+        "rotulo": "MARESIS"
+      },
+      "descricao": "Solução de água do mar para limpar e descongestionar o nariz."
+    },
+    {
+      "id": "benalet-mel",
+      "categoria": "medicamentos",
+      "subcategoria": "garganta",
+      "nome": "Benalet mel e limão",
+      "marca": "Benalet",
+      "sub": "12 pastilhas",
+      "preco": 15.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "blister",
+        "rotulo": "MEL"
+      },
+      "descricao": "Pastilhas para irritação da garganta e tosse."
+    },
+    {
+      "id": "sinvastatina-20",
+      "categoria": "medicamentos",
+      "subcategoria": "receita",
+      "nome": "Sinvastatina 20 mg",
+      "marca": "Genérico",
+      "sub": "30 comprimidos",
+      "preco": 12.9,
+      "receita": "prescricao",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "20 MG"
+      },
+      "descricao": "Controle do colesterol. Medicamento genérico."
+    },
+    {
+      "id": "metformina-850",
+      "categoria": "medicamentos",
+      "subcategoria": "receita",
+      "nome": "Cloridrato de Metformina 850 mg",
+      "marca": "Genérico",
+      "sub": "30 comprimidos",
+      "preco": 9.9,
+      "receita": "prescricao",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "850"
+      },
+      "descricao": "Controle da glicose no diabetes tipo 2. Medicamento genérico."
+    },
+    {
+      "id": "sertralina-50",
+      "categoria": "medicamentos",
+      "subcategoria": "receita",
+      "nome": "Sertralina 50 mg",
+      "marca": "Genérico",
+      "sub": "30 comprimidos",
+      "preco": 24.9,
+      "receita": "retencao",
+      "arte": {
+        "forma": "blister",
+        "rotulo": "50 MG"
+      },
+      "descricao": "Antidepressivo. Venda com retenção da receita."
+    },
+    {
+      "id": "centrum-homem",
+      "categoria": "vitaminas",
+      "subcategoria": "multi",
+      "nome": "Centrum Homem",
+      "marca": "Centrum",
+      "sub": "60 comprimidos",
+      "preco": 89.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "A-Z"
+      },
+      "descricao": "Multivitamínico com vitaminas e minerais para homens."
+    },
+    {
+      "id": "supradyn-energia",
+      "categoria": "vitaminas",
+      "subcategoria": "multi",
+      "nome": "Supradyn Energia",
+      "marca": "Supradyn",
+      "sub": "30 comprimidos",
+      "preco": 59.9,
+      "precoAntigo": 69.9,
+      "selo": "-14%",
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "ENERGIA"
+      },
+      "descricao": "Polivitamínico com vitaminas do complexo B, ferro e magnésio."
+    },
+    {
+      "id": "cenevit-1g",
+      "categoria": "vitaminas",
+      "subcategoria": "vitamina-c",
+      "nome": "Cenevit 1 g",
+      "marca": "Cenevit",
+      "sub": "10 comprimidos efervescentes",
+      "preco": 22.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "C"
+      },
+      "descricao": "Vitamina C efervescente sabor laranja."
+    },
+    {
+      "id": "vitamina-c-sundown",
+      "categoria": "vitaminas",
+      "subcategoria": "vitamina-c",
+      "nome": "Vitamina C 1000 mg",
+      "marca": "Sundown",
+      "sub": "100 tabletes",
+      "preco": 69.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "C 1000"
+      },
+      "descricao": "Suplemento de vitamina C em tabletes."
+    },
+    {
+      "id": "lavitan-d3",
+      "categoria": "vitaminas",
+      "subcategoria": "vitamina-d",
+      "nome": "Vitamina D3 2.000 UI",
+      "marca": "Lavitan",
+      "sub": "60 comprimidos",
+      "preco": 29.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "D3"
+      },
+      "descricao": "Suplemento de vitamina D3."
+    },
+    {
+      "id": "lavitan-omega3",
+      "categoria": "vitaminas",
+      "subcategoria": "omega",
+      "nome": "Ômega 3 1.000 mg",
+      "marca": "Lavitan",
+      "sub": "60 cápsulas",
+      "preco": 49.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "Ω3"
+      },
+      "descricao": "Óleo de peixe em cápsulas, fonte de EPA e DHA."
+    },
+    {
+      "id": "sun-fresh-70",
+      "categoria": "dermo",
+      "subcategoria": "protetor",
+      "nome": "Sun Fresh FPS 70",
+      "marca": "Neutrogena",
+      "sub": "120 ml",
+      "preco": 69.9,
+      "precoAntigo": 79.9,
+      "selo": "-13%",
+      "receita": "livre",
+      "destaque": true,
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "FPS70"
+      },
+      "descricao": "Protetor solar corporal de textura leve, resistente à água."
+    },
+    {
+      "id": "nivea-sun-50",
+      "categoria": "dermo",
+      "subcategoria": "protetor",
+      "nome": "Nivea Sun Protect & Hidrata FPS 50",
+      "marca": "Nivea",
+      "sub": "200 ml",
+      "preco": 64.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "FPS50"
+      },
+      "descricao": "Protetor solar com hidratação, resistente à água."
+    },
+    {
+      "id": "sundown-praia-50",
+      "categoria": "dermo",
+      "subcategoria": "protetor",
+      "nome": "Sundown Praia e Piscina FPS 50",
+      "marca": "Sundown",
+      "sub": "200 ml",
+      "preco": 54.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "FPS50"
+      },
+      "descricao": "Protetor solar para praia e piscina, resistente à água."
+    },
+    {
+      "id": "nivea-creme-56",
+      "categoria": "dermo",
+      "subcategoria": "hidratante",
+      "nome": "Nivea Creme",
+      "marca": "Nivea",
+      "sub": "lata 56 g",
+      "preco": 14.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pote",
+        "rotulo": "NIVEA"
+      },
+      "descricao": "Creme hidratante para rosto, corpo e mãos."
+    },
+    {
+      "id": "neutrogena-norwegian",
+      "categoria": "dermo",
+      "subcategoria": "hidratante",
+      "nome": "Hidratante Norwegian Formula",
+      "marca": "Neutrogena",
+      "sub": "400 ml",
+      "preco": 49.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pump",
+        "rotulo": "NORW"
+      },
+      "descricao": "Hidratante corporal para pele extrasseca."
+    },
+    {
+      "id": "cerave-espuma",
+      "categoria": "dermo",
+      "subcategoria": "rosto",
+      "nome": "CeraVe Gel de Limpeza Espumante",
+      "marca": "CeraVe",
+      "sub": "473 ml",
+      "preco": 109.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pump",
+        "rotulo": "CERAVE"
+      },
+      "descricao": "Limpa a pele normal a oleosa sem ressecar, com ceramidas."
+    },
+    {
+      "id": "nivea-micelar",
+      "categoria": "dermo",
+      "subcategoria": "rosto",
+      "nome": "Água Micelar 7 em 1",
+      "marca": "Nivea",
+      "sub": "400 ml",
+      "preco": 39.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "MICELAR"
+      },
+      "descricao": "Remove a maquiagem e limpa o rosto sem enxágue."
+    },
+    {
+      "id": "neutrogena-deep-clean",
+      "categoria": "dermo",
+      "subcategoria": "rosto",
+      "nome": "Sabonete facial Deep Clean",
+      "marca": "Neutrogena",
+      "sub": "150 ml",
+      "preco": 34.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "DEEP"
+      },
+      "descricao": "Gel de limpeza facial para pele oleosa."
+    },
+    {
+      "id": "carmed-labial",
+      "categoria": "dermo",
+      "subcategoria": "labios",
+      "nome": "Hidratante labial Carmed",
+      "marca": "Carmed",
+      "sub": "10 g",
+      "preco": 22.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "CARMED"
+      },
+      "descricao": "Hidratante labial com manteiga de karité."
+    },
+    {
+      "id": "colgate-luminous",
+      "categoria": "higiene",
+      "subcategoria": "bucal",
+      "nome": "Colgate Luminous White",
+      "marca": "Colgate",
+      "sub": "70 g",
+      "preco": 14.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "WHITE"
+      },
+      "descricao": "Creme dental clareador."
+    },
+    {
+      "id": "sorriso-dentes-brancos",
+      "categoria": "higiene",
+      "subcategoria": "bucal",
+      "nome": "Sorriso Dentes Brancos",
+      "marca": "Sorriso",
+      "sub": "90 g",
+      "preco": 4.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "SORRISO"
+      },
+      "descricao": "Creme dental com flúor."
+    },
+    {
+      "id": "rexona-men-v8",
+      "categoria": "higiene",
+      "subcategoria": "desodorante",
+      "nome": "Desodorante Rexona Men V8 aerosol",
+      "marca": "Rexona",
+      "sub": "150 ml",
+      "preco": 17.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "spray",
+        "rotulo": "V8"
+      },
+      "descricao": "Antitranspirante masculino, proteção 72h."
+    },
+    {
+      "id": "nivea-black-white",
+      "categoria": "higiene",
+      "subcategoria": "desodorante",
+      "nome": "Desodorante Nivea Black & White roll-on",
+      "marca": "Nivea",
+      "sub": "50 ml",
+      "preco": 16.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bastao",
+        "rotulo": "B&W"
+      },
+      "descricao": "Antitranspirante que não mancha roupas pretas nem brancas."
+    },
+    {
+      "id": "dove-sabonete",
+      "categoria": "higiene",
+      "subcategoria": "banho",
+      "nome": "Sabonete Dove Original",
+      "marca": "Dove",
+      "sub": "barra 90 g",
+      "preco": 4.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "DOVE"
+      },
+      "descricao": "Sabonete em barra com 1/4 de creme hidratante."
+    },
+    {
+      "id": "head-shoulders",
+      "categoria": "higiene",
+      "subcategoria": "banho",
+      "nome": "Shampoo Head & Shoulders anticaspa",
+      "marca": "Head & Shoulders",
+      "sub": "200 ml",
+      "preco": 26.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "H&S"
+      },
+      "descricao": "Shampoo anticaspa de uso diário."
+    },
+    {
+      "id": "lucretin-intimo",
+      "categoria": "higiene",
+      "subcategoria": "intimo",
+      "nome": "Sabonete íntimo Lucretin",
+      "marca": "Lucretin",
+      "sub": "200 ml",
+      "preco": 24.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pump",
+        "rotulo": "LUCRET"
+      },
+      "descricao": "Sabonete líquido para a higiene íntima."
+    },
+    {
+      "id": "intimus-gel",
+      "categoria": "higiene",
+      "subcategoria": "intimo",
+      "nome": "Absorvente Intimus Gel com abas",
+      "marca": "Intimus",
+      "sub": "8 unidades",
+      "preco": 7.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pacote",
+        "rotulo": "8 UN"
+      },
+      "descricao": "Absorvente com gel e abas, cobertura suave."
+    },
+    {
+      "id": "nebacetin-15",
+      "categoria": "socorros",
+      "subcategoria": "antissepticos",
+      "nome": "Nebacetin pomada",
+      "marca": "Nebacetin",
+      "sub": "15 g",
+      "preco": 21.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "NEBA"
+      },
+      "descricao": "Pomada antibacteriana para pequenos ferimentos (neomicina + bacitracina)."
+    },
+    {
+      "id": "agua-oxigenada",
+      "categoria": "socorros",
+      "subcategoria": "antissepticos",
+      "nome": "Água oxigenada 10 volumes",
+      "marca": "Farmax",
+      "sub": "100 ml",
+      "preco": 4.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "10 VOL"
+      },
+      "descricao": "Para limpeza de ferimentos."
+    },
+    {
+      "id": "micropore-3m",
+      "categoria": "socorros",
+      "subcategoria": "curativos",
+      "nome": "Fita Micropore",
+      "marca": "3M",
+      "sub": "25 mm x 10 m",
+      "preco": 12.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "caixa",
+        "rotulo": "3M"
+      },
+      "descricao": "Fita cirúrgica hipoalergênica para fixar curativos."
+    },
+    {
+      "id": "oximetro-gtech",
+      "categoria": "socorros",
+      "subcategoria": "aparelhos",
+      "nome": "Oxímetro de dedo",
+      "marca": "G-Tech",
+      "sub": "1 unidade",
+      "preco": 99.9,
+      "precoAntigo": 129.9,
+      "selo": "-23%",
+      "receita": "livre",
+      "arte": {
+        "forma": "aparelho",
+        "rotulo": ""
+      },
+      "descricao": "Mede a saturação de oxigênio e os batimentos."
+    },
+    {
+      "id": "pampers-premium-p",
+      "categoria": "bebe",
+      "subcategoria": "fraldas",
+      "nome": "Fralda Pampers Premium Care P",
+      "marca": "Pampers",
+      "sub": "40 unidades",
+      "preco": 89.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "fralda",
+        "rotulo": "P"
+      },
+      "descricao": "Fralda com camada extra macia e até 12h seca."
+    },
+    {
+      "id": "huggies-lencos",
+      "categoria": "bebe",
+      "subcategoria": "pele-bebe",
+      "nome": "Lenços umedecidos Huggies Max Clean",
+      "marca": "Huggies",
+      "sub": "48 unidades",
+      "preco": 12.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pacote",
+        "rotulo": "48 UN"
+      },
+      "descricao": "Lenços umedecidos para a troca de fraldas."
+    },
+    {
+      "id": "desitin-57",
+      "categoria": "bebe",
+      "subcategoria": "pele-bebe",
+      "nome": "Desitin creme preventivo de assaduras",
+      "marca": "Desitin",
+      "sub": "57 g",
+      "preco": 34.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "DESITIN"
+      },
+      "descricao": "Creme com óxido de zinco que protege contra assaduras."
+    },
+    {
+      "id": "johnsons-cabeca-pes",
+      "categoria": "bebe",
+      "subcategoria": "banho-bebe",
+      "nome": "Sabonete líquido Johnson's Baby da cabeça aos pés",
+      "marca": "Johnson's",
+      "sub": "200 ml",
+      "preco": 21.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pump",
+        "rotulo": "BABY"
+      },
+      "descricao": "Sabonete líquido suave para cabelo e corpo do bebê."
     }
   ]
 }
