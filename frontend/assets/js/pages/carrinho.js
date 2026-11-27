@@ -71,7 +71,6 @@ const ETAPAS = [
 let etapaAtual = 0;
 const visitadas = new Set();
 let enviado = false; // a pessoa já tentou finalizar?
-let receitaBase64 = sessionStorage.getItem('receita_foto_temp') || null;
 const modo = () => f.modo.value; // 'entrega' | 'retirada'
 const resumo = () => carrinho.resumo(modo() === 'retirada');
 
@@ -143,12 +142,12 @@ function desenharResumo(r) {
     <dt>${r.retirada ? 'Retirada' : 'Entrega'}</dt><dd>${r.frete === 0 ? 'grátis' : formatBRL(r.frete)}</dd>
     <dt class="is-total">Total</dt><dd class="is-total">${formatBRL(r.total)}</dd>`;
 
-  const faltaReceita = r.exigeReceita && !receitaBase64;
-  $('#finalizar').disabled = pagamentoEmVerificacao || faltaReceita;
+  const temItemBloqueado = r.exigeReceita;
+  $('#finalizar').disabled = pagamentoEmVerificacao || temItemBloqueado;
   $('#finalizar').textContent = pagamentoEmVerificacao
     ? 'Confira o pagamento no Mercado Pago'
-    : faltaReceita
-      ? 'Anexe a receita médica para continuar'
+    : temItemBloqueado
+      ? 'Remova medicamentos sob receita para continuar'
       : `Finalizar pedido · ${formatBRL(r.total)}`;
   desenharCupom();
 }
@@ -357,6 +356,11 @@ async function iniciarCheckout(r) {
   botao.disabled = true;
   botao.textContent = 'Conectando ao Mercado Pago…';
 
+  if (r.exigeReceita) {
+    mostrarAviso('Remova os medicamentos sob receita para finalizar a compra online. Eles estão disponíveis apenas na loja física.');
+    return;
+  }
+
   // LINHA: Monta o objeto JavaScript com todos os dados do comprador e do carrinho
   const pedido = {
     nome: f.nome.value.trim(),
@@ -373,8 +377,8 @@ async function iniciarCheckout(r) {
     cupom: carrinho.cupom()?.codigo ?? null,
     // Converte os produtos do carrinho em formato simplificado { slug, quantidade } para o servidor
     itens: r.itens.map(({ produto, qtd }) => ({ slug: produto.id, quantidade: qtd })),
-    // Se o cliente anexou foto de receita médica, ela viaja aqui codificada em base64
-    receitaUrl: receitaBase64,
+    // Medicamentos com receita são apenas presenciais na loja
+    receitaUrl: null,
   };
 
   try {
@@ -583,77 +587,9 @@ if (retorno) {
   }
 }
 
-function ligarReceitaCarrinho() {
-  const input = $('#carrinho-receita-arquivo');
-  const status = $('#carrinho-receita-status');
-  const preview = $('#carrinho-receita-preview');
-  const img = $('#carrinho-receita-img');
-
-  function atualizarPreview() {
-    if (receitaBase64) {
-      status.textContent = '✓ Receita anexada com sucesso! Farmacêutico irá conferir.';
-      status.style.color = 'var(--cross)';
-      if (img && !receitaBase64.includes('application/pdf')) {
-        img.src = receitaBase64;
-        preview.style.display = 'block';
-      }
-    }
-  }
-
-  if (receitaBase64) atualizarPreview();
-
-  input?.addEventListener('change', (e) => {
-    const arquivo = e.target.files?.[0];
-    if (!arquivo) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      receitaBase64 = reader.result;
-      sessionStorage.setItem('receita_foto_temp', receitaBase64);
-      atualizarPreview();
-      desenharResumo(resumo());
-    };
-    reader.readAsDataURL(arquivo);
-  });
-}
-
-ligarReceitaCarrinho();
 preencherComSessao();
 sessao.aoMudar(() => {
-  function ligarReceitaCarrinho() {
-  const input = $('#carrinho-receita-arquivo');
-  const status = $('#carrinho-receita-status');
-  const preview = $('#carrinho-receita-preview');
-  const img = $('#carrinho-receita-img');
-
-  function atualizarPreview() {
-    if (receitaBase64) {
-      status.textContent = '✓ Receita anexada com sucesso! Farmacêutico irá conferir.';
-      status.style.color = 'var(--cross)';
-      if (img && !receitaBase64.includes('application/pdf')) {
-        img.src = receitaBase64;
-        preview.style.display = 'block';
-      }
-    }
-  }
-
-  if (receitaBase64) atualizarPreview();
-
-  input?.addEventListener('change', (e) => {
-    const arquivo = e.target.files?.[0];
-    if (!arquivo) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      receitaBase64 = reader.result;
-      sessionStorage.setItem('receita_foto_temp', receitaBase64);
-      atualizarPreview();
-      desenharResumo(resumo());
-    };
-    reader.readAsDataURL(arquivo);
-  });
-}
-
-ligarReceitaCarrinho();
-preencherComSessao();
+  preencherComSessao();
   desenhar();
 });
 carrinho.aoMudar(desenhar);

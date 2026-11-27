@@ -90,12 +90,12 @@ function montar(p) {
           </div>
           <div class="pdp__tags">
             ${p.receita !== 'livre' ? `<span class="tarja">${esc(receita.rotulo)}</span>` : `<span class="badge">${esc(receita.rotulo)}</span>`}
-            <span class="badge badge--blue">entrega em 2h</span>
+            ${p.receita !== 'livre' ? `<span class="badge badge--dark">apenas loja física</span>` : `<span class="badge badge--blue">entrega em 2h</span>`}
           </div>
 
           ${
             p.receita !== 'livre'
-              ? `<div class="pdp__alert" role="note"><div><b>Precisa de receita.</b>${esc(receita.aviso)} Você pode enviar a foto no carrinho.</div></div>`
+              ? `<div class="pdp__alert" role="note"><div><b>Venda exclusiva na loja física.</b> ${esc(receita.aviso)} Pela legislação sanitária da Anvisa (RDC 44/2009 e Portaria 344/98), medicamentos com retenção ou controle de receita médica só podem ser adquiridos presencialmente na farmácia física com apresentação da receita médica física original.</div></div>`
               : ''
           }
 
@@ -105,18 +105,31 @@ function montar(p) {
               ${parcelas > 1 ? `ou ${parcelas}x de ${formatBRL(p.preco / parcelas)} sem juros no cartão` : 'no Pix, cartão ou na entrega'}
             </p>
             <div class="pdp__row">
-              <div class="stepper">
-                <button type="button" data-qtd="-1" aria-label="Diminuir quantidade">–</button>
-                <label class="sr-only" for="qtd">Quantidade</label>
-                <input id="qtd" type="number" inputmode="numeric" min="1" max="99" value="1">
-                <button type="button" data-qtd="1" aria-label="Aumentar quantidade">+</button>
-              </div>
-              <button type="button" class="btn btn--primary" id="comprar">Adicionar ao carrinho</button>
+              ${
+                p.receita !== 'livre'
+                  ? `<button type="button" class="btn btn--ghost-dark" id="comprar" disabled style="opacity:0.85;cursor:not-allowed;width:100%">
+                      🏥 Venda exclusiva na loja física (com receita)
+                    </button>`
+                  : `
+                    <div class="stepper">
+                      <button type="button" data-qtd="-1" aria-label="Diminuir quantidade">–</button>
+                      <label class="sr-only" for="qtd">Quantidade</label>
+                      <input id="qtd" type="number" inputmode="numeric" min="1" max="99" value="1">
+                      <button type="button" data-qtd="1" aria-label="Aumentar quantidade">+</button>
+                    </div>
+                    <button type="button" class="btn btn--primary" id="comprar">Adicionar ao carrinho</button>
+                  `
+              }
             </div>
             <p class="pdp__incart" id="no-carrinho" role="status" hidden></p>
             <ul class="pdp__ship">
-              <li>chega em até 2h na Grande SP</li>
-              <li>frete grátis acima de R$ 99</li>
+              ${
+                p.receita !== 'livre'
+                  ? `<li>retirada e compra direta no balcão da farmácia</li>
+                     <li>apresentação obrigatória de receita física</li>`
+                  : `<li>chega em até 2h na Grande SP</li>
+                     <li>frete grátis acima de R$ 99</li>`
+              }
               <li>dúvida? o farmacêutico responde no chat</li>
             </ul>
           </div>
@@ -162,6 +175,8 @@ function montar(p) {
 
 /* ---------- quantidade + adicionar ---------- */
 function ligarCompra(p) {
+  if (p.receita !== 'livre') return; // Venda exclusiva na loja física
+
   const campo = $('#qtd');
   const ajustar = (valor) => (campo.value = Math.min(99, Math.max(1, parseInt(valor, 10) || 1)));
   document

@@ -76,17 +76,10 @@
           <!-- checkout -->
           <form class="checkout" id="checkout" novalidate aria-label="Finalizar compra">
             <section class="checkout__rx" id="bloco-receita" aria-labelledby="rx-titulo" hidden>
-              <h2 id="rx-titulo" class="checkout__rx-title"><span class="tarja">receita médica obrigatória</span></h2>
-              <p>Este carrinho contém medicamento com retenção ou controle de receita. Conforme a RDC 471/2021 da Anvisa, anexe a foto ou PDF da prescrição médica para conferência do farmacêutico antes da entrega.</p>
-              <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
-                <label class="btn btn--primary" for="carrinho-receita-arquivo" style="align-self:flex-start;cursor:pointer">
-                  📸 Anexar foto da receita
-                </label>
-                <input class="sr-only" type="file" id="carrinho-receita-arquivo" accept="image/*,.pdf">
-                <p class="term" id="carrinho-receita-status">Nenhuma receita anexada ainda_</p>
-                <div id="carrinho-receita-preview" style="display:none;max-width:220px;border-radius:var(--radius-sm);overflow:hidden;border:var(--line);box-shadow:var(--shadow-sm)">
-                  <img id="carrinho-receita-img" src="" alt="Prévia da receita" style="width:100%;height:auto;display:block">
-                </div>
+              <h2 id="rx-titulo" class="checkout__rx-title"><span class="tarja">medicamento sob receita médica</span></h2>
+              <p>Este carrinho contém medicamento que exige prescrição médica. Conforme a RDC 44/2009 e Portaria 344/98 da Anvisa, medicamentos sob controle ou retenção de receita só podem ser vendidos <b>presencialmente em nossa loja física</b>.</p>
+              <div style="margin-top:12px;padding:12px;background:#fff3cd;border:1px solid #ffeeba;border-radius:var(--radius-sm);color:#856404;font-size:0.9rem">
+                ⚠️ Não é permitido comprar medicamentos sob receita online. <b>Remova os itens com receita médica</b> do carrinho para continuar o pedido dos demais produtos, ou compareça à nossa loja física com sua receita física original.
               </div>
             </section>
 

@@ -16,7 +16,6 @@ desenharCategorias();
 desenharDestaques();
 ligarBannerApp();
 ligarPopupBula();
-ligarReceita();
 ligarChat();
 ligarNewsletter();
 
@@ -138,26 +137,6 @@ function ligarPopupBula() {
       $('#bula-resposta').innerHTML = respostas[b.dataset.bula];
     }),
   );
-}
-
-/* ---------- envio de receita médica ---------- */
-function ligarReceita() {
-  $('#receita-arquivo').addEventListener('change', (e) => {
-    const arquivo = e.target.files?.[0];
-    const status = $('#receita-status');
-    if (!arquivo) {
-      status.textContent = 'nenhum arquivo selecionado_';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      sessionStorage.setItem('receita_foto_temp', reader.result);
-      const kb = Math.max(1, Math.round(arquivo.size / 1024));
-      status.innerHTML = `${esc(arquivo.name)} (${kb} KB) ✓ salva! <a href="loja.html" style="color:var(--blue-glow);text-decoration:underline">Escolha seus medicamentos na loja →</a>`;
-      mostrarAviso('Receita recebida e anexada para sua compra.');
-    };
-    reader.readAsDataURL(arquivo);
-  });
 }
 
 /* ---------- chat (simulado) ---------- */

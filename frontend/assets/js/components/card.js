@@ -35,15 +35,21 @@ export function cardHtml(p) {
         <p class="card__incart" ${carrinho.qtdDe(p.id) ? '' : 'hidden'}>${noCarrinhoHtml(p.id)}</p>
         ${
           p.receita !== 'livre'
-            ? `<span class="tarja">tarja vermelha · ${p.receita === 'retencao' ? 'retém receita' : 'exige receita'}</span>`
+            ? `<span class="tarja">tarja vermelha · venda somente na loja física</span>`
             : ''
         }
       </div>
       <div class="card__foot">
         ${precoHtml(p)}
-        <button type="button" class="btn btn--primary btn--sm card__add" aria-label="Adicionar ${esc(p.nome)} ao carrinho">
-          ${icone('sacola')} Adicionar
-        </button>
+        ${
+          p.receita !== 'livre'
+            ? `<a href="produto.html?id=${encodeURIComponent(p.id)}" class="btn btn--ghost-dark btn--sm" aria-label="${esc(p.nome)} disponível apenas na loja física">
+                Apenas na loja
+              </a>`
+            : `<button type="button" class="btn btn--primary btn--sm card__add" aria-label="Adicionar ${esc(p.nome)} ao carrinho">
+                ${icone('sacola')} Adicionar
+              </button>`
+        }
       </div>
     </article>`;
 }
@@ -63,6 +69,10 @@ export function ligarCards() {
     if (!botao) return;
     const id = botao.closest('.card').dataset.id;
     const p = catalogo.produto(id);
+    if (p && p.receita !== 'livre') {
+      mostrarAviso('Medicamento com receita: disponível apenas para compra presencial na loja física.');
+      return;
+    }
     carrinho.adicionar(id);
 
     // "Adicionado ✓" por um instante

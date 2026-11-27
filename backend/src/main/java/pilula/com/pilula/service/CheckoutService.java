@@ -133,14 +133,13 @@ public class CheckoutService {
                   HttpStatus.BAD_REQUEST, "Um produto do carrinho não está mais disponível."));
           
           // LINHA: produto.getReceita() != TipoReceita.LIVRE
-          // O QUE FAZ: Regra sanitária da Anvisa. Se o remédio exige receita médica e o comprador não enviou a foto,
-          // o servidor recusa a criação do pedido lançando HTTP 409 (Conflict).
+          // O QUE FAZ: Regra sanitária da Anvisa (RDC 44/2009 e Portaria 344/98).
+          // Medicamentos que exigem receita médica não podem ser vendidos pela internet nem entregues em domicílio.
+          // O servidor bloqueia a compra online lançando HTTP 409 (Conflict). A aquisição deve ser presencial na farmácia física.
           if (produto.getReceita() != TipoReceita.LIVRE) {
-            if (dados.receitaUrl() == null || dados.receitaUrl().isBlank()) {
-              throw new ResponseStatusException(
-                  HttpStatus.CONFLICT,
-                  "Este carrinho contém medicamento que exige validação farmacêutica. Por favor, anexe a foto da receita médica.");
-            }
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Medicamentos sob prescrição médica só podem ser adquiridos presencialmente em nossa loja física com a apresentação da receita original.");
           }
           // Retorna um objeto interno contendo a entidade Produto do banco e a quantidade pedida
           return new LinhaPedido(produto, item.quantidade());

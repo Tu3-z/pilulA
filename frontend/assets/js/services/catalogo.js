@@ -42,11 +42,11 @@ export const RECEITA = {
   },
   prescricao: {
     rotulo: 'Tarja vermelha · exige receita',
-    aviso: 'Venda sob prescrição médica. Apresente a receita na compra.',
+    aviso: 'Venda sob prescrição médica exclusivamente na loja física com apresentação da receita.',
   },
   retencao: {
     rotulo: 'Tarja vermelha · receita retida',
-    aviso: 'Venda sob prescrição médica. A receita original é retida na entrega.',
+    aviso: 'Venda sob prescrição médica exclusivamente na loja física. A receita original é retida no balcão.',
   },
 };
 
