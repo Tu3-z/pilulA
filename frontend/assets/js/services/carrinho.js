@@ -1,10 +1,30 @@
+/* ==============================================================================
+ * SERVIÇO: carrinho.js (Gerenciador de Estado do Carrinho)
+ * ==============================================================================
+ * Responsável pelo estado reativo e persistência local do carrinho de compras.
+ * 
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
+ * 1. Persistência no LocalStorage:
+ *    - Os itens e o cupom de desconto são salvos no armazenamento local do navegador
+ *      (chave 'pilula:carrinho:v1'), sobrevivendo a recarregamentos de página (F5).
+ * 
+ * 2. Arquitetura Reativa com EventTarget (Padrão Pub/Sub):
+ *    - Utiliza a API nativa 'EventTarget' do JavaScript moderno sem depender de Redux/Vuex.
+ *    - Qualquer componente ou cabeçalho que precise reagir a alterações se inscreve
+ *      usando 'carrinho.aoMudar(callback)'.
+ * 
+ * 3. Sincronização em Tempo Real entre Abas:
+ *    - Escuta o evento 'storage' do window. Se o usuário abrir duas abas da farmácia
+ *      e adicionar um remédio em uma delas, a outra aba atualiza o contador do cabeçalho
+ *      instantaneamente sem recarregar a página!
+ * 
+ * 4. Regras de Frete e Cupom:
+ *    - Frete grátis automático a partir de R$ 99,00.
+ *    - Cupom promocional PILULA10 concede 10% de desconto no total.
+ * ============================================================================== */
+
 import { gravarStorage, lerStorage } from '../utils/texto.js';
 import { produto } from './catalogo.js';
-
-/*
- * Carrinho salvo no localStorage e sincronizado entre abas.
- * Quem precisa reagir a mudanças usa aoMudar(fn).
- */
 
 const CHAVE = 'pilula:carrinho:v1';
 

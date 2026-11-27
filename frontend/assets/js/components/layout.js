@@ -526,7 +526,7 @@ function montarRodape() {
       <div class="container footer__legal">
         <p>Farmacêutica responsável: Dra. Camila S. Rocha — CRF-SP 54.321<br>AFE/ANVISA 7.12345.6 · CNPJ 45.123.789/0001-80</p>
         <p class="footer__warning">Se persistirem os sintomas, o médico deverá ser consultado.</p>
-        <p class="footer__note">Projeto Integrador — protótipo acadêmico. Produtos reais usados como dados de teste; preços ilustrativos. Marcas pertencem aos seus donos.</p>
+        <p class="footer__note">Projeto Integrador — protótipo acadêmico. Produtos reais usados como dados de teste; preços ilustrativos. Marcas pertencem aos seus donos. Fotos de dermocosméticos e higiene sob licença colaborativa ODbL / CC BY-SA cortesia de <a href="https://world.openbeautyfacts.org" target="_blank" rel="noopener">Open Beauty Facts</a>.</p>
       </div>
     </footer>
     <dialog class="dialog" id="modal-info">

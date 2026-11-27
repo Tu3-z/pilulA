@@ -148,6 +148,144 @@
   ],
   "produtos": [
     {
+      "id": "dipirona-gotas-medley",
+      "categoria": "medicamentos",
+      "subcategoria": "dor-febre",
+      "nome": "Dipirona Gotas 500 mg/mL",
+      "marca": "Medley",
+      "sub": "frasco 20 ml",
+      "preco": 8.49,
+      "precoAntigo": 10.9,
+      "receita": "livre",
+      "destaque": true,
+      "selo": "-22%",
+      "arte": {
+        "forma": "gotas",
+        "rotulo": "500"
+      },
+      "foto": "assets/img/produtos/dipirona-gotas-medley.webp",
+      "descricao": "Analgésico e antitérmico em gotas, para alívio de febre e dores. Medicamento genérico. Uso adulto e pediátrico acima de 3 meses."
+    },
+    {
+      "id": "cerave-locao",
+      "categoria": "dermo",
+      "subcategoria": "hidratante",
+      "nome": "CeraVe Loção Hidratante",
+      "marca": "CeraVe",
+      "sub": "473 ml",
+      "preco": 99.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pump",
+        "rotulo": "CERAVE"
+      },
+      "descricao": "Hidratante corporal com ceramidas e ácido hialurônico.",
+      "destaque": true,
+      "foto": "assets/img/produtos/cerave-locao.jpg"
+    },
+    {
+      "id": "hydro-boost",
+      "categoria": "dermo",
+      "subcategoria": "rosto",
+      "nome": "Hydro Boost Water Gel",
+      "marca": "Neutrogena",
+      "sub": "50 g",
+      "preco": 79.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pote",
+        "rotulo": "HYDRO"
+      },
+      "descricao": "Hidratante facial em gel com ácido hialurônico.",
+      "foto": "assets/img/produtos/hydro-boost.jpg",
+      "destaque": true
+    },
+    {
+      "id": "effaclar-gel",
+      "categoria": "dermo",
+      "subcategoria": "rosto",
+      "nome": "Effaclar Gel Concentrado",
+      "marca": "La Roche-Posay",
+      "sub": "60 g",
+      "preco": 59.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "EFFAC"
+      },
+      "descricao": "Gel de limpeza facial para pele oleosa.",
+      "foto": "assets/img/produtos/effaclar-gel.jpg",
+      "destaque": true
+    },
+    {
+      "id": "colgate-total",
+      "categoria": "higiene",
+      "subcategoria": "bucal",
+      "nome": "Colgate Total 12 Clean Mint",
+      "marca": "Colgate",
+      "sub": "90 g",
+      "preco": 12.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "bisnaga",
+        "rotulo": "TOTAL"
+      },
+      "descricao": "Creme dental com flúor.",
+      "foto": "assets/img/produtos/colgate-total.jpg",
+      "destaque": true
+    },
+    {
+      "id": "dove-aerosol",
+      "categoria": "higiene",
+      "subcategoria": "desodorante",
+      "nome": "Desodorante Dove Original aerosol",
+      "marca": "Dove",
+      "sub": "150 ml",
+      "preco": 19.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "spray",
+        "rotulo": "DOVE"
+      },
+      "descricao": "Antitranspirante aerosol 48h.",
+      "foto": "assets/img/produtos/dove-aerosol.jpg",
+      "destaque": true
+    },
+    {
+      "id": "shampoo-johnsons",
+      "categoria": "bebe",
+      "subcategoria": "banho-bebe",
+      "nome": "Shampoo Johnson's Baby",
+      "marca": "Johnson's",
+      "sub": "200 ml",
+      "preco": 17.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "frasco",
+        "rotulo": "BABY"
+      },
+      "descricao": "Shampoo suave, fórmula sem lágrimas.",
+      "foto": "assets/img/produtos/shampoo-johnsons.jpg",
+      "destaque": true
+    },
+    {
+      "id": "nivea-creme-56",
+      "categoria": "dermo",
+      "subcategoria": "hidratante",
+      "nome": "Nivea Creme",
+      "marca": "Nivea",
+      "sub": "lata 56 g",
+      "preco": 14.9,
+      "receita": "livre",
+      "arte": {
+        "forma": "pote",
+        "rotulo": "NIVEA"
+      },
+      "descricao": "Creme hidratante para rosto, corpo e mãos.",
+      "foto": "assets/img/produtos/nivea-creme-56.jpg",
+      "destaque": true
+    },
+    {
       "id": "dorflex-36",
       "categoria": "medicamentos",
       "subcategoria": "dor-febre",
@@ -222,25 +360,6 @@
         "rotulo": "500 MG"
       },
       "descricao": "Analgésico e antitérmico. Medicamento genérico."
-    },
-    {
-      "id": "dipirona-gotas-medley",
-      "categoria": "medicamentos",
-      "subcategoria": "dor-febre",
-      "nome": "Dipirona Gotas 500 mg/mL",
-      "marca": "Medley",
-      "sub": "frasco 20 ml",
-      "preco": 8.49,
-      "precoAntigo": 10.9,
-      "receita": "livre",
-      "destaque": true,
-      "selo": "-22%",
-      "arte": {
-        "forma": "gotas",
-        "rotulo": "500"
-      },
-      "foto": "assets/img/produtos/dipirona-gotas-medley.webp",
-      "descricao": "Analgésico e antitérmico em gotas, para alívio de febre e dores. Medicamento genérico. Uso adulto e pediátrico acima de 3 meses."
     },
     {
       "id": "benegrip-12",
@@ -581,53 +700,8 @@
         "forma": "pump",
         "rotulo": "CETAPH"
       },
-      "descricao": "Loção hidratante para pele seca e sensível."
-    },
-    {
-      "id": "cerave-locao",
-      "categoria": "dermo",
-      "subcategoria": "hidratante",
-      "nome": "CeraVe Loção Hidratante",
-      "marca": "CeraVe",
-      "sub": "473 ml",
-      "preco": 99.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "pump",
-        "rotulo": "CERAVE"
-      },
-      "descricao": "Hidratante corporal com ceramidas e ácido hialurônico.",
-      "destaque": true
-    },
-    {
-      "id": "hydro-boost",
-      "categoria": "dermo",
-      "subcategoria": "rosto",
-      "nome": "Hydro Boost Water Gel",
-      "marca": "Neutrogena",
-      "sub": "50 g",
-      "preco": 79.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "pote",
-        "rotulo": "HYDRO"
-      },
-      "descricao": "Hidratante facial em gel com ácido hialurônico."
-    },
-    {
-      "id": "effaclar-gel",
-      "categoria": "dermo",
-      "subcategoria": "rosto",
-      "nome": "Effaclar Gel Concentrado",
-      "marca": "La Roche-Posay",
-      "sub": "60 g",
-      "preco": 59.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "bisnaga",
-        "rotulo": "EFFAC"
-      },
-      "descricao": "Gel de limpeza facial para pele oleosa."
+      "descricao": "Loção hidratante para pele seca e sensível.",
+      "foto": "assets/img/produtos/cetaphil-locao.jpg"
     },
     {
       "id": "bepantol-derma",
@@ -673,21 +747,6 @@
         "rotulo": "FPS30"
       },
       "descricao": "Hidratante labial com proteção solar."
-    },
-    {
-      "id": "colgate-total",
-      "categoria": "higiene",
-      "subcategoria": "bucal",
-      "nome": "Colgate Total 12 Clean Mint",
-      "marca": "Colgate",
-      "sub": "90 g",
-      "preco": 12.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "bisnaga",
-        "rotulo": "TOTAL"
-      },
-      "descricao": "Creme dental com flúor."
     },
     {
       "id": "sensodyne-repara",
@@ -749,21 +808,6 @@
         "rotulo": "50 M"
       },
       "descricao": "Fio dental encerado."
-    },
-    {
-      "id": "dove-aerosol",
-      "categoria": "higiene",
-      "subcategoria": "desodorante",
-      "nome": "Desodorante Dove Original aerosol",
-      "marca": "Dove",
-      "sub": "150 ml",
-      "preco": 19.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "spray",
-        "rotulo": "DOVE"
-      },
-      "descricao": "Antitranspirante aerosol 48h."
     },
     {
       "id": "rexona-clinical",
@@ -1008,21 +1052,6 @@
         "rotulo": "48 UN"
       },
       "descricao": "Lenços umedecidos com aloe vera."
-    },
-    {
-      "id": "shampoo-johnsons",
-      "categoria": "bebe",
-      "subcategoria": "banho-bebe",
-      "nome": "Shampoo Johnson's Baby",
-      "marca": "Johnson's",
-      "sub": "200 ml",
-      "preco": 17.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "frasco",
-        "rotulo": "BABY"
-      },
-      "descricao": "Shampoo suave, fórmula sem lágrimas."
     },
     {
       "id": "advil-400",
@@ -1330,7 +1359,8 @@
         "forma": "frasco",
         "rotulo": "FPS50"
       },
-      "descricao": "Protetor solar com hidratação, resistente à água."
+      "descricao": "Protetor solar com hidratação, resistente à água.",
+      "foto": "assets/img/produtos/nivea-sun-50.jpg"
     },
     {
       "id": "sundown-praia-50",
@@ -1346,21 +1376,6 @@
         "rotulo": "FPS50"
       },
       "descricao": "Protetor solar para praia e piscina, resistente à água."
-    },
-    {
-      "id": "nivea-creme-56",
-      "categoria": "dermo",
-      "subcategoria": "hidratante",
-      "nome": "Nivea Creme",
-      "marca": "Nivea",
-      "sub": "lata 56 g",
-      "preco": 14.9,
-      "receita": "livre",
-      "arte": {
-        "forma": "pote",
-        "rotulo": "NIVEA"
-      },
-      "descricao": "Creme hidratante para rosto, corpo e mãos."
     },
     {
       "id": "neutrogena-norwegian",
@@ -1390,7 +1405,8 @@
         "forma": "pump",
         "rotulo": "CERAVE"
       },
-      "descricao": "Limpa a pele normal a oleosa sem ressecar, com ceramidas."
+      "descricao": "Limpa a pele normal a oleosa sem ressecar, com ceramidas.",
+      "foto": "assets/img/produtos/cerave-espuma.jpg"
     },
     {
       "id": "nivea-micelar",
@@ -1420,7 +1436,8 @@
         "forma": "bisnaga",
         "rotulo": "DEEP"
       },
-      "descricao": "Gel de limpeza facial para pele oleosa."
+      "descricao": "Gel de limpeza facial para pele oleosa.",
+      "foto": "assets/img/produtos/neutrogena-deep-clean.jpg"
     },
     {
       "id": "carmed-labial",
@@ -1450,7 +1467,8 @@
         "forma": "bisnaga",
         "rotulo": "WHITE"
       },
-      "descricao": "Creme dental clareador."
+      "descricao": "Creme dental clareador.",
+      "foto": "assets/img/produtos/colgate-luminous.jpg"
     },
     {
       "id": "sorriso-dentes-brancos",
@@ -1495,7 +1513,8 @@
         "forma": "bastao",
         "rotulo": "B&W"
       },
-      "descricao": "Antitranspirante que não mancha roupas pretas nem brancas."
+      "descricao": "Antitranspirante que não mancha roupas pretas nem brancas.",
+      "foto": "assets/img/produtos/nivea-black-white.jpg"
     },
     {
       "id": "dove-sabonete",
@@ -1510,7 +1529,8 @@
         "forma": "caixa",
         "rotulo": "DOVE"
       },
-      "descricao": "Sabonete em barra com 1/4 de creme hidratante."
+      "descricao": "Sabonete em barra com 1/4 de creme hidratante.",
+      "foto": "assets/img/produtos/dove-sabonete.jpg"
     },
     {
       "id": "head-shoulders",
@@ -1525,7 +1545,8 @@
         "forma": "frasco",
         "rotulo": "H&S"
       },
-      "descricao": "Shampoo anticaspa de uso diário."
+      "descricao": "Shampoo anticaspa de uso diário.",
+      "foto": "assets/img/produtos/head-shoulders.jpg"
     },
     {
       "id": "lucretin-intimo",
@@ -1677,7 +1698,8 @@
         "forma": "pump",
         "rotulo": "BABY"
       },
-      "descricao": "Sabonete líquido suave para cabelo e corpo do bebê."
+      "descricao": "Sabonete líquido suave para cabelo e corpo do bebê.",
+      "foto": "assets/img/produtos/johnsons-cabeca-pes.jpg"
     }
   ]
 }

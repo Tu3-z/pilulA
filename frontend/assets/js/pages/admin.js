@@ -1,3 +1,23 @@
+/* ==============================================================================
+ * CONTROLADOR DE PÁGINA: admin.js (Painel Administrativo e Farmacêutico)
+ * ==============================================================================
+ * Centraliza o gerenciamento de permissões e o fluxo de auditoria de receitas.
+ * 
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
+ * 1. Segurança e Autenticação Prévia:
+ *    - Verifica se o usuário atual possui token válido e perfil estrito 'ADMIN'.
+ *    - Se for comprador comum ou não logado, bloqueia o acesso à interface.
+ * 
+ * 2. Gestão de Contas e RBAC:
+ *    - Permite promover usuários ou alterar perfis (COMPRADOR, VENDEDOR, ADMIN).
+ * 
+ * 3. Mesa de Revisão Farmacêutica (Receitas Médicas):
+ *    - Exibe fila de pedidos com prescrições anexadas pelo cliente.
+ *    - Badge de contagem em tempo real com pedidos aguardando análise (PENDENTE).
+ *    - Modal interativo com visualização da receita, campo para justificativa/observações
+ *      técnicas do farmacêutico e ações diretas de Aprovação ou Recusa via PATCH /api/admin/receitas/{id}.
+ * ============================================================================== */
+
 import { $, esc } from '../utils/texto.js';
 import * as sessao from '../services/sessao.js';
 import { iniciarLayout } from '../components/layout.js';

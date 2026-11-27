@@ -1,3 +1,33 @@
+/* ==============================================================================
+ * CONTROLADOR DE PÁGINA: carrinho.js
+ * ==============================================================================
+ * Gerencia o ciclo completo de compra no frontend:
+ * 
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
+ * 
+ * 1. Checkout em Etapas (Progressive Disclosure):
+ *    - Dividido em 4 etapas didáticas:
+ *      Etapa 0: Carrinho (ajuste de quantidades, cálculo de frete e cupom)
+ *      Etapa 1: Seus dados (Nome, CPF, E-mail, Celular com máscaras e validação)
+ *      Etapa 2: Entrega (Alternância entre Entrega expressa ou Retirada na Loja,
+ *               autocompletar de endereço via API ViaCEP)
+ *      Etapa 3: Pagamento (Resumo final, upload de receita médica caso haja remédio
+ *               controlado e redirecionamento para o gateway Mercado Pago)
+ * 
+ * 2. Validação Sanitária da Anvisa no Frontend:
+ *    - Se o carrinho contém medicamentos com retenção de receita (tarja vermelha/preta),
+ *      o botão de finalizar é travado até que o comprador anexe a imagem/foto da prescrição.
+ * 
+ * 3. Integração com a API Backend:
+ *    - Envia requisição POST para /api/checkout/preferencia.
+ *    - O backend recalcula os preços com base nos valores do banco (proteção contra fraude).
+ *    - Redireciona o usuário para a página de pagamento seguro do Mercado Pago Checkout Pro.
+ * 
+ * 4. Pós-Pagamento e Emissão de Recibo:
+ *    - Ao retornar do gateway com '?pagamento=sucesso', exibe o recibo completo
+ *      com opção de impressão (Ctrl+P / window.print) e compartilhamento via WhatsApp.
+ * ============================================================================== */
+
 import { $, esc, formatBRL } from '../utils/texto.js';
 import { icone } from '../utils/icones.js';
 import { arteHtml } from '../utils/arte.js';
@@ -6,11 +36,6 @@ import * as sessao from '../services/sessao.js';
 import { mostrarAviso } from '../components/avisos.js';
 import { ligarMascaras, ligarValidacao, validarCampo } from '../utils/validacao.js';
 import { iniciarLayout } from '../components/layout.js';
-
-/*
- * Carrinho + checkout em etapas: itens → dados → entrega → pagamento.
- * O formulário está escrito no carrinho.html; aqui ficam as regras e o que muda na tela.
- */
 
 await iniciarLayout();
 
@@ -220,34 +245,61 @@ form.addEventListener('focusin', (e) => {
   desenharEtapas();
 });
 
-/* ---------- CEP com 8 dígitos → busca o endereço no ViaCEP (API pública) ---------- */
+/* ---------- BUSCA DE ENDEREÇO VIA CEP (API ViaCEP) ---------- */
 let ultimoCep = '';
 let controleCep = null;
+
+// Escuta quando a pessoa digita no campo de CEP
 f.cep.addEventListener('input', async () => {
+  // LINHA: f.cep.value.replace(/\D/g, '')
+  // O QUE FAZ: Limpa o traço e espaços deixando só os números do CEP
   const cep = f.cep.value.replace(/\D/g, '');
+
+  // LINHA: if (cep.length !== 8 || cep === ultimoCep) return;
+  // O QUE FAZ: Só dispara a busca na internet se o usuário tiver digitado os 8 números completos
+  // e se não for o mesmo CEP que já acabamos de buscar (evita chamadas duplicadas à API).
   if (cep.length !== 8 || cep === ultimoCep) return;
   ultimoCep = cep;
+
   const status = $('#cep-status');
   status.textContent = 'buscando endereço…';
-  controleCep?.abort(); // cancela a busca anterior, se ainda estiver rodando
+
+  // LINHA: controleCep?.abort(); controleCep = new AbortController();
+  // O QUE FAZ: Se o usuário digitar rápido e mudar o CEP, cancela a requisição anterior que estava em andamento.
+  controleCep?.abort();
   controleCep = new AbortController();
+
+  // LINHA: setTimeout(() => controleCep.abort(), 5000);
+  // O QUE FAZ: Define um timeout de 5 segundos. Se a API do ViaCEP travar, cancela a busca para não travar a tela.
   const tempo = setTimeout(() => controleCep.abort(), 5000);
+
   try {
+    // LINHA: fetch(`https://viacep.com.br/ws/${cep}/json/`, { signal: controleCep.signal })
+    // O QUE FAZ: Envia requisição HTTP GET para o serviço público gratuito do ViaCEP passando o CEP digitado.
     const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`, {
       signal: controleCep.signal,
     });
+    // Converte a resposta recebida em JSON:
     const d = await resposta.json();
+
+    // Se o CEP for inexistente na base dos Correios, o ViaCEP devolve { erro: true }
     if (d.erro) {
       status.textContent = 'CEP não encontrado. preenche à mão.';
       return;
     }
+
+    // Preenche automaticamente os campos de texto do formulário com os dados dos Correios:
     if (d.logradouro) f.rua.value = d.logradouro;
     if (d.bairro) f.bairro.value = d.bairro;
     if (d.localidade) f.cidade.value = `${d.localidade} / ${d.uf}`;
+
+    // Dispara a validação visual (tira o contorno vermelho de campo vazio se houver)
     ['rua', 'bairro', 'cidade'].forEach(
       (n) => f[n].getAttribute('aria-invalid') === 'true' && validarCampo(f[n]),
     );
+
     status.textContent = '✓ endereço encontrado';
+    // Coloca o cursor automaticamente no campo 'Número', que é o único dado que o ViaCEP não tem
     f.numero.focus();
   } catch {
     status.textContent = 'sem conexão com o ViaCEP. preenche à mão.';
@@ -269,15 +321,21 @@ function preencherComSessao() {
 
 /* ================================================================ finalizar */
 
+// Escuta o clique no botão 'Finalizar pedido'
 form.addEventListener('submit', async (e) => {
+  // LINHA: e.preventDefault()
+  // O QUE FAZ: Impede o comportamento padrão do navegador de recarregar a tela ao enviar um form.
   e.preventDefault();
   enviado = true;
   const r = resumo();
 
+  // LINHA: validarTudo()
+  // O QUE FAZ: Roda a validação de todos os campos (CPF, email, celular, CEP, etc.)
   const invalidos = validarTudo().map((el) => NOMES[el.name] ?? el.name);
   desenharEtapas();
 
   const erros = $('#resumo-erros');
+  // Se tiver algum campo com erro, exibe mensagem vermelha e coloca foco no primeiro campo com erro
   if (invalidos.length) {
     erros.hidden = false;
     erros.textContent = `falta corrigir: ${invalidos.join(', ')}.`;
@@ -287,6 +345,7 @@ form.addEventListener('submit', async (e) => {
     return;
   }
   erros.hidden = true;
+  // Se tudo estiver válido, chama a integração de checkout com o backend
   await iniciarCheckout(r);
 });
 
@@ -294,9 +353,11 @@ async function iniciarCheckout(r) {
   const botao = $('#finalizar');
   const textoOriginal = botao.textContent;
   const erros = $('#resumo-erros');
+  // Desativa o botão para evitar clique duplo enquanto a requisição viaja pela rede
   botao.disabled = true;
   botao.textContent = 'Conectando ao Mercado Pago…';
 
+  // LINHA: Monta o objeto JavaScript com todos os dados do comprador e do carrinho
   const pedido = {
     nome: f.nome.value.trim(),
     email: f.email.value.trim(),
@@ -310,17 +371,24 @@ async function iniciarCheckout(r) {
     bairro: f.bairro.value.trim(),
     cidade: f.cidade.value.trim(),
     cupom: carrinho.cupom()?.codigo ?? null,
+    // Converte os produtos do carrinho em formato simplificado { slug, quantidade } para o servidor
     itens: r.itens.map(({ produto, qtd }) => ({ slug: produto.id, quantidade: qtd })),
+    // Se o cliente anexou foto de receita médica, ela viaja aqui codificada em base64
     receitaUrl: receitaBase64,
   };
 
   try {
+    // LINHA: fetch(`${API_URL}/api/checkout/preferencia`, { method: 'POST', ... })
+    // O QUE FAZ: Envia uma requisição HTTP POST para a API do Spring Boot na porta 8080.
+    // O backend recebe esse JSON, recalcula os preços no banco de dados e cria a preferência no Mercado Pago.
     const resposta = await fetch(`${API_URL}/api/checkout/preferencia`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(pedido),
     });
     const dados = await resposta.json().catch(() => null);
+
+    // Se o servidor retornou código de erro (400, 409, 500, etc.), lança exceção com o detalhe do erro
     if (!resposta.ok) {
       throw new Error(
         dados?.detail ??
@@ -329,6 +397,8 @@ async function iniciarCheckout(r) {
       );
     }
 
+    // LINHA: Proteção de Integridade Financeira
+    // O QUE FAZ: Confere se o valor total devolvido pelo backend bate com o que estava no carrinho.
     const totalServidor = Number(dados.total);
     if (!Number.isFinite(totalServidor) || !dados.checkoutUrl) {
       throw new Error('O servidor devolveu uma resposta inválida para iniciar o pagamento.');
@@ -339,6 +409,8 @@ async function iniciarCheckout(r) {
       );
     }
 
+    // LINHA: Validação de Segurança de URL do Gateway
+    // O QUE FAZ: Garante que o link retornado pelo servidor seja obrigatoriamente HTTPS e pertença ao domínio 'mercadopago.com'.
     let checkoutUrl;
     try {
       checkoutUrl = new URL(dados.checkoutUrl);

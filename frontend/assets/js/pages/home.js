@@ -14,10 +14,62 @@ iniciarCarrossel($('.carrossel'));
 desenharPrecoDestaque();
 desenharCategorias();
 desenharDestaques();
+ligarBannerApp();
 ligarPopupBula();
 ligarReceita();
 ligarChat();
 ligarNewsletter();
+
+/* ---------- banner do app mobile / QR code ---------- */
+function ligarBannerApp() {
+  const urlAtual = location.href.replace(/index\.html.*/, '');
+  const urlCurta = location.host || 'pilula.app';
+  
+  const elUrl = $('#phone-mockup-url');
+  if (elUrl) elUrl.textContent = urlCurta;
+
+  // Botão Copiar Link
+  $('#btn-copiar-link-app')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(urlAtual);
+      mostrarAviso('Link copiado! Abra no celular ou envie no WhatsApp dos alunos.', 'ok');
+    } catch {
+      mostrarAviso(`Acesse no celular: ${urlAtual}`);
+    }
+  });
+
+  // Botão Instruções PWA
+  $('#btn-instrucoes-pwa')?.addEventListener('click', () => {
+    const dialog = $('#modal-info');
+    const titulo = $('#modal-info-titulo');
+    const corpo = $('#modal-info-corpo');
+    if (!dialog || !titulo || !corpo) return;
+
+    titulo.textContent = 'Como instalar a pílula* no seu celular';
+    corpo.innerHTML = `
+      <div style="display:grid;gap:16px;text-align:left">
+        <p>A pílula* é um <b>PWA (Progressive Web App)</b>: você pode usá-la no navegador ou colocá-la na tela inicial do celular como um aplicativo comum, sem precisar de loja.</p>
+        <div style="background:var(--blue-tint);padding:14px;border-radius:var(--radius);border:var(--line)">
+          <h4 style="margin:0 0 6px;color:var(--blue)">🍏 No iPhone (Safari)</h4>
+          <ol style="margin:0;padding-left:20px;font-size:0.9rem;line-height:1.5">
+            <li>Abra o site no navegador <b>Safari</b>.</li>
+            <li>Toque no botão <b>Compartilhar</b> (ícone de quadrado com seta para cima).</li>
+            <li>Role as opções e toque em <b>"Adicionar à Tela de Início"</b>.</li>
+          </ol>
+        </div>
+        <div style="background:var(--blue-tint);padding:14px;border-radius:var(--radius);border:var(--line)">
+          <h4 style="margin:0 0 6px;color:var(--blue)">🤖 No Android (Chrome)</h4>
+          <ol style="margin:0;padding-left:20px;font-size:0.9rem;line-height:1.5">
+            <li>Abra o site no navegador <b>Google Chrome</b>.</li>
+            <li>Toque nos <b>três pontinhos</b> no canto superior direito.</li>
+            <li>Toque em <b>"Instalar aplicativo"</b> ou <b>"Adicionar à tela inicial"</b>.</li>
+          </ol>
+        </div>
+      </div>
+    `;
+    dialog.showModal();
+  });
+}
 
 /* ---------- preço do remédio do carrossel (vem do catálogo) ---------- */
 function desenharPrecoDestaque() {

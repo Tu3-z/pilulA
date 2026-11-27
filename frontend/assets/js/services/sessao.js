@@ -1,17 +1,24 @@
-import { gravarStorage, lerStorage } from '../utils/texto.js';
+/* ==============================================================================
+ * SERVIÇO: sessao.js (Autenticação e Sessão de Usuário)
+ * ==============================================================================
+ * Centraliza a comunicação com os endpoints /api/auth e a persistência do JWT.
+ * 
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
+ * 1. Gerenciamento Seguro de Token JWT:
+ *    - Quando o usuário faz login ou cadastra-se, a API devolve um token JWT assinado.
+ *    - Esse token é armazenado no localStorage ('pilula:sessao:v2') e injetado
+ *      automaticamente no header 'Authorization: Bearer <token>' de requisições autenticadas.
+ * 
+ * 2. Segurança de Senhas:
+ *    - O frontend nunca armazena a senha do usuário em storage; ela é enviada
+ *      via HTTPS diretamente para a API, onde é convertida em hash BCrypt.
+ * 
+ * 3. Sincronização de Login Multi-Aba:
+ *    - Utiliza o evento 'storage' para sincronizar o estado de login/logout
+ *      entre múltiplas abas abertas no mesmo navegador.
+ * ============================================================================== */
 
-/*
- * Sessão do usuário, ligada na API do back-end (Spring Boot + tabela `usuario` no Supabase).
- *
- *   cadastrar → POST /api/auth/cadastrar   entrar → POST /api/auth/entrar
- *
- * As duas devolvem o usuário + um token JWT. O token fica guardado no navegador e vai no
- * cabeçalho "Authorization: Bearer ..." das rotas que exigem login (ver `comToken`).
- * A senha nunca fica no navegador: quem guarda (como hash BCrypt) é o back-end.
- *
- * A URL da API é lida de window.APP_CONFIG.apiUrl, definida em assets/js/config.js.
- * Isso evita ter a URL hardcoded aqui e facilita a troca entre ambiente local e produção.
- */
+import { gravarStorage, lerStorage } from '../utils/texto.js';
 
 /** Lê a URL base da API de config.js; se não existir, cai no localhost para dev local. */
 const BASE_URL = (window.APP_CONFIG?.apiUrl ?? 'http://localhost:8080').replace(/\/+$/, '');

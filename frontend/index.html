@@ -121,6 +121,47 @@
           </div>
         </div>
 
+        <!-- ===== 2. banner do app mobile / QR code ===== -->
+        <div class="slide slide--app" role="group" aria-roledescription="slide" data-rotulo="Acesse pelo Celular ou App PWA">
+          <div class="slide__copy">
+            <p class="slide__eyebrow">📱 Versão Mobile &amp; App</p>
+            <h2 class="slide__titulo">Leve a pílula*<br>no seu <em>bolso</em>.</h2>
+            <p class="slide__lead">Aponte a câmera do seu celular para o QR Code ao lado. Acesse a farmácia instantaneamente no seu navegador ou instale como app no seu aparelho.</p>
+            
+            <div class="slide__ctas">
+              <button type="button" class="btn btn--light" id="btn-copiar-link-app">
+                Copiar link do app
+              </button>
+              <button type="button" class="btn btn--ghost-light" id="btn-instrucoes-pwa">
+                Como instalar no celular?
+              </button>
+            </div>
+            
+            <p class="slide__legal" id="app-url-indicador">Compatível com Android e iPhone · PWA com carregamento instantâneo offline</p>
+          </div>
+
+          <div class="palco palco--app" aria-hidden="true">
+            <span class="camada palco__brilho" style="--p: 8"></span>
+            <span class="camada capsula capsula--a" style="--p: 36"></span>
+            <span class="camada cruz" style="--p: -15"></span>
+            
+            <!-- Mockup de smartphone com QR Code escaneável -->
+            <div class="camada phone-mockup" style="--p: 20">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen">
+                <div class="phone-mockup__badge">Abra a câmera e aponte</div>
+                <div class="phone-mockup__qr">
+                  <img id="qr-code-img" src="assets/img/qr-code-app.png" alt="QR Code para abrir no celular" width="160" height="160">
+                </div>
+                <p class="phone-mockup__hint">Acesse pelo celular:<br><b id="phone-mockup-url">pilula.app</b></p>
+              </div>
+            </div>
+            
+            <span class="palco__sombra"></span>
+            <span class="camada palco__selo palco__selo--pwa" style="--p: 34">App PWA</span>
+          </div>
+        </div>
+
         <!-- ===== 2. cupom ===== -->
         <div class="slide slide--cupom" role="group" aria-roledescription="slide" data-rotulo="Cupom de 10% na primeira compra">
           <div class="slide__copy">

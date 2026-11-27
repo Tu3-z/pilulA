@@ -15,16 +15,26 @@ import pilula.com.pilula.repository.PedidoRepository;
 
 /**
  * ==============================================================================
- * SERVICE: ReceitaService
+ * SERVICE: ReceitaService - Módulo de Controle Sanitário e Farmacêutico
  * ==============================================================================
- * Lógica de negócio para o fluxo de envio e revisão de receita médica.
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
  * 
- * Fluxo:
- *  1. Comprador envia foto da receita via POST /api/receita/{referencia}
- *     → receitaStatus muda para "PENDENTE"
- *  2. Admin lista pedidos com receita pendente em GET /api/admin/receitas
- *  3. Admin aprova ou rejeita via PATCH /api/admin/receitas/{id}
- *     → receitaStatus muda para "APROVADA" ou "REJEITADA"
+ * 1. Conformidade Regulatória (Anvisa - Portaria 344/98 e RDC 44/2009):
+ *    - No Brasil, medicamentos com tarja vermelha com retenção e tarja preta
+ *      não podem ser dispensados sem validação e retenção de receita médica válida.
+ *    - O sistema Pílula implementa essa conformidade de ponta a ponta:
+ *      se o carrinho possui remédio controlado, o checkout exige a foto/documento
+ *      da prescrição médica e cria o pedido com 'receitaStatus = PENDENTE'.
+ * 
+ * 2. Fluxo do Farmacêutico / Administrador:
+ *    - O farmacêutico responsável acessa a aba restrita no painel administrativo
+ *      (/admin.html) e visualiza as receitas pendentes com imagem em alta resolução.
+ *    - O profissional confere: nome do paciente, dosagem, CRM do médico e data.
+ *    - Ao aprovar ou rejeitar (com justificativa), o backend registra o status
+ *      e o timestamp da auditoria (receitaRevisadaEm).
+ * 
+ * 3. Transacionalidade (@Transactional):
+ *    - As alterações de status e auditoria ocorrem em transações seguras no banco de dados.
  */
 @Service
 public class ReceitaService {
@@ -36,8 +46,8 @@ public class ReceitaService {
   }
 
   /**
-   * Comprador envia a URL/base64 da foto da receita para um pedido.
-   * A URL pode vir de um upload externo ou diretamente como data URI.
+   * Comprador envia a URL ou base64 da foto da receita para um pedido existente.
+   * O status da receita é redefinido para PENDENTE para nova análise da farmácia.
    */
   @Transactional
   public ReceitaPedidoDTO enviarReceita(String referencia, String receitaUrl) {
@@ -50,7 +60,8 @@ public class ReceitaService {
   }
 
   /**
-   * Admin lista todos os pedidos que possuem receita enviada (qualquer status).
+   * Admin/Farmacêutico lista todos os pedidos que possuem prescrição anexada.
+   * Ordenado cronologicamente (do mais recente para o mais antigo).
    */
   @Transactional(readOnly = true)
   public List<ReceitaPedidoDTO> listarComReceita() {
@@ -59,7 +70,8 @@ public class ReceitaService {
   }
 
   /**
-   * Admin lista pedidos com receita PENDENTE (aguardando revisão).
+   * Admin/Farmacêutico filtra especificamente os pedidos com receita aguardando análise (PENDENTE).
+   * Alimenta a fila de trabalho prioritária do farmacêutico no painel web.
    */
   @Transactional(readOnly = true)
   public List<ReceitaPedidoDTO> listarPendentes() {
@@ -68,7 +80,8 @@ public class ReceitaService {
   }
 
   /**
-   * Admin aprova ou rejeita a receita de um pedido.
+   * Aprovação ou Rejeição técnica da receita pelo Farmacêutico/Admin.
+   * Grava status ("APROVADA" ou "REJEITADA"), justificativa e data/hora da auditoria.
    */
   @Transactional
   public ReceitaPedidoDTO avaliarReceita(Long id, AvaliarReceitaDTO dados) {
@@ -85,7 +98,7 @@ public class ReceitaService {
     return toDTO(pedido);
   }
 
-  // --- helpers ---
+  // --- Métodos Auxiliares de Mapeamento ---
 
   private Pedido buscarPedido(String referencia) {
     return pedidos.findByReferencia(referencia)

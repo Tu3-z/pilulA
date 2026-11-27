@@ -1,14 +1,27 @@
-import { semAcento } from '../utils/texto.js';
+/* ==============================================================================
+ * SERVIÇO: catalogo.js (Fonte de Dados e Resiliência)
+ * ==============================================================================
+ * Centraliza o carregamento, indexação e busca de produtos e categorias.
+ * 
+ * PONTOS-CHAVE PARA A APRESENTAÇÃO:
+ * 1. Padrão de Resiliência com Fallback Gracioso (Graceful Degradation):
+ *    - Fonte Primária: Requisição HTTP para a API REST do Backend (/api/catalogo).
+ *    - Timeout com AbortController: Aguarda no máximo 2500ms para evitar travamento de UI.
+ *    - Fonte Secundária (Fallback): Caso a API esteja temporariamente offline ou lenta,
+ *      carrega automaticamente o catálogo estático ('assets/data/catalogo.json').
+ *    - Efeito: A experiência do usuário (UX) nunca quebra e a loja continua navegável!
+ * 
+ * 2. Estrutura de Indexação em Memória (O(1)):
+ *    - Utiliza 'Map()' para busca instantânea de produtos por ID/slug sem varredura linear.
+ * 
+ * 3. Classificação Regulatória de Receitas (Anvisa):
+ *    - Mapeia rótulos e advertências legais para medicamentos:
+ *      * 'livre': MIPs (Medicamentos Isentos de Prescrição).
+ *      * 'prescricao': Tarja Vermelha sob prescrição.
+ *      * 'retencao': Tarja Vermelha/Preta com retenção obrigatória de receita médica.
+ * ============================================================================== */
 
-/**
- * Catálogo de produtos. De onde vem:
- *  1. da API do back-end (Spring Boot + banco no Supabase), se ela estiver no ar;
- *  2. senão, do JSON estático (assets/data/catalogo.json), para o site nunca ficar vazio.
- * O console do navegador mostra qual das duas fontes foi usada.
- *
- * A URL da API é lida de window.APP_CONFIG.apiUrl, definida em assets/js/config.js.
- * Isso evita ter a URL hardcoded aqui e facilita a troca entre ambiente local e produção.
- */
+import { semAcento } from '../utils/texto.js';
 
 /** Lê a URL base da API de config.js; se não existir, cai no localhost para dev local. */
 const BASE_URL = (window.APP_CONFIG?.apiUrl ?? 'http://localhost:8080').replace(/\/+$/, '');
@@ -46,7 +59,8 @@ async function buscarJson(url, ms) {
   const controle = new AbortController();
   const tempo = ms ? setTimeout(() => controle.abort(), ms) : null;
   try {
-    const r = await fetch(url, { signal: controle.signal });
+    const urlComBuster = url.includes('?') ? `${url}&_t=${Date.now()}` : `${url}?_t=${Date.now()}`;
+    const r = await fetch(urlComBuster, { signal: controle.signal, cache: 'no-cache' });
     if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
     return await r.json();
   } finally {
@@ -62,7 +76,7 @@ async function buscarJson(url, ms) {
  */
 const comSlug = (x) => (x.slug ? { ...x, id: x.slug, idBanco: x.id } : x);
 
-const CHAVE_CACHE = 'pilula:catalogo:cache:v2';
+const CHAVE_CACHE = 'pilula:catalogo:cache:v4';
 
 function aplicarDados(dados) {
   categorias = dados.categorias.map((c) => ({ ...comSlug(c), subs: c.subs.map(comSlug) }));

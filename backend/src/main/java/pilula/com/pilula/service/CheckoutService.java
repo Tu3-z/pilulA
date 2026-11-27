@@ -107,19 +107,34 @@ public class CheckoutService {
    * A anotação @Transactional garante que todas as operações com o banco ocorram
    * dentro de uma mesma transação ACID (tudo é gravado com sucesso ou desfeito em caso de erro).
    */
+  // @Transactional: Abre uma transação no banco de dados.
+  // SE O PROFESSOR PERGUNTAR: Garante a propriedade ACID (Atomicidade, Consistência, Isolamento, Durabilidade).
+  // Se acontecer qualquer erro no meio do caminho, todas as inserções (Pedido e Itens) são canceladas (rollback automático).
   @Transactional
   public CheckoutCriadoDTO criarPreferencia(CriarCheckoutDTO dados) {
+    
+    // LINHA: if (accessToken.isBlank())
+    // O QUE FAZ: Verifica se a chave de API do Mercado Pago foi fornecida no arquivo .env do backend.
+    // Se estiver em branco, bloqueia a chamada retornando HTTP 503 (Serviço Indisponível).
     if (accessToken.isBlank()) {
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE, "Checkout indisponível: configure MERCADOPAGO_ACCESS_TOKEN no backend.");
     }
 
-    // 1. Busca os produtos no banco e valida cada item
+    // 1. LINHA: dados.itens().stream().map(...).toList()
+    // O QUE FAZ: Percorre a lista de itens do carrinho vinda do frontend e valida item por item diretamente no banco.
     var linhas = dados.itens().stream()
         .map(item -> {
+          // LINHA: produtos.findBySlug(item.slug()).orElseThrow(...)
+          // O QUE FAZ: Faz SELECT no banco de dados para buscar o produto pelo seu código público (slug).
+          // Se o produto não existir ou tiver sido excluído, lança HTTP 400 (Bad Request).
           Produto produto = produtos.findBySlug(item.slug())
               .orElseThrow(() -> new ResponseStatusException(
                   HttpStatus.BAD_REQUEST, "Um produto do carrinho não está mais disponível."));
+          
+          // LINHA: produto.getReceita() != TipoReceita.LIVRE
+          // O QUE FAZ: Regra sanitária da Anvisa. Se o remédio exige receita médica e o comprador não enviou a foto,
+          // o servidor recusa a criação do pedido lançando HTTP 409 (Conflict).
           if (produto.getReceita() != TipoReceita.LIVRE) {
             if (dados.receitaUrl() == null || dados.receitaUrl().isBlank()) {
               throw new ResponseStatusException(
@@ -127,27 +142,53 @@ public class CheckoutService {
                   "Este carrinho contém medicamento que exige validação farmacêutica. Por favor, anexe a foto da receita médica.");
             }
           }
+          // Retorna um objeto interno contendo a entidade Produto do banco e a quantidade pedida
           return new LinhaPedido(produto, item.quantidade());
         })
         .toList();
 
-    // 2. Recalcula os valores no servidor com precisão monetária (BigDecimal)
+    // 2. LINHA: Recalculo financeiro com BigDecimal
+    // SE O PROFESSOR PERGUNTAR: "Por que não usou float ou double?"
+    // RESPOSTA: Float e Double usam ponto flutuante binário e causam erros de dízima/arredondamento (ex: 0.1 + 0.2 = 0.30000000000000004).
+    // O BigDecimal garante precisão monetária exata sem perder centavos.
     BigDecimal subtotal = linhas.stream()
+        // Multiplica o preço unitário do banco pela quantidade: preco * qtd
         .map(linha -> linha.produto().getPreco().multiply(BigDecimal.valueOf(linha.quantidade())))
+        // Soma todos os valores acumulando a partir de zero:
         .reduce(BigDecimal.ZERO, BigDecimal::add)
+        // Arredonda para 2 casas decimais usando o padrão bancário HALF_UP (arredonda 0.005 para cima):
         .setScale(2, RoundingMode.HALF_UP);
 
+    // LINHA: calcularDesconto(subtotal, dados.cupom())
+    // O QUE FAZ: Aplica 10% de desconto caso o cliente tenha usado o cupom 'PILULA10'.
     BigDecimal desconto = calcularDesconto(subtotal, dados.cupom());
+
+    // LINHA: subtotal.subtract(desconto)
+    // O QUE FAZ: Subtrai o valor do desconto do subtotal da compra.
     BigDecimal base = subtotal.subtract(desconto);
+
+    // LINHA: "retirada".equals(dados.modo())
+    // O QUE FAZ: Checa se o cliente escolheu retirar na loja física ou receber em casa via delivery.
     boolean retirada = "retirada".equals(dados.modo());
+
+    // LINHA: base.compareTo(LIMITE_FRETE_GRATIS) >= 0 ? BigDecimal.ZERO : FRETE
+    // O QUE FAZ: Se for retirada OU se o valor das compras for igual ou superior a R$ 99,00, o frete é ZERO (grátis).
+    // Caso contrário, cobra a taxa padrão de R$ 9,90.
     BigDecimal frete = retirada || base.compareTo(LIMITE_FRETE_GRATIS) >= 0 ? BigDecimal.ZERO : FRETE;
+
+    // LINHA: base.add(frete).setScale(2, RoundingMode.HALF_UP)
+    // O QUE FAZ: Soma o frete ao valor base e fixa o total final com duas casas decimais.
     BigDecimal total = base.add(frete).setScale(2, RoundingMode.HALF_UP);
     
-    // Geramos um UUID único para rastrear este pedido
+    // LINHA: UUID.randomUUID().toString()
+    // O QUE FAZ: Gera um identificador único universal de 128 bits (ex: "c38b2d18-912a-436d-9781-a957b420f18c").
+    // Esse UUID será a 'external_reference' compartilhada entre nossa farmácia e o Mercado Pago para identificar o pedido.
     String referencia = UUID.randomUUID().toString();
+
+    // LINHA: Soma a quantidade total de unidades no carrinho
     int quantidadeTotal = linhas.stream().mapToInt(LinhaPedido::quantidade).sum();
 
-    // 3. Monta e salva o Pedido no banco de dados como PENDENTE
+    // 3. Persistência da entidade Pedido no banco
     Pedido pedido = new Pedido();
     pedido.setReferencia(referencia);
     pedido.setNomeComprador(dados.nome().trim());
@@ -160,8 +201,10 @@ public class CheckoutService {
     pedido.setDesconto(desconto);
     pedido.setFrete(frete);
     pedido.setTotal(total);
+    // Todo pedido nasce com status inicial PENDENTE (aguardando o pagamento do gateway)
     pedido.setStatus(StatusPedido.PENDENTE);
 
+    // Se o cliente anexou a imagem da receita, marca o status da receita como PENDENTE de auditoria do farmacêutico
     if (dados.receitaUrl() != null && !dados.receitaUrl().isBlank()) {
       pedido.setReceitaUrl(dados.receitaUrl().trim());
       pedido.setReceitaStatus("PENDENTE");
@@ -169,9 +212,10 @@ public class CheckoutService {
       pedido.setReceitaStatus("NAO_EXIGIDA");
     }
 
-    // Se o comprador tiver conta cadastrada na farmácia com este e-mail, vincula
+    // Se existir um usuário cadastrado com esse e-mail no sistema, associa a chave estrangeira (FK) do pedido ao usuário
     usuarios.findByEmail(pedido.getEmailComprador()).ifPresent(pedido::setUsuario);
 
+    // Se for entrega a domicílio, valida os dados de endereço do ViaCEP e grava na tabela
     if (!retirada) {
       validarEndereco(dados);
       String[] cidadeUf = dados.cidade().split("\\s*/\\s*", 2);
@@ -184,13 +228,13 @@ public class CheckoutService {
       pedido.setUf(cidadeUf[1].trim().toUpperCase());
     }
 
-    // Adiciona os itens ao pedido
+    // Adiciona cada item à lista do pedido vinculando produto, quantidade e preço congelado no momento da compra
     for (LinhaPedido linha : linhas) {
       ItemPedido item = new ItemPedido(linha.produto(), linha.quantidade(), linha.produto().getPreco());
       pedido.adicionarItem(item);
     }
 
-    // 4. Prepara a requisição para a API do Mercado Pago
+    // 4. Monta a carga de dados (Payload) exigida pela API do Mercado Pago
     Map<String, Object> pagador = new LinkedHashMap<>();
     pagador.put("name", dados.nome().trim());
     pagador.put("email", dados.email().trim());
