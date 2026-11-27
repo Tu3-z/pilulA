@@ -22,19 +22,31 @@ ligarNewsletter();
 
 /* ---------- banner do app mobile / QR code ---------- */
 function ligarBannerApp() {
-  const urlAtual = location.href.replace(/index\.html.*/, '');
-  const urlCurta = location.host || 'pilula.app';
+  // Define o domínio oficial no Vercel para acesso dos celulares
+  const isVercel = location.hostname.includes('vercel.app');
+  const urlApp = isVercel ? location.origin : 'https://pilula-five.vercel.app';
+  const urlExibicao = 'pilula-five.vercel.app';
   
   const elUrl = $('#phone-mockup-url');
-  if (elUrl) elUrl.textContent = urlCurta;
+  if (elUrl) elUrl.textContent = urlExibicao;
+
+  // Garante que o QR code aponte para o site no Vercel
+  const qrImg = $('#qr-code-img');
+  if (qrImg) {
+    // Tenta carregar QR dinâmico em alta definição do Vercel, com fallback para o PNG local
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(urlApp)}`;
+    qrImg.onerror = () => {
+      qrImg.src = 'assets/img/qr-code-app.png';
+    };
+  }
 
   // Botão Copiar Link
   $('#btn-copiar-link-app')?.addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText(urlAtual);
-      mostrarAviso('Link copiado! Abra no celular ou envie no WhatsApp dos alunos.', 'ok');
+      await navigator.clipboard.writeText(urlApp);
+      mostrarAviso('Link da pílula* copiado! Envie no WhatsApp ou abra no celular.', 'ok');
     } catch {
-      mostrarAviso(`Acesse no celular: ${urlAtual}`);
+      mostrarAviso(`Acesse no celular: ${urlApp}`);
     }
   });
 
